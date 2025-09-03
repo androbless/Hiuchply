@@ -1,0 +1,32 @@
+huichply-website/
+│
+├── public_html/                 # Carpeta principal (raíz del sitio web)
+│   │
+│   ├── index.html              # Tu archivo HTML principal (modificado)
+│   ├── config.php              # Configuración de la base de datos
+│   ├── procesar_formulario.php # Script para procesar formularios
+│   ├── .htaccess               # Configuración del servidor
+│   │
+│   ├── assets/                 # Todos los recursos estáticos
+│   │   ├── css/
+│   │   │   └── style.css       # CSS extraído del HTML (opcional)
+│   │   ├── js/
+│   │   │   └── scripts.js      # JavaScript extraído (opcional)
+│   │   ├── images/
+│   │   │   ├── logo.svg        # Logo de Huichply
+│   │   │   └── ...             # Otras imágenes
+│   │   └── fonts/
+│   │       └── ...             # Fuentes personalizadas (si las hay)
+│   │
+│   ├── phpmailer/              # Librería PHPMailer (si decides usarla)
+│   │   ├── src/
+│   │   └── ... 
+│   │
+│   └── HUICHPLY LOGO/          # Carpeta con los recursos del logo
+│       ├── Recurso 21CHOCOLATE.svg
+│       └── ...                 # Otras versiones del logo
+│
+├── database/                   # Scripts de base de datos (local)
+│   └── huichply.sql           # Exportación de la estructura de la BD
+│
+└── README.md                   # Documentación del proyecto

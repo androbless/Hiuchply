@@ -1,0 +1,3291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huichply</title>
+    <!-- Agregando jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Agregando Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Agregando Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Gabarito:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos existentes (se mantienen igual) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Gabarito', Arial, sans-serif;
+            color: #2a181c;
+            background-color: #ede8dd;
+            line-height: 1.4;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px; /* Para compensar el header fijo */
+        }
+        
+        header {
+            text-align: center;
+            padding: 15px 0;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background-color: #ede8dd;
+            opacity: 0; /* Inicialmente oculto para la animación */
+        }
+        
+        .logo {
+            height: 30px;
+            width: auto;
+            display: block;
+            margin: 0 auto;
+            max-width: 90%;
+        }
+        
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .floating-images {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: auto;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-img {
+            position: absolute;
+            height: auto;
+            opacity: 0;
+            filter: brightness(1.2);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        /* Actualizar las animaciones para que sean compatibles con la interacción */
+        .img1 { width: 150px; top: 10%; left: 10% ; animation: float1 8s ease-in-out infinite; }
+        .img2 { width: 170px; top: 10%; right: 10%; animation: float2 9s ease-in-out infinite; }
+        .img3 { width: 120px; bottom: 10%; left: 10%; animation: float3 7s ease-in-out infinite; }
+        .img4 { width: 180px; bottom: 15%; right: 10%; animation: float4 10s ease-in-out infinite; }
+        .img5 { width: 150px; top: 52%; left: 20%; animation: float5 8.5s ease-in-out infinite; }
+        .img6 { width: 150px; top: 50%; left: 80%; animation: float5 8.5s ease-in-out infinite; }
+
+        /* Flotación base */
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-10px, -10px) rotate(-5deg); }
+        }
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, -15px) rotate(5deg); }
+        }
+        @keyframes float3 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-15px, 10px) rotate(-8deg); }
+        }
+        @keyframes float4 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, -12px) rotate(10deg); }
+        }
+        @keyframes float5 {
+            0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+            50% { transform: translate(-50%, -55%) rotate(-5deg); }
+        }
+        
+        /* Asegurar que el contenido principal esté por encima */
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0; /* Inicialmente oculto para la animación */
+        }
+        
+        .hero h2 {
+            font-family: 'Climate Crisis', sans-serif;
+            font-weight: 400;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            color: #2a181c;
+        }
+        
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+            opacity: 0; /* Inicialmente oculto para la animación */
+        }
+        
+        .botones button {
+            font-family: 'Gabarito', sans-serif;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background-color: #ff6700;
+            color: #ede8dd;
+            border: 0px solid #2a181c;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            min-width: 200px;
+        }
+        
+        .botones button:hover {
+            background-color: #ec92ff;
+            color: #2a181c;
+            transform: translateY(-3px);
+        }
+        
+        /* Estilos para la animación de inicio */
+        #animation-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ff6700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            transition: background-color 2s ease;
+        }
+        
+        #animation-logo {
+            width: 200px;
+            opacity: 1;
+            transition: all 1.5s ease;
+        }
+        
+        /* Estilos para los wizards */
+        .wizard-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ede8dd;
+            z-index: 1000;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .wizard-content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .wizard-close-x {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 2.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 1010;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ede8dd;
+            border-radius: 50%;
+            color: #2a181c;
+            border: 2px solid #2a181c;
+        }
+        
+        .wizard-step {
+            display: none;
+        }
+        
+        .wizard-step.active {
+            display: block;
+        }
+        
+        .wizard-title {
+            font-family: 'Gabarito', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2a181c;
+        }
+        
+        .wizard-field {
+            margin-bottom: 20px;
+        }
+        
+        .wizard-field label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #2a181c;
+        }
+        
+        .wizard-field input, 
+        .wizard-field select, 
+        .wizard-field textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #2a181c;
+            border-radius: 4px;
+            font-family: 'Gabarito', sans-serif;
+            font-size: 1rem;
+            -webkit-appearance: none;
+            background-color: #fff;
+        }
+        
+        .wizard-field input:focus, 
+        .wizard-field select:focus, 
+        .wizard-field textarea:focus {
+            outline: none;
+            border-color: #ff6700;
+        }
+        
+        .wizard-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+        
+        .wizard-buttons button {
+            padding: 15px 25px;
+            font-family: 'Gabarito', sans-serif;
+            font-weight: bold;
+            background-color: #ede8dd;
+            color: #2a181c;
+            border: 2px solid #2a181c;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .wizard-buttons button:hover {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .wizard-buttons button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .wizard-buttons button:disabled:hover {
+            background-color: #ede8dd;
+            color: #2a181c;
+        }
+        
+        .product-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .product-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .product-quantity {
+            margin-left: 10px;
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        
+        /* Estilos mejorados para el slider de peso */
+        .weight-slider {
+            width: 100%;
+            margin: 20px 0;
+            -webkit-appearance: none;
+            height: 10px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+        }
+        
+        .weight-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff6700;
+            cursor: pointer;
+        }
+        
+        /* Estilo para la barra de progreso con color */
+        .weight-slider::-webkit-slider-runnable-track {
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #ff6700, #ff3300);
+        }
+        
+        .weight-slider::-moz-range-track {
+            height: 10px;
+            border-radius: 5px;
+            background: linear-gradient(to right, #ff6700, #ff3300);
+        }
+        
+        .weight-value {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #2a181c;
+        }
+        
+        .confirmation-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .confirmation-option {
+            display: flex;
+            align-items: center;
+        }
+        
+        .confirmation-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .error-message {
+            color: #ff0000;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .success-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #ff6700;
+        }
+        
+        /* Nuevos estilos para botones seleccionables */
+        .selectable-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .selectable-button {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #2a181c;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #ede8dd;
+        }
+        
+        .selectable-button.selected {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .selectable-button input[type="checkbox"] {
+            display: none;
+        }
+        
+        .selectable-button-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-left: 10px;
+        }
+        
+        /* NUEVOS ESTILOS PARA BOTONES COMPACTOS RESPONSIVOS */
+        .product-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .product-button {
+            display: flex;
+            align-items: center;
+            padding: 12px 10px;
+            border: 2px solid #2a181c;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 70px;
+            background-color: #ede8dd;
+        }
+        
+        .product-button.selected {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .product-button input[type="checkbox"] {
+            display: none;
+        }
+        
+        .product-button-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 8px;
+        }
+        
+        .product-button span {
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        /* NUEVO: Estilos para los controles de cantidad mejorados */
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            padding: 0;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .quantity-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .product-button-quantity {
+            width: 40px;
+            text-align: center;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -moz-appearance: textfield;
+            margin: 0;
+        }
+        
+        .product-button-quantity::-webkit-outer-spin-button,
+        .product-button-quantity::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .product-button-quantity:focus {
+            outline: none;
+            border-color: #666;
+        }
+        
+        .special-input-container {
+            margin-top: 15px;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        
+        .special-note {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        
+        .empresa-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .empresa-option {
+            padding: 20px 15px;
+            border: 2px solid #2a181c;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            background-color: #ede8dd;
+        }
+        
+        .empresa-option:hover {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .input-error {
+            border-color: #ff0000 !important;
+        }
+        
+        /* Estilos para botones de selección única (radio buttons como botones) */
+        .radio-buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .radio-button-option {
+            padding: 15px;
+            border: 2px solid #2a181c;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background-color: #ede8dd;
+        }
+        
+        .radio-button-option.selected {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .radio-button-option input[type="radio"] {
+            display: none;
+        }
+        
+        /* Estilos para la ventana modal de confirmación */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: #ede8dd;
+            padding: 25px;
+            border-radius: 8px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid #2a181c;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .modal-buttons button {
+            padding: 12px 20px;
+            font-family: 'Gabarito', sans-serif;
+            font-weight: bold;
+            border: 2px solid #2a181c;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+        
+        .modal-confirm {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .modal-cancel {
+            background-color: #ede8dd;
+            color: #2a181c;
+        }
+        
+        .modal-buttons button:hover {
+            opacity: 0.8;
+        }
+        
+        /* Estilos para opciones de volumen de envíos */
+        .volume-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .volume-option {
+            padding: 15px;
+            border: 2px solid #2a181c;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            background-color: #ede8dd;
+        }
+        
+        .volume-option.selected {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .volume-option input[type="radio"] {
+            display: none;
+        }
+        
+        /* Nuevos estilos para campos de dirección */
+        .address-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .address-full {
+            grid-column: span 2;
+        }
+        
+        /* Estilo para botón "No aplica" */
+        .unknown-button {
+            margin-top: 10px;
+            padding: 12px 15px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .unknown-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* Estilos para resumen de confirmación */
+        .summary-container {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f9f9f9;
+        }
+        
+        .summary-section {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .summary-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .summary-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #2a181c;
+        }
+        
+        .summary-content {
+            margin-left: 10px;
+        }
+        
+        .summary-item {
+            margin-bottom: 5px;
+            word-break: break-word;
+        }
+        
+        /* NUEVO: Estilos mejorados para medios de contacto */
+        .contacto-option {
+            margin-bottom: 15px;
+        }
+        
+        .contacto-button {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #2a181c;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #ede8dd;
+        }
+        
+        .contacto-button.selected {
+            background-color: #2a181c;
+            color: #ede8dd;
+        }
+        
+        .contacto-button input[type="checkbox"] {
+            display: none;
+        }
+        
+        .contacto-button-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .contacto-detalle-container {
+            margin-top: 10px;
+            padding: 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        
+        /* NUEVO: Estilos para campos de medidas y peso por producto */
+        .product-measurements {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        
+        .product-measurement-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .product-measurement-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .measurement-fields {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .measurement-field {
+            margin-bottom: 10px;
+        }
+        
+        .measurement-field label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: normal;
+            color: #666;
+        }
+        
+        .measurement-field input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: 'Gabarito', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        /* Media Queries para Responsividad */
+        @media (max-width: 1024px) {
+            .hero h2 {
+                font-size: 3rem;
+            }
+            
+            .img1, .img2, .img3, .img4 {
+                width: 130px;
+            }
+            
+            .img5 {
+                width: 110px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 55px;
+            }
+            
+            header {
+                padding: 10px 0;
+            }
+            
+            .logo {
+                height: 25px;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+                margin-bottom: 30px;
+            }
+            
+            .botones {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .botones button {
+                width: 100%;
+                max-width: 280px;
+                padding: 14px 30px;
+            }
+            
+            /* Ajustar imágenes flotantes para tablets */
+            .floating-images {
+                display: flex;
+                justify-content: space-around;
+                flex-wrap: wrap;
+            }
+            
+            .img1, .img2, .img3, .img4 {
+                position: relative;
+                width: 120px;
+                margin: 10px;
+            }
+            
+            .img5 {
+                display: none; /* Ocultar la imagen central en tablets */
+            }
+            
+            .wizard-content {
+                padding: 30px 15px;
+                justify-content: flex-start;
+                min-height: auto;
+                padding-top: 60px;
+            }
+            
+            .wizard-close-x {
+                top: 10px;
+                right: 10px;
+                font-size: 2rem;
+                width: 35px;
+                height: 35px;
+            }
+            
+            .wizard-title {
+                font-size: 1.7rem;
+                margin-bottom: 25px;
+            }
+            
+            .wizard-field {
+                margin-bottom: 18px;
+            }
+            
+            .wizard-field input, 
+            .wizard-field select, 
+            .wizard-field textarea {
+                padding: 14px;
+                font-size: 16px; /* Previene zoom en iOS */
+            }
+            
+            /* CAMBIO 1: Invertir orden de botones en móviles (Siguiente primero, luego Atrás) */
+            .wizard-buttons {
+                flex-direction: column-reverse;
+                gap: 12px;
+                margin-top: 25px;
+            }
+            
+            .wizard-buttons button {
+                width: 100%;
+                padding: 14px 20px;
+            }
+            
+            /* CAMBIO 2: Ajustar grid para 2 columnas debajo de 740px */
+            .product-buttons-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            
+            .product-button {
+                min-height: 65px;
+                padding: 10px 8px;
+            }
+            
+            .product-button-content {
+                gap: 6px;
+            }
+            
+            .product-button span {
+                font-size: 0.85rem;
+            }
+            
+            /* NUEVO: Mejorar controles de cantidad para móviles */
+            .quantity-controls {
+                gap: 6px;
+            }
+            
+            .quantity-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 1.1rem;
+            }
+            
+            .product-button-quantity {
+                width: 45px;
+                padding: 8px 5px;
+                font-size: 1rem;
+                min-height: 32px;
+            }
+            
+            .selectable-button-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .quantity-input {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            .modal-content {
+                padding: 20px 15px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+            
+            .address-fields {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .address-full {
+                grid-column: span 1;
+            }
+            
+            .empresa-option {
+                padding: 18px 12px;
+            }
+            
+            .radio-button-option,
+            .volume-option {
+                padding: 14px;
+            }
+            
+            /* NUEVO: Ajustes para campos de medidas en móviles */
+            .measurement-fields {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-measurements {
+                padding: 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 1.8rem;
+                margin-bottom: 25px;
+                line-height: 1.2;
+            }
+            
+            header {
+                padding: 8px 0;
+            }
+            
+            /* Ajustar imágenes flotantes para móviles */
+            .floating-images {
+                display: none; /* Ocultar imágenes en móviles muy pequeños */
+            }
+            
+            /* Alternativa: mostrar solo 2 imágenes en móviles */
+            
+            .img1, .img2, .img3, .img4, .img5 {
+                display: none;
+            }
+            
+            .img1, .img2 {
+                display: block;
+                width: 100px;
+                top: auto;
+                bottom: 10%;
+            }
+            
+            .img1 {
+                left: 5%;
+            }
+            
+            .img2 {
+                right: 5%;
+            }
+            
+            
+            .wizard-content {
+                padding: 25px 12px;
+                padding-top: 50px;
+            }
+            
+            .wizard-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+            
+            .product-buttons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .product-button {
+                min-height: 60px;
+                padding: 8px 6px;
+            }
+            
+            .product-button span {
+                font-size: 0.8rem;
+            }
+            
+            /* NUEVO: Ajustar controles de cantidad para móviles pequeños */
+            .quantity-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 1rem;
+            }
+            
+            .product-button-quantity {
+                width: 40px;
+                padding: 7px;
+                font-size: 0.9rem;
+                min-height: 28px;
+            }
+            
+            .wizard-field input, 
+            .wizard-field select, 
+            .wizard-field textarea {
+                padding: 12px;
+            }
+            
+            .confirmation-options {
+                gap: 12px;
+            }
+            
+            .summary-container {
+                padding: 15px;
+            }
+            
+            .summary-item {
+                font-size: 0.9rem;
+            }
+            
+            .unknown-button {
+                padding: 10px 12px;
+            }
+            
+            .modal-overlay {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                padding: 20px 15px;
+            }
+            
+            .modal-buttons button {
+                padding: 10px 15px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .hero h2 {
+                font-size: 1.6rem;
+            }
+            
+            .product-buttons-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .botones button {
+                max-width: 100%;
+            }
+            
+            /* NUEVO: Ajuste adicional para pantallas muy pequeñas */
+            .quantity-btn {
+                width: 26px;
+                height: 26px;
+            }
+            
+            .product-button-quantity {
+                width: 35px;
+                padding: 6px;
+            }
+        }
+        
+        /* Ajustes para tablets en orientación vertical */
+        @media (min-width: 769px) and (max-width: 1024px) and (orientation: portrait) {
+            .hero h2 {
+                font-size: 2.8rem;
+            }
+            
+            .wizard-content {
+                padding: 35px 20px;
+            }
+            
+            .product-buttons-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* Ajustes para tablets en orientación horizontal */
+        @media (min-width: 769px) and (max-width: 1024px) and (orientation: landscape) {
+            .wizard-content {
+                padding: 30px 20px;
+                justify-content: center;
+            }
+            
+            /* Ajustar imágenes para landscape */
+            .img1, .img2, .img3, .img4 {
+                width: 110px;
+            }
+            
+            .img5 {
+                width: 90px;
+            }
+        }
+        
+        /* Ajustes para dispositivos muy altos */
+        @media (min-height: 1000px) {
+            .wizard-content {
+                justify-content: center;
+            }
+            
+            /* Ajustar posición de imágenes para pantallas altas */
+            .img1 {
+                top: 20%;
+            }
+            
+            .img2 {
+                top: 20%;
+            }
+            
+            .img3 {
+                bottom: 25%;
+            }
+            
+            .img4 {
+                bottom: 25%;
+            }
+        }
+        
+        /* CAMBIO 2: Media query específica para 740px para productos */
+        @media (max-width: 740px) {
+            .product-buttons-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Mejoras en las animaciones */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        .floating-img {
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1), 
+                        opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-content, .botones, header {
+            will-change: transform, opacity;
+            transform: translateZ(0);
+        }
+
+        #animation-overlay {
+            transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1), 
+                       opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #FF6B35;
+        }
+
+        #animation-logo {
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateZ(0);
+            will-change: transform, opacity;
+        }
+    </style>
+</head>
+<body>
+    <!-- Overlay para animación inicial -->
+    <div id="animation-overlay">
+        <img src="assets/images/Recurso 21CHOCOLATE.svg" alt="Huichply" id="animation-logo">
+    </div>
+
+    <!-- Modal de confirmación para cerrar wizard -->
+    <div class="modal-overlay" id="close-confirm-modal">
+        <div class="modal-content">
+            <h3>¿Estás seguro de que deseas salir?</h3>
+            <p>Si sales, deberás comenzar con el formulario de nuevo.</p>
+            <div class="modal-buttons">
+                <button class="modal-cancel" id="modal-cancel">Cancelar</button>
+                <button class="modal-confirm" id="modal-confirm">Sí, salir</button>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <img src="assets/images/Recurso 21CHOCOLATE.svg" alt="Huichply" class="logo">
+    </header>
+    
+    <section class="hero">
+        <div class="floating-images">
+            <img src="assets/images/Recurso 9primer contacto.png" alt="" class="floating-img img1">
+            <img src="assets/images/Recurso 8primer contacto.png" alt="" class="floating-img img2">
+            <img src="assets/images/Recurso 14primer contacto.png" alt="" class="floating-img img3">
+            <img src="assets/images/Recurso 12primer contacto.png" alt="" class="floating-img img4">
+            <img src="assets/images/Recurso 10primer contacto.png" alt="" class="floating-img img5">
+            <img src="assets/images/Recurso 16primer contacto.png" alt="" class="floating-img img6">
+        </div>
+        <div class="hero-content">
+            <h2>TODO LO QUE ENTRE EN UNA FURGONETA</h2>
+            <div class="botones">
+                <button id="btn-pide-ya">Pide un Huichply</button>
+                <button id="btn-empresas">Empresas</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Wizard: Selección de tipo de servicio para Pide un Huichply -->
+    <div id="wizard-pide-ya-seleccion" class="wizard-container">
+        <div class="wizard-content">
+            <span class="wizard-close-x" data-wizard="wizard-pide-ya-seleccion">×</span>
+            <div class="wizard-step active" data-step="1">
+                <h2 class="wizard-title">Pide un Huichply</h2>
+                <p>Selecciona una opción:</p>
+                
+                <div class="empresa-options">
+                    <div class="empresa-option" data-option="domicilio">
+                        A un domicilio
+                    </div>
+                    <div class="empresa-option" data-option="punto-limpio">
+                        Punto limpio
+                    </div>
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-close-confirm">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wizard: A un domicilio -->
+    <div id="wizard-domicilio" class="wizard-container">
+        <div class="wizard-content">
+            <span class="wizard-close-x" data-wizard="wizard-domicilio">×</span>
+            
+            <!-- Paso 1: Nombre completo -->
+            <div class="wizard-step active" data-step="1">
+                <h2 class="wizard-title">A un domicilio</h2>
+                <div class="wizard-field">
+                    <label for="nombre-domicilio">Nombre completo *</label>
+                    <input type="text" id="nombre-domicilio" required>
+                    <div class="error-message">Por favor, ingresa tu nombre</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-close-confirm">Cerrar</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 2: ¿Qué necesitas transportar? -->
+            <div class="wizard-step" data-step="2">
+                <h2 class="wizard-title">¿Qué necesitas transportar?</h2>
+                
+                <div class="product-buttons-grid">
+                    <label class="product-button" for="sofa-domicilio">
+                        <input type="checkbox" id="sofa-domicilio" class="product-checkbox" data-product="Sofá">
+                        <div class="product-button-content">
+                            <span>Sofá</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="canape-domicilio">
+                        <input type="checkbox" id="canape-domicilio" class="product-checkbox" data-product="Canapé">
+                        <div class="product-button-content">
+                            <span>Canapé</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="literas-domicilio">
+                        <input type="checkbox" id="literas-domicilio" class="product-checkbox" data-product="Literas">
+                        <div class="product-button-content">
+                            <span>Literas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="comedor-domicilio">
+                        <input type="checkbox" id="comedor-domicilio" class="product-checkbox" data-product="Comedor">
+                        <div class="product-button-content">
+                            <span>Comedor</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="cama-domicilio">
+                        <input type="checkbox" id="cama-domicilio" class="product-checkbox" data-product="Cama">
+                        <div class="product-button-content">
+                            <span>Cama</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="colchones-domicilio">
+                        <input type="checkbox" id="colchones-domicilio" class="product-checkbox" data-product="Colchones">
+                        <div class="product-button-content">
+                            <span>Colchones</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="mesa-noche-domicilio">
+                        <input type="checkbox" id="mesa-noche-domicilio" class="product-checkbox" data-product="Mesa de noche">
+                        <div class="product-button-content">
+                            <span>Mesa de noche</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="cajas-domicilio">
+                        <input type="checkbox" id="cajas-domicilio" class="product-checkbox" data-product="Cajas">
+                        <div class="product-button-content">
+                            <span>Cajas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="maletas-domicilio">
+                        <input type="checkbox" id="maletas-domicilio" class="product-checkbox" data-product="Maletas">
+                        <div class="product-button-content">
+                            <span>Maletas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="bolsas-domicilio">
+                        <input type="checkbox" id="bolsas-domicilio" class="product-checkbox" data-product="Bolsas">
+                        <div class="product-button-content">
+                            <span>Bolsas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="electrodomesticos-domicilio">
+                        <input type="checkbox" id="electrodomesticos-domicilio" class="product-checkbox" data-product="Electrodomésticos" data-special="electrodomesticos-domicilio">
+                        <div class="product-button-content">
+                            <span>Electrodomésticos</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="otros-domicilio">
+                        <input type="checkbox" id="otros-domicilio" class="product-checkbox" data-product="Otros" data-special="otros-domicilio">
+                        <div class="product-button-content">
+                            <span>Otros</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                
+                <!-- Campo para Electrodomésticos -->
+                <div class="special-input-container" id="electrodomesticos-domicilio-container">
+                    <div class="wizard-field">
+                        <label for="electrodomesticos-desc-domicilio">Describe los electrodomésticos *</label>
+                        <input type="text" id="electrodomesticos-desc-domicilio" placeholder="Ejemplo: microondas, licuadora, TV 42 pulgadas">
+                        <div class="error-message">Por favor, describe los electrodomésticos</div>
+                    </div>
+                    <div class="special-note">Nota: No transportamos refrigeradoras grandes</div>
+                </div>
+                
+                <!-- Campo para Otros -->
+                <div class="special-input-container" id="otros-domicilio-container">
+                    <div class="wizard-field">
+                        <label for="otros-desc-domicilio">Describe qué necesitas transportar *</label>
+                        <input type="text" id="otros-desc-domicilio" placeholder="Ejemplo: bicicleta, escritorio, lámpara">
+                        <div class="error-message">Por favor, describe qué necesitas transportar</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-field">
+                    <label for="comentario-transporte-domicilio">Comentarios adicionales (opcional)</label>
+                    <textarea id="comentario-transporte-domicilio" rows="3" placeholder="Detalles adicionales sobre lo que transportarás"></textarea>
+                </div>
+                
+                <div class="error-message" id="transport-error-domicilio">Selecciona al menos un elemento y especifica la cantidad</div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 3: Medidas y peso por producto (opcional) -->
+            <div class="wizard-step" data-step="3">
+                <h2 class="wizard-title">Medidas y peso por producto (opcional)</h2>
+                <p>Puedes especificar las medidas y peso de cada producto si lo deseas:</p>
+                
+                <div id="product-measurements-domicilio" class="product-measurements">
+                    <!-- Los campos de medidas y peso se generarán dinámicamente aquí -->
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 4: Confirmación furgoneta -->
+            <div class="wizard-step" data-step="4">
+                <h2 class="wizard-title">Confirmación</h2>
+                <p>¿Estás seguro de que todo cabe en una furgoneta?</p>
+                <div class="confirmation-options">
+                    <div class="confirmation-option">
+                        <input type="radio" id="confirm-si-domicilio" name="confirmacion-domicilio" value="si">
+                        <label for="confirm-si-domicilio">Sí, estoy seguro</label>
+                    </div>
+                    <div class="confirmation-option">
+                        <input type="radio" id="confirm-no-domicilio" name="confirmacion-domicilio" value="no">
+                        <label for="confirm-no-domicilio">No lo estoy</label>
+                    </div>
+                </div>
+                <div class="error-message" id="confirmacion-error-domicilio">Por favor, selecciona una opción</div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 5: Dirección de recogida -->
+            <div class="wizard-step" data-step="5">
+                <h2 class="wizard-title">Dirección de recogida</h2>
+                <div class="wizard-field address-full">
+                    <label for="direccion-recogida-domicilio">Dirección completa *</label>
+                    <input type="text" id="direccion-recogida-domicilio" required placeholder="Calle, número">
+                    <div class="error-message">Por favor, ingresa la dirección de recogida</div>
+                </div>
+                
+                <div class="address-fields">
+                    <div class="wizard-field">
+                        <label for="piso-recogida-domicilio">Piso</label>
+                        <input type="text" id="piso-recogida-domicilio" placeholder="Piso, puerta, etc.">
+                    </div>
+                    
+                    <div class="wizard-field">
+                        <label for="cp-recogida-domicilio">Código postal *</label>
+                        <input type="text" id="cp-recogida-domicilio" required pattern="[0-9]{5}" placeholder="28001">
+                        <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 6: Dirección de entrega -->
+            <div class="wizard-step" data-step="6">
+                <h2 class="wizard-title">Dirección de entrega</h2>
+                <div class="wizard-field address-full">
+                    <label for="direccion-entrega-domicilio">Dirección completa *</label>
+                    <input type="text" id="direccion-entrega-domicilio" required placeholder="Calle, número">
+                    <div class="error-message">Por favor, ingresa la dirección de entrega</div>
+                </div>
+                
+                <div class="address-fields">
+                    <div class="wizard-field">
+                        <label for="piso-entrega-domicilio">Piso</label>
+                        <input type="text" id="piso-entrega-domicilio" placeholder="Piso, puerta, etc.">
+                    </div>
+                    
+                    <div class="wizard-field">
+                        <label for="cp-entrega-domicilio">Código postal *</label>
+                        <input type="text" id="cp-entrega-domicilio" required pattern="[0-9]{5}" placeholder="28001">
+                        <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 7: Fecha y hora -->
+            <div class="wizard-step" data-step="7">
+                <h2 class="wizard-title">Fecha y hora</h2>
+                <div class="wizard-field">
+                    <label for="fecha-domicilio">Fecha *</label>
+                    <input type="date" id="fecha-domicilio" required>
+                    <div class="error-message">Por favor, selecciona una fecha</div>
+                </div>
+                <div class="wizard-field">
+                    <label for="franja-horaria-domicilio">Franja horaria *</label>
+                    <select id="franja-horaria-domicilio" required>
+                        <option value="">Selecciona una franja</option>
+                        <option value="mañana">Mañana (9:00 - 14:00)</option>
+                        <option value="tarde">Tarde (14:00 - 18:00)</option>
+                        <option value="tarde-noche">Tarde-noche (18:00 - 22:00)</option>
+                    </select>
+                    <div class="error-message">Por favor, selecciona una franja horaria</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 8: Medios de contacto -->
+            <div class="wizard-step" data-step="8">
+                <h2 class="wizard-title">Medios de contacto</h2>
+                <p>Selecciona cómo prefieres que contactemos contigo (puedes elegir más de uno):</p>
+                
+                <div class="selectable-buttons">
+                    <div class="contacto-option">
+                        <label class="contacto-button" for="contacto-whatsapp-domicilio">
+                            <input type="checkbox" id="contacto-whatsapp-domicilio" class="contacto-checkbox" data-contacto="WhatsApp">
+                            <div class="contacto-button-content">
+                                <span>WhatsApp</span>
+                            </div>
+                        </label>
+                        <div class="contacto-detalle-container">
+                            <input type="text" class="contacto-detalle" placeholder="Número de WhatsApp" data-tipo="whatsapp">
+                            <div class="error-message">Por favor, ingresa tu número de WhatsApp</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-option">
+                        <label class="contacto-button" for="contacto-email-domicilio">
+                            <input type="checkbox" id="contacto-email-domicilio" class="contacto-checkbox" data-contacto="Email">
+                            <div class="contacto-button-content">
+                                <span>Email</span>
+                            </div>
+                        </label>
+                        <div class="contacto-detalle-container">
+                            <input type="email" class="contacto-detalle" placeholder="ejemplo@dominio.com" data-tipo="email">
+                            <div class="error-message">Por favor, ingresa un email válido</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-option">
+                        <label class="contacto-button" for="contacto-llamada-domicilio">
+                            <input type="checkbox" id="contacto-llamada-domicilio" class="contacto-checkbox" data-contacto="Llamada telefónica">
+                            <div class="contacto-button-content">
+                                <span>Llamada telefónica</span>
+                            </div>
+                        </label>
+                        <div class="contacto-detalle-container">
+                            <input type="text" class="contacto-detalle" placeholder="Número de teléfono" data-tipo="llamada">
+                            <div class="error-message">Por favor, ingresa tu número de teléfono</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-message" id="contacto-error-domicilio">Selecciona al menos un medio de contacto</div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 9: Resumen -->
+            <div class="wizard-step" data-step="9">
+                <h2 class="wizard-title">Resumen</h2>
+                <div id="resumen-pedido-domicilio" class="summary-container"></div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next" id="finalizar-pedido-domicilio">Enviar solicitud</button>
+                </div>
+            </div>
+            
+            <!-- Paso 10: Solicitud enviada -->
+            <div class="wizard-step" data-step="10">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h2 class="wizard-title">¡Solicitud enviada!</h2>
+                    <p>Le responderemos en menos de 15 minutos.</p>
+                    <div class="wizard-buttons">
+                        <button class="wizard-close">Volver a la página principal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wizard: Punto limpio -->
+    <div id="wizard-punto-limpio" class="wizard-container">
+        <div class="wizard-content">
+            <span class="wizard-close-x" data-wizard="wizard-punto-limpio">×</span>
+            
+            <!-- Paso 1: Nombre completo -->
+            <div class="wizard-step active" data-step="1">
+                <h2 class="wizard-title">Punto limpio</h2>
+                <div class="wizard-field">
+                    <label for="nombre-punto-limpio">Nombre completo *</label>
+                    <input type="text" id="nombre-punto-limpio" required>
+                    <div class="error-message">Por favor, ingresa tu nombre</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-close-confirm">Cerrar</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 2: ¿Qué necesitas transportar? -->
+            <div class="wizard-step" data-step="2">
+                <h2 class="wizard-title">¿Qué necesitas transportar?</h2>
+                <p class="special-note">Especifica que no llevamos desechos de basura</p>
+                
+                <div class="product-buttons-grid">
+                    <label class="product-button" for="sofa-punto-limpio">
+                        <input type="checkbox" id="sofa-punto-limpio" class="product-checkbox" data-product="Sofá">
+                        <div class="product-button-content">
+                            <span>Sofá</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="canape-punto-limpio">
+                        <input type="checkbox" id="canape-punto-limpio" class="product-checkbox" data-product="Canapé">
+                        <div class="product-button-content">
+                            <span>Canapé</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="literas-punto-limpio">
+                        <input type="checkbox" id="literas-punto-limpio" class="product-checkbox" data-product="Literas">
+                        <div class="product-button-content">
+                            <span>Literas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="comedor-punto-limpio">
+                        <input type="checkbox" id="comedor-punto-limpio" class="product-checkbox" data-product="Comedor">
+                        <div class="product-button-content">
+                            <span>Comedor</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="cama-punto-limpio">
+                        <input type="checkbox" id="cama-punto-limpio" class="product-checkbox" data-product="Cama">
+                        <div class="product-button-content">
+                            <span>Cama</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="colchones-punto-limpio">
+                        <input type="checkbox" id="colchones-punto-limpio" class="product-checkbox" data-product="Colchones">
+                        <div class="product-button-content">
+                            <span>Colchones</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min-1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="mesa-noche-punto-limpio">
+                        <input type="checkbox" id="mesa-noche-punto-limpio" class="product-checkbox" data-product="Mesa de noche">
+                        <div class="product-button-content">
+                            <span>Mesa de noche</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="cajas-punto-limpio">
+                        <input type="checkbox" id="cajas-punto-limpio" class="product-checkbox" data-product="Cajas">
+                        <div class="product-button-content">
+                            <span>Cajas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="maletas-punto-limpio">
+                        <input type="checkbox" id="maletas-punto-limpio" class="product-checkbox" data-product="Maletas">
+                        <div class="product-button-content">
+                            <span>Maletas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="bolsas-punto-limpio">
+                        <input type="checkbox" id="bolsas-punto-limpio" class="product-checkbox" data-product="Bolsas">
+                        <div class="product-button-content">
+                            <span>Bolsas</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="electrodomesticos-punto-limpio">
+                        <input type="checkbox" id="electrodomesticos-punto-limpio" class="product-checkbox" data-product="Electrodomésticos" data-special="electrodomesticos-punto-limpio">
+                        <div class="product-button-content">
+                            <span>Electrodomésticos</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                    
+                    <label class="product-button" for="otros-punto-limpio">
+                        <input type="checkbox" id="otros-punto-limpio" class="product-checkbox" data-product="Otros" data-special="otros-punto-limpio">
+                        <div class="product-button-content">
+                            <span>Otros</span>
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn quantity-minus">-</button>
+                                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                                <button type="button" class="quantity-btn quantity-plus">+</button>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+                
+                <!-- Campo para Electrodomésticos -->
+                <div class="special-input-container" id="electrodomesticos-punto-limpio-container">
+                    <div class="wizard-field">
+                        <label for="electrodomesticos-desc-punto-limpio">Describe los electrodomésticos *</label>
+                        <input type="text" id="electrodomesticos-desc-punto-limpio" placeholder="Ejemplo: microondas, licuadora, TV 42 pulgadas">
+                        <div class="error-message">Por favor, describe los electrodomésticos</div>
+                    </div>
+                    <div class="special-note">Nota: No transportamos refrigeradoras grandes</div>
+                </div>
+                
+                <!-- Campo para Otros -->
+                <div class="special-input-container" id="otros-punto-limpio-container">
+                    <div class="wizard-field">
+                        <label for="otros-desc-punto-limpio">Describe qué necesitas transportar *</label>
+                        <input type="text" id="otros-desc-punto-limpio" placeholder="Ejemplo: bicicleta, escritorio, lámpara">
+                        <div class="error-message">Por favor, describe qué necesitas transportar</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-field">
+                    <label for="comentario-transporte-punto-limpio">Comentarios adicionales (opcional)</label>
+                    <textarea id="comentario-transporte-punto-limpio" rows="3" placeholder="Detalles adicionales sobre lo que transportarás"></textarea>
+                </div>
+                
+                <div class="error-message" id="transport-error-punto-limpio">Selecciona al menos un elemento y especifica la cantidad</div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 3: Medidas y peso por producto (opcional) -->
+            <div class="wizard-step" data-step="3">
+                <h2 class="wizard-title">Medidas y peso por producto (opcional)</h2>
+                <p>Puedes especificar las medidas y peso de cada producto si lo deseas:</p>
+                
+                <div id="product-measurements-punto-limpio" class="product-measurements">
+                    <!-- Los campos de medidas y peso se generarán dinámicamente aquí -->
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 4: Confirmación furgoneta -->
+            <div class="wizard-step" data-step="4">
+                <h2 class="wizard-title">Confirmación</h2>
+                <p>¿Estás seguro de que todo cabe en una furgoneta?</p>
+                <div class="confirmation-options">
+                    <div class="confirmation-option">
+                        <input type="radio" id="confirm-si-punto-limpio" name="confirmacion-punto-limpio" value="si">
+                        <label for="confirm-si-punto-limpio">Sí, estoy seguro</label>
+                    </div>
+                    <div class="confirmation-option">
+                        <input type="radio" id="confirm-no-punto-limpio" name="confirmacion-punto-limpio" value="no">
+                        <label for="confirm-no-punto-limpio">No lo estoy</label>
+                    </div>
+                </div>
+                <div class="error-message" id="confirmacion-error-punto-limpio">Por favor, selecciona una opción</div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 5: Dirección de recogida -->
+            <div class="wizard-step" data-step="5">
+                <h2 class="wizard-title">Dirección de recogida</h2>
+                <div class="wizard-field address-full">
+                    <label for="direccion-recogida-punto-limpio">Dirección completa *</label>
+                    <input type="text" id="direccion-recogida-punto-limpio" required placeholder="Calle, número">
+                    <div class="error-message">Por favor, ingresa la dirección de recogida</div>
+                </div>
+                
+                <div class="address-fields">
+                    <div class="wizard-field">
+                        <label for="piso-recogida-punto-limpio">Piso</label>
+                        <input type="text" id="piso-recogida-punto-limpio" placeholder="Piso, puerta, etc.">
+                    </div>
+                    
+                    <div class="wizard-field">
+                        <label for="cp-recogida-punto-limpio">Código postal *</label>
+                        <input type="text" id="cp-recogida-punto-limpio" required pattern="[0-9]{5}" placeholder="28001">
+                        <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 6: Fecha y hora -->
+            <div class="wizard-step" data-step="6">
+                <h2 class="wizard-title">Fecha y hora</h2>
+                <div class="wizard-field">
+                    <label for="fecha-punto-limpio">Fecha *</label>
+                    <input type="date" id="fecha-punto-limpio" required>
+                    <div class="error-message">Por favor, selecciona una fecha</div>
+                </div>
+                <div class="wizard-field">
+                    <label for="franja-horaria-punto-limpio">Franja horaria *</label>
+                    <select id="franja-horaria-punto-limpio" required>
+                        <option value="">Selecciona una franja</option>
+                        <option value="mañana">Mañana (9:00 - 14:00)</option>
+                        <option value="tarde">Tarde (14:00 - 18:00)</option>
+                        <option value="tarde-noche">Tarde-noche (18:00 - 22:00)</option>
+                    </select>
+                    <div class="error-message">Por favor, selecciona una franja horaria</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 7: Medios de contacto -->
+            <div class="wizard-step" data-step="7">
+                <h2 class="wizard-title">Medios de contacto</h2>
+                <p>Selecciona cómo prefieres que contactemos contigo (puedes elegir más de uno):</p>
+                
+                <div class="selectable-buttons">
+                    <div class="contacto-option">
+                        <label class="contacto-button" for="contacto-whatsapp-punto-limpio">
+                            <input type="checkbox" id="contacto-whatsapp-punto-limpio" class="contacto-checkbox" data-contacto="WhatsApp">
+                            <div class="contacto-button-content">
+                                <span>WhatsApp</span>
+                            </div>
+                        </label>
+                        <div class="contacto-detalle-container">
+                            <input type="text" class="contacto-detalle" placeholder="Número de WhatsApp" data-tipo="whatsapp">
+                            <div class="error-message">Por favor, ingresa tu número de WhatsApp</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-option">
+                        <label class="contacto-button" for="contacto-email-punto-limpio">
+                            <input type="checkbox" id="contacto-email-punto-limpio" class="contacto-checkbox" data-contacto="Email">
+                            <div class="contacto-button-content">
+                                <span>Email</span>
+                            </div>
+                        </label>
+                        <div class="contacto-detalle-container">
+                            <input type="email" class="contacto-detalle" placeholder="ejemplo@dominio.com" data-tipo="email">
+                            <div class="error-message">Por favor, ingresa un email válido</div>
+                        </div>
+                    </div>
+                    
+                    <div class="contacto-option">
+                        <label class="contacto-button" for="contacto-llamada-punto-limpio">
+                            <input type="checkbox" id="contacto-llamada-punto-limpio" class="contacto-checkbox" data-contacto="Llamada telefónica">
+                            <div class="contacto-button-content">
+                                <span>Llamada telefónica</span>
+                            </div>
+                        </label>
+                        <div class="contacto-detalle-container">
+                            <input type="text" class="contacto-detalle" placeholder="Número de teléfono" data-tipo="llamada">
+                            <div class="error-message">Por favor, ingresa tu número de teléfono</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="error-message" id="contacto-error-punto-limpio">Selecciona al menos un medio de contacto</div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <!-- Paso 8: Resumen -->
+            <div class="wizard-step" data-step="8">
+                <h2 class="wizard-title">Resumen</h2>
+                <div id="resumen-pedido-punto-limpio" class="summary-container"></div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next" id="finalizar-pedido-pl">Enviar solicitud</button>
+                </div>
+            </div>
+            
+            <!-- Paso 9: Solicitud enviada -->
+            <div class="wizard-step" data-step="9">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h2 class="wizard-title">¡Solicitud enviada!</h2>
+                    <p>Le responderemos en menos de 15 minutos.</p>
+                    <div class="wizard-buttons">
+                        <button class="wizard-close">Volver a la página principal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wizard: Selección de tipo de empresa -->
+    <div id="wizard-empresa-seleccion" class="wizard-container">
+        <div class="wizard-content">
+            <span class="wizard-close-x" data-wizard="wizard-empresa-seleccion">×</span>
+            <div class="wizard-step active" data-step="1">
+                <h2 class="wizard-title">Empresas</h2>
+                <p>Selecciona una opción:</p>
+                
+                <div class="empresa-options">
+                    <div class="empresa-option" data-option="afiliado">
+                        ¿Eres afiliado?
+                    </div>
+                    <div class="empresa-option" data-option="afiliacion">
+                        ¿Quieres afiliarte?
+                    </div>
+                </div>
+                
+        <div class="wizard-buttons">
+                    <button class="wizard-close-confirm">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wizard: Empresas (Afiliados) -->
+    <div id="wizard-empresas" class="wizard-container">
+        <div class="wizard-content">
+            <span class="wizard-close-x" data-wizard="wizard-empresas">×</span>
+            <div class="wizard-step active" data-step="1">
+                <h2 class="wizard-title">Afiliados</h2>
+                <div class="wizard-field">
+                    <label for="codigo-cliente">Código de cliente (8 dígitos) *</label>
+                    <input type="text" id="codigo-cliente" pattern="[0-9]{8}" required placeholder="12345678">
+                    <div class="error-message">El código debe tener 8 dígitos numéricos</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-close-confirm">Cerrar</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="2">
+                <h2 class="wizard-title">Datos del cliente</h2>
+                <div class="wizard-field">
+                    <label for="nombre-afiliado">Nombre del cliente *</label>
+                    <input type="text" id="nombre-afiliado" required>
+                    <div class="error-message">Por favor, ingresa el nombre del cliente</div>
+                </div>
+                <div class="wizard-field">
+                    <label for="telefono-afiliado">Número de teléfono *</label>
+                    <input type="tel" id="telefono-afiliado" required pattern="[0-9]*">
+                    <div class="error-message">Por favor, ingresa un número de teléfono válido (solo números)</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="3">
+                <h2 class="wizard-title">Direcciones</h2>
+                <div class="wizard-field address-full">
+                    <label for="afiliado-recogida">Dirección de recogida *</label>
+                    <input type="text" id="afiliado-recogida" required>
+                    <div class="error-message">Por favor, ingresa la dirección de recogida</div>
+                </div>
+                
+                <div class="address-fields">
+                    <div class="wizard-field">
+                        <label for="piso-recogida-afiliado">Piso</label>
+                        <input type="text" id="piso-recogida-afiliado" placeholder="Piso, puerta, etc.">
+                    </div>
+                    
+                    <div class="wizard-field">
+                        <label for="cp-recogida-afiliado">Código postal *</label>
+                    <input type="text" id="cp-recogida-afiliado" required pattern="[0-9]{5}" placeholder="28001">
+                        <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-field address-full">
+                    <label for="afiliado-entrega">Dirección de entrega *</label>
+                    <input type="text" id="afiliado-entrega" required>
+                    <div class="error-message">Por favor, ingresa la dirección de entrega</div>
+                </div>
+                
+                <div class="address-fields">
+                    <div class="wizard-field">
+                        <label for="piso-entrega-afiliado">Piso</label>
+                        <input type="text" id="piso-entrega-afiliado" placeholder="Piso, puerta, etc.">
+                    </div>
+                    
+                    <div class="wizard-field">
+                        <label for="cp-entrega-afiliado">Código postal *</label>
+                        <input type="text" id="cp-entrega-afiliado" required pattern="[0-9]{5}" placeholder="28001">
+                        <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+                    </div>
+                </div>
+                
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="4">
+                <h2 class="wizard-title">Fecha and hora</h2>
+                <div class="wizard-field">
+                    <label for="afiliado-fecha">Fecha de recogida *</label>
+                    <input type="date" id="afiliado-fecha" required>
+                    <div class="error-message">Por favor, selecciona una fecha</div>
+                </div>
+                <div class="wizard-field">
+                    <label for="afiliado-hora">Hora de recogida *</label>
+                    <input type="time" id="afiliado-hora" required>
+                    <div class="error-message">Por favor, selecciona una hora</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="5">
+                <h2 class="wizard-title">Tipo de producto</h2>
+                <div class="radio-buttons-container">
+                    <label class="radio-button-option" for="producto-acordado">
+                        <input type="radio" id="producto-acordado" name="tipo-producto" value="acordado">
+                        Producto acordado
+                    </label>
+                    <label class="radio-button-option" for="devolucion">
+                        <input type="radio" id="devolucion" name="tipo-producto" value="devolucion">
+                        Devolución
+                    </label>
+                    <label class="radio-button-option" for="producto-no-acordado">
+                        <input type="radio" id="producto-no-acordado" name="tipo-producto" value="no-acordado">
+                        Producto no acordado
+                    </label>
+                </div>
+                
+                <!-- Campo para especificar producto no acordado -->
+                <div class="special-input-container" id="producto-no-acordado-container">
+                    <div class="wizard-field">
+                        <label for="producto-no-acordado-desc">Especifica qué producto es *</label>
+                        <input type="text" id="producto-no-acordado-desc" placeholder="Describe el producto">
+                        <div class="error-message">Por favor, describe el producto</div>
+                    </div>
+                </div>
+                
+                <div class="error-message" id="tipo-producto-error">Por favor, selecciona el tipo de producto</div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="6">
+                <h2 class="wizard-title">Resumen y confirmación</h2>
+                <div id="resumen-afiliado" class="summary-container"></div>
+                <div class="wizard-field">
+                    <label for="comentarios">Comentarios adicionales</label>
+                    <textarea id="comentarios" rows="4"></textarea>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next" id="finalizar-afiliado">Enviar pedido</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="7">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h2 class="wizard-title">¡Pedido enviado!</h2>
+                    <p>Enviaremos un conductor pronto.</p>
+                    <div class="wizard-buttons">
+                        <button class="wizard-close">Volver a la página principal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wizard: Quiero afiliarme -->
+    <div id="wizard-afiliacion" class="wizard-container">
+        <div class="wizard-content">
+            <span class="wizard-close-x" data-wizard="wizard-afiliacion">×</span>
+            <div class="wizard-step active" data-step="1">
+                <h2 class="wizard-title">Quiero afiliarme</h2>
+                <div class="wizard-field">
+                    <label for="nombre-empresa">Nombre de la empresa *</label>
+                    <input type="text" id="nombre-empresa" required>
+                    <div class="error-message">Por favor, ingresa el nombre de la empresa</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-close-confirm">Cerrar</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="2">
+                <h2 class="wizard-title">Datos fiscales</h2>
+                <div class="wizard-field">
+                    <label for="cif">CIF *</label>
+                    <input type="text" id="cif" required pattern="[A-Za-z]{1}[0-9]{7}[A-Za-z]{1}" title="Formato: Letra + 7 números + Letra">
+                    <div class="error-message">El CIF debe tener el formato: Letra + 7 números + Letra</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="3">
+                <h2 class="wizard-title">Persona responsable</h2>
+                <div class="wizard-field">
+                    <label for="responsable">Nombre completo *</label>
+                    <input type="text" id="responsable" required>
+                    <div class="error-message">Por favor, ingresa el nombre del responsable</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="4">
+                <h2 class="wizard-title">Contacto</h2>
+                <div class="wizard-field">
+                    <label for="telefono-empresa">Teléfono de la empresa *</label>
+                    <input type="tel" id="telefono-empresa" required pattern="[0-9]*">
+                    <div class="error-message">Por favor, ingresa un número de teléfono válido (solo números)</div>
+                </div>
+                <div class="wizard-field">
+                    <label for="email-empresa">Email de la empresa *</label>
+                    <input type="email" id="email-empresa" required>
+                    <div class="error-message">Por favor, ingresa un email válido</div>
+                </div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="5">
+                <h2 class="wizard-title">Volumen de envíos</h2>
+                <p>Selecciona el volumen aproximado de envíos mensuales:</p>
+                <div class="volume-options">
+                    <label class="volume-option" for="volumen-1-10">
+                        <input type="radio" id="volumen-1-10" name="volumen-envios" value="1-10">
+                        1 - 10
+                    </label>
+                    <label class="volume-option" for="volumen-10-20">
+                        <input type="radio" id="volumen-10-20" name="volumen-envios" value="10-20">
+                        10 - 20
+                    </label>
+                    <label class="volume-option" for="volumen-20-30">
+                        <input type="radio" id="volumen-20-30" name="volumen-envios" value="20-30">
+                        20 - 30
+                    </label>
+                    <label class="volume-option" for="volumen-otro">
+                        <input type="radio" id="volumen-otro" name="volumen-envios" value="otro">
+                        Otro
+                    </label>
+                </div>
+                
+                <!-- Campo para especificar otro volumen -->
+                <div class="special-input-container" id="volumen-otro-container">
+                    <div class="wizard-field">
+                        <label for="volumen-otro-desc">Especifica el volumen *</label>
+                        <input type="number" id="volumen-otro-desc" min="1" placeholder="Número de envíos mensuales">
+                        <div class="error-message">Por favor, ingresa un número válido</div>
+                    </div>
+                </div>
+                
+                <div class="error-message" id="volumen-error">Por favor, selecciona un volumen de envíos</div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next">Siguiente</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="6">
+                <h2 class="wizard-title">Resumen and confirmación</h2>
+                <div id="resumen-afiliacion" class="summary-container"></div>
+                <div class="wizard-buttons">
+                    <button class="wizard-prev">Atrás</button>
+                    <button class="wizard-next" id="finalizar-afiliacion">Enviar solicitud</button>
+                </div>
+            </div>
+            
+            <div class="wizard-step" data-step="7">
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h2 class="wizard-title">¡Solicitud enviada!</h2>
+                    <p>Se le mandará un coste fijo basado en los datos proporcionados.</p>
+                    <div class="wizard-buttons">
+                        <button class="wizard-close">Volver a la página principal</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+        // ==============================================
+        // CÓDIGO PARA LA ANIMACIÓN DE INICIO
+        // ==============================================
+        $(document).ready(function() {
+            // Iniciar animación cuando el documento esté listo
+            startIntroAnimation();
+            
+            function startIntroAnimation() {
+                // Obtener elementos
+                const overlay = $('#animation-overlay');
+                const animatedLogo = $('#animation-logo');
+                const headerLogo = $('header .logo');
+                const header = $('header');
+                const heroContent = $('.hero-content');
+                const botones = $('.botones');
+                const floatingImages = $('.floating-img');
+                
+                // Posición final del logo en el header
+                const headerLogoPosition = {
+                    top: header.offset().top + (header.height() / 2) - (headerLogo.height() / 2),
+                    left: header.offset().left + (header.width() / 2) - (headerLogo.width() / 2),
+                    width: headerLogo.width(),
+                    height: headerLogo.height()
+                };
+                
+                // 1. Iniciar con el logo en el centro y fondo naranja
+                setTimeout(function() {
+                    // 2. Mover el logo a la posición del header y cambiar el fondo
+                    overlay.css('background-color', '#ede8dd');
+                    animatedLogo.css({
+                        'width': headerLogoPosition.width + 'px',
+                        'position': 'fixed',
+                        'top': headerLogoPosition.top + 'px',
+                        'left': headerLogoPosition.left + 'px'
+                    });
+                }, 1500);
+                
+                // 3. Ocultar overlay y mostrar contenido
+                setTimeout(function() {
+                    overlay.fadeOut(800, function() {
+                        // Mostrar header y contenido principal
+                        header.css('opacity', 1);
+                        heroContent.css('opacity', 1).addClass('fade-in');
+                        botones.css('opacity', 1).addClass('fade-in');
+                        
+                        // Animar imágenes flotantes
+                        floatingImages.each(function(index) {
+                            $(this).css('opacity', 0.9).delay(200 * index).fadeTo(800, 0.9);
+                        });
+                    });
+                }, 3000);
+            }
+        });
+
+        // ==============================================
+        // CÓDIGO EXISTENTE PARA LA FUNCIONALIDAD DE LA PÁGINA
+        // ==============================================
+        $(document).ready(function() {
+            // Variables para controlar el wizard actual
+            let currentWizard = null;
+            
+            // Botones para abrir los wizards
+            $('#btn-pide-ya').click(function() {
+                $('#wizard-pide-ya-seleccion').show();
+                currentWizard = 'wizard-pide-ya-seleccion';
+                resetWizard('wizard-pide-ya-seleccion');
+            });
+            
+            $('#btn-empresas').click(function() {
+                $('#wizard-empresa-seleccion').show();
+                currentWizard = 'wizard-empresa-seleccion';
+                resetWizard('wizard-empresa-seleccion');
+            });
+            
+            // Selección de tipo de servicio para Pide un Huichply
+            $('#wizard-pide-ya-seleccion .empresa-option').click(function() {
+                const tipo = $(this).data('option');
+                $('#wizard-pide-ya-seleccion').hide();
+                
+                if (tipo === 'domicilio') {
+                    $('#wizard-domicilio').show();
+                    currentWizard = 'wizard-domicilio';
+                    resetWizard('wizard-domicilio');
+                } else if (tipo === 'punto-limpio') {
+                    $('#wizard-punto-limpio').show();
+                    currentWizard = 'wizard-punto-limpio';
+                    resetWizard('wizard-punto-limpio');
+                }
+            });
+            
+            // Selección de tipo de empresa
+            $('#wizard-empresa-seleccion .empresa-option').click(function() {
+                const tipo = $(this).data('option');
+                $('#wizard-empresa-seleccion').hide();
+                
+                if (tipo === 'afiliado') {
+                    $('#wizard-empresas').show();
+                    currentWizard = 'wizard-empresas';
+                    resetWizard('wizard-empresas');
+                } else if (tipo === 'afiliacion') {
+                    $('#wizard-afiliacion').show();
+                    currentWizard = 'wizard-afiliacion';
+                    resetWizard('wizard-afiliacion');
+                }
+            });
+            
+            // Función para resetear wizard
+            function resetWizard(wizardId) {
+                const wizard = $('#' + wizardId);
+                wizard.find('.wizard-step').removeClass('active');
+                wizard.find('.wizard-step:first').addClass('active');
+                
+                // Limpiar campos
+                wizard.find('input, select, textarea').not('[type="button"]').val('');
+                wizard.find('.input-error').removeClass('input-error');
+                
+                // Resetear selección de botones
+                wizard.find('.product-button, .radio-button-option, .volume-option, .contacto-button').removeClass('selected');
+                wizard.find('input[type="checkbox"], input[type="radio"]').prop('checked', false);
+                
+                wizard.find('.product-button-quantity').val('1');
+                
+                // Ocultar mensajes de error
+                wizard.find('.error-message').hide();
+                
+                // Ocultar campos especiales
+                $('.special-input-container, .contacto-detalle-container').hide();
+            }
+            
+            // Navegación entre pasos
+            $('.wizard-next').click(function() {
+                const currentStep = $(this).closest('.wizard-step');
+                
+                // Validar el paso actual antes de avanzar
+                if (validateStep(currentStep)) {
+                    const nextStep = currentStep.next('.wizard-step');
+                    currentStep.removeClass('active');
+                    nextStep.addClass('active');
+                    
+                    // Generar resumen si es el paso correspondiente
+                    if (nextStep.data('step') == '9' && currentStep.closest('#wizard-domicilio').length) {
+                        generateResumenPedidoDomicilio();
+                    } else if (nextStep.data('step') == '8' && currentStep.closest('#wizard-punto-limpio').length) {
+                        generateResumenPuntoLimpio();
+                    } else if (nextStep.data('step') == '6' && currentStep.closest('#wizard-empresas').length) {
+                        generateResumenAfiliado();
+                    } else if (nextStep.data('step') == '6' && currentStep.closest('#wizard-afiliacion').length) {
+                        generateResumenAfiliacion();
+                    }
+                    
+                    // Generar campos de medidas y peso si es el paso 3
+                    if (nextStep.data('step') == '3' && currentStep.closest('#wizard-domicilio').length) {
+                        generateProductMeasurements('domicilio');
+                    } else if (nextStep.data('step') == '3' && currentStep.closest('#wizard-punto-limpio').length) {
+                        generateProductMeasurements('punto-limpio');
+                    }
+                }
+            });
+            
+            // Función para generar campos de medidas y peso por producto
+            function generateProductMeasurements(wizardType) {
+                const container = $(`#product-measurements-${wizardType}`);
+                container.empty();
+                
+                $(`#wizard-${wizardType} .product-checkbox:checked`).each(function() {
+                    const productName = $(this).data('product');
+                    const cantidad = $(this).closest('.product-button').find('.product-button-quantity').val();
+                    const productId = $(this).attr('id');
+                    
+                    let productText = `${productName}: ${cantidad}`;
+                    
+                    // Si es "Electrodomésticos", agregar la descripción
+                    if ($(this).attr('id') === `electrodomesticos-${wizardType}`) {
+                        const descripcion = $(`#electrodomesticos-desc-${wizardType}`).val();
+                        if (descripcion) {
+                            productText += ` (${descripcion})`;
+                        }
+                    }
+                    
+                    // Si es "Otros", agregar la descripción
+                    if ($(this).attr('id') === `otros-${wizardType}`) {
+                        const descripcion = $(`#otros-desc-${wizardType}`).val();
+                        if (descripcion) {
+                            productText += ` (${descripcion})`;
+                        }
+                    }
+                    
+                    // Agregar medidas y peso si se especificaron
+                    const medidas = $(`#medidas-${productId}`).val();
+                    const peso = $(`#peso-${productId}`).val();
+                    
+                    if (medidas || peso) {
+                        productText += ` - `;
+                        if (medidas) productText += `Medidas: ${medidas}`;
+                        if (medidas && peso) productText += `, `;
+                        if (peso) productText += `Peso: ${peso} kg`;
+                    }
+                    
+                    const measurementHtml = `
+                        <div class="product-measurement-item" data-product="${productId}">
+                            <div class="summary-title">${productText}</div>
+                            <div class="measurement-fields">
+                                <div class="measurement-field">
+                                    <label for="medidas-${productId}">Medidas (opcional)</label>
+                                    <input type="text" id="medidas-${productId}" class="product-measurement-input" placeholder="Ej: 120x80x60 cm" data-type="medidas">
+                                </div>
+                                <div class="measurement-field">
+                                    <label for="peso-${productId}">Peso en kg (opcional)</label>
+                                    <input type="number" id="peso-${productId}" class="product-measurement-input" placeholder="Ej: 25" min="0" data-type="peso">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.append(measurementHtml);
+                });
+                
+                if (container.children().length === 0) {
+                    container.html('<p>No hay productos seleccionados</p>');
+                }
+            }
+            
+            // Botones específicos para finalizar
+            $('#finalizar-pedido-domicilio').click(function() {
+                $(this).closest('.wizard-step').removeClass('active').next('.wizard-step').addClass('active');
+            });
+            
+            $('#finalizar-pedido-pl').click(function() {
+                $(this).closest('.wizard-step').removeClass('active').next('.wizard-step').addClass('active');
+            });
+            
+            $('#finalizar-afiliado').click(function() {
+                $(this).closest('.wizard-step').removeClass('active').next('.wizard-step').addClass('active');
+            });
+            
+            $('#finalizar-afiliacion').click(function() {
+                $(this).closest('.wizard-step').removeClass('active').next('.wizard-step').addClass('active');
+            });
+            
+            $('.wizard-prev').click(function() {
+                const currentStep = $(this).closest('.wizard-step');
+                const prevStep = currentStep.prev('.wizard-step');
+                
+                currentStep.removeClass('active');
+                prevStep.addClass('active');
+            });
+            
+            // Cerrar wizard
+            $('.wizard-close').click(function() {
+                $(this).closest('.wizard-container').hide();
+                currentWizard = null;
+            });
+            
+            // Cerrar wizard con confirmación (botones Cerrar)
+            $('.wizard-close-confirm').click(function() {
+                showCloseConfirmation();
+            });
+            
+            // Cerrar wizard con X
+            $('.wizard-close-x').click(function() {
+                showCloseConfirmation();
+            });
+            
+            // Mostrar modal de confirmación para cerrar
+            function showCloseConfirmation() {
+                $('#close-confirm-modal').css('display', 'flex');
+            }
+            
+            // Ocultar modal de confirmación
+            $('#modal-cancel').click(function() {
+                $('#close-confirm-modal').hide();
+            });
+            
+            // Confirmar cierre del wizard
+            $('#modal-confirm').click(function() {
+                $('#close-confirm-modal').hide();
+                if (currentWizard) {
+                    $('#' + currentWizard).hide();
+                    currentWizard = null;
+                }
+            });
+            
+            // Función de validación
+            function validateStep(step) {
+                let isValid = true;
+                
+                // Ocultar todos los mensajes de error en este paso
+                step.find('.error-message').hide();
+                step.find('.input-error').removeClass('input-error');
+                
+                // Validar campos obligatorios
+                step.find('input[required], select[required], textarea[required]').each(function() {
+                    if (!$(this).val().trim()) {
+                        isValid = false;
+                        $(this).addClass('input-error');
+                        $(this).next('.error-message').show();
+                    }
+                    
+                    // Validaciones específicas
+                    if ($(this).attr('type') === 'email' && $(this).val().trim()) {
+                        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test($(this).val())) {
+                            isValid = false;
+                            $(this).addClass('input-error');
+                            $(this).next('.error-message').show();
+                        }
+                    }
+                    
+                    if ($(this).attr('pattern') && $(this).val().trim()) {
+                        const pattern = new RegExp($(this).attr('pattern'));
+                        if (!pattern.test($(this).val())) {
+                            isValid = false;
+                            $(this).addClass('input-error');
+                            $(this).next('.error-message').show();
+                        }
+                    }
+                });
+                
+                // Validar selección de productos en los pasos correspondientes
+                if ((step.data('step') === '2' && step.closest('#wizard-domicilio').length) || 
+                    (step.data('step') === '2' && step.closest('#wizard-punto-limpio').length)) {
+                    if (step.find('.product-checkbox:checked').length === 0) {
+                        isValid = false;
+                        step.find('#transport-error-domicilio, #transport-error-punto-limpio').show();
+                    }
+                    
+                    // Validar campos especiales si están visibles
+                    if ($('#electrodomesticos-domicilio-container').is(':visible') || $('#electrodomesticos-punto-limpio-container').is(':visible')) {
+                        const electroInput = $('#electrodomesticos-desc-domicilio, #electrodomesticos-desc-punto-limpio');
+                        if (!electroInput.val().trim()) {
+                            isValid = false;
+                            electroInput.addClass('input-error');
+                            electroInput.next('.error-message').show();
+                        }
+                    }
+                    
+                    if ($('#otros-domicilio-container').is(':visible') || $('#otros-punto-limpio-container').is(':visible')) {
+                        const otrosInput = $('#otros-desc-domicilio, #otros-desc-punto-limpio');
+                        if (!otrosInput.val().trim()) {
+                            isValid = false;
+                            otrosInput.addClass('input-error');
+                            otrosInput.next('.error-message').show();
+                        }
+                    }
+                }
+                
+                // Validar confirmación en el paso 4 de domicilio y punto limpio
+                if ((step.data('step') === '4' && step.closest('#wizard-domicilio').length) || 
+                    (step.data('step') === '4' && step.closest('#wizard-punto-limpio').length)) {
+                    if (!step.find('input[name^="confirmacion"]:checked').length) {
+                        isValid = false;
+                        step.find('#confirmacion-error-domicilio, #confirmacion-error-punto-limpio').show();
+                    }
+                }
+                
+                // Validar medios de contacto
+                if ((step.data('step') === '8' && step.closest('#wizard-domicilio').length) || 
+                    (step.data('step') === '7' && step.closest('#wizard-punto-limpio').length)) {
+                    const contactosSeleccionados = step.find('.contacto-checkbox:checked');
+                    if (contactosSeleccionados.length === 0) {
+                        isValid = false;
+                        step.find('#contacto-error-domicilio, #contacto-error-punto-limpio').show();
+                    } else {
+                        // Validar que los campos de contacto seleccionados estén completos
+                        contactosSeleccionados.each(function() {
+                            const detalleContainer = $(this).closest('.contacto-option').find('.contacto-detalle-container');
+                            const detalleInput = detalleContainer.find('.contacto-detalle');
+                            
+                            if (!detalleInput.val().trim()) {
+                                isValid = false;
+                                detalleInput.addClass('input-error');
+                                detalleContainer.find('.error-message').show();
+                            } else if ($(this).attr('id').includes('email')) {
+                                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                if (!emailPattern.test(detalleInput.val())) {
+                                    isValid = false;
+                                    detalleInput.addClass('input-error');
+                                    detalleContainer.find('.error-message').text('Ingresa un email válido').show();
+                                }
+                            } else if ($(this).attr('id').includes('whatsapp') || $(this).attr('id').includes('llamada')) {
+                                const phonePattern = /^[0-9]{9,}$/;
+                                if (!phonePattern.test(detalleInput.val())) {
+                                    isValid = false;
+                                    detalleInput.addClass('input-error');
+                                    detalleContainer.find('.error-message').text('Ingresa un número válido (9 dígitos)').show();
+                                }
+                            }
+                        });
+                    }
+                }
+                
+                // Validar tipo de producto en el paso 5 de empresas
+                if (step.data('step') === '5' && step.closest('#wizard-empresas').length) {
+                    if (!step.find('input[name="tipo-producto"]:checked').length) {
+                        isValid = false;
+                        $('#tipo-producto-error').show();
+                    }
+                    
+                    // Validar campo de producto no acordado si está visible
+                    if ($('#producto-no-acordado-container').is(':visible')) {
+                        const productoInput = $('#producto-no-acordado-desc');
+                        if (!productoInput.val().trim()) {
+                            isValid = false;
+                            productoInput.addClass('input-error');
+                            productoInput.next('.error-message').show();
+                        }
+                    }
+                }
+                
+                // Validar volumen de envíos en el paso 5 de afiliación
+                if (step.data('step') === '5' && step.closest('#wizard-afiliacion').length) {
+                    if (!step.find('input[name="volumen-envios"]:checked').length) {
+                        isValid = false;
+                        $('#volumen-error').show();
+                    }
+                    
+                    // Validar campo de volumen otro si está visible
+                    if ($('#volumen-otro-container').is(':visible')) {
+                        const volumenInput = $('#volumen-otro-desc');
+                        if (!volumenInput.val().trim() || parseInt(volumenInput.val()) <= 0) {
+                            isValid = false;
+                            volumenInput.addClass('input-error');
+                            volumenInput.next('.error-message').show();
+                        }
+                    }
+                }
+                
+                return isValid;
+            }
+            
+            // Generar resumen del pedido para domicilio
+            function generateResumenPedidoDomicilio() {
+                const resumen = $('#resumen-pedido-domicilio');
+                let html = `
+                    <div class="summary-section">
+                        <div class="summary-title">Datos personales</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Nombre:</strong> ${$('#nombre-domicilio').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Direcciones</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Recogida:</strong> ${$('#direccion-recogida-domicilio').val()}, ${$('#piso-recogida-domicilio').val() || 'N/A'}, CP: ${$('#cp-recogida-domicilio').val()}</div>
+                            <div class="summary-item"><strong>Entrega:</strong> ${$('#direccion-entrega-domicilio').val()}, ${$('#piso-entrega-domicilio').val() || 'N/A'}, CP: ${$('#cp-entrega-domicilio').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Fecha and hora</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Fecha:</strong> ${$('#fecha-domicilio').val()}</div>
+                            <div class="summary-item"><strong>Franja horaria:</strong> ${$('#franja-horaria-domicilio option:selected').text()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Contacto</div>
+                        <div class="summary-content">
+                `;
+                
+                // Agregar medios de contacto seleccionados
+                $('#wizard-domicilio .contacto-checkbox:checked').each(function() {
+                    const tipo = $(this).data('contacto');
+                    const detalle = $(this).closest('.contacto-option').find('.contacto-detalle').val();
+                    html += `<div class="summary-item"><strong>${tipo}:</strong> ${detalle}</div>`;
+                });
+                
+                html += `</div></div>`;
+                
+                // Agregar productos transportados
+                const productos = [];
+                $('#wizard-domicilio .product-checkbox:checked').each(function() {
+                    const productName = $(this).data('product');
+                    const cantidad = $(this).closest('.product-button').find('.product-button-quantity').val();
+                    const productId = $(this).attr('id');
+                    
+                    let productText = `${productName}: ${cantidad}`;
+                    
+                    // Si es "Electrodomésticos", agregar la descripción
+                    if ($(this).attr('id') === 'electrodomesticos-domicilio') {
+                        const descripcion = $('#electrodomesticos-desc-domicilio').val();
+                        if (descripcion) {
+                            productText += ` (${descripcion})`;
+                        }
+                    }
+                    
+                    // Si es "Otros", agregar la descripción
+                    if ($(this).attr('id') === 'otros-domicilio') {
+                        const descripcion = $('#otros-desc-domicilio').val();
+                        if (descripcion) {
+                            productText += ` (${descripcion})`;
+                        }
+                    }
+                    
+                    // Agregar medidas y peso si se especificaron
+                    const medidas = $(`#medidas-${productId}`).val();
+                    const peso = $(`#peso-${productId}`).val();
+                    
+                    if (medidas || peso) {
+                        productText += ` - `;
+                        if (medidas) productText += `Medidas: ${medidas}`;
+                        if (medidas && peso) productText += `, `;
+                        if (peso) productText += `Peso: ${peso} kg`;
+                    }
+                    
+                    productos.push(productText);
+                });
+                
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-title">Productos</div>
+                        <div class="summary-content">
+                            <div class="summary-item">${productos.join(', ')}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Agregar comentarios si existen
+                const comentarios = $('#comentario-transporte-domicilio').val();
+                if (comentarios) {
+                    html += `
+                        <div class="summary-section">
+                            <div class="summary-title">Comentarios</div>
+                            <div class="summary-content">
+                                <div class="summary-item">${comentarios}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Agregar confirmación de furgoneta
+                const confirmacion = $('#wizard-domicilio input[name="confirmacion-domicilio"]:checked');
+                if (confirmacion.length) {
+                    html += `
+                        <div class="summary-section">
+                            <div class="summary-title">Confirmación</div>
+                            <div class="summary-content">
+                                <div class="summary-item">${confirmacion.next().text()}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                resumen.html(html);
+            }
+            
+            // Generar resumen para punto limpio
+            function generateResumenPuntoLimpio() {
+                const resumen = $('#resumen-pedido-punto-limpio');
+                let html = `
+                    <div class="summary-section">
+                        <div class="summary-title">Datos personales</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Nombre:</strong> ${$('#nombre-punto-limpio').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Fecha y hora</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Fecha:</strong> ${$('#fecha-punto-limpio').val()}</div>
+                            <div class="summary-item"><strong>Franja horaria:</strong> ${$('#franja-horaria-punto-limpio option:selected').text()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Contacto</div>
+                        <div class="summary-content">
+                `;
+                
+                // Agregar medios de contacto seleccionados
+                $('#wizard-punto-limpio .contacto-checkbox:checked').each(function() {
+                    const tipo = $(this).data('contacto');
+                    const detalle = $(this).closest('.contacto-option').find('.contacto-detalle').val();
+                    html += `<div class="summary-item"><strong>${tipo}:</strong> ${detalle}</div>`;
+                });
+                
+                html += `</div></div>`;
+                
+                // Agregar productos transportados
+                const productos = [];
+                $('#wizard-punto-limpio .product-checkbox:checked').each(function() {
+                    const productName = $(this).data('product');
+                    const cantidad = $(this).closest('.product-button').find('.product-button-quantity').val();
+                    const productId = $(this).attr('id');
+                    
+                    let productText = `${productName}: ${cantidad}`;
+                    
+                    // Si es "Electrodomésticos", agregar la descripción
+                    if ($(this).attr('id') === 'electrodomesticos-punto-limpio') {
+                        const descripcion = $('#electrodomesticos-desc-punto-limpio').val();
+                        if (descripcion) {
+                            productText += ` (${descripcion})`;
+                        }
+                    }
+                    
+                    // Si es "Otros", agregar la descripción
+                    if ($(this).attr('id') === 'otros-punto-limpio') {
+                        const descripcion = $('#otros-desc-punto-limpio').val();
+                        if (descripcion) {
+                            productText += ` (${descripcion})`;
+                        }
+                    }
+                    
+                    // Agregar medidas y peso si se especificaron
+                    const medidas = $(`#medidas-${productId}`).val();
+                    const peso = $(`#peso-${productId}`).val();
+                    
+                    if (medidas || peso) {
+                        productText += ` - `;
+                        if (medidas) productText += `Medidas: ${medidas}`;
+                        if (medidas && peso) productText += `, `;
+                        if (peso) productText += `Peso: ${peso} kg`;
+                    }
+                    
+                    productos.push(productText);
+                });
+                
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-title">Productos</div>
+                        <div class="summary-content">
+                            <div class="summary-item">${productos.join(', ')}</div>
+                        </div>
+                    </div>
+                `;
+                
+                // Agregar comentarios si existen
+                const comentarios = $('#comentario-transporte-punto-limpio').val();
+                if (comentarios) {
+                    html += `
+                        <div class="summary-section">
+                            <div class="summary-title">Comentarios</div>
+                            <div class="summary-content">
+                                <div class="summary-item">${comentarios}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Agregar confirmación de furgoneta
+                const confirmacion = $('#wizard-punto-limpio input[name="confirmacion-punto-limpio"]:checked');
+                if (confirmacion.length) {
+                    html += `
+                        <div class="summary-section">
+                            <div class="summary-title">Confirmación</div>
+                            <div class="summary-content">
+                                <div class="summary-item">${confirmacion.next().text()}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Agregar dirección de recogida
+                html += `
+                    <div class="summary-section">
+                        <div class="summary-title">Dirección de recogida</div>
+                        <div class="summary-content">
+                            <div class="summary-item">${$('#direccion-recogida-punto-limpio').val()}, ${$('#piso-recogida-punto-limpio').val() || 'N/A'}, CP: ${$('#cp-recogida-punto-limpio').val()}</div>
+                        </div>
+                    </div>
+                `;
+                
+                resumen.html(html);
+            }
+            
+            // Generar resumen para afiliados
+            function generateResumenAfiliado() {
+                const resumen = $('#resumen-afiliado');
+                
+                let tipoProductoText = '';
+                const tipoProducto = $('input[name="tipo-producto"]:checked');
+                if (tipoProducto.length) {
+                    tipoProductoText = tipoProducto.parent().text().trim();
+                    if (tipoProducto.val() === 'no-acordado') {
+                        const productoDesc = $('#producto-no-acordado-desc').val();
+                        tipoProductoText += `: ${productoDesc}`;
+                    }
+                }
+                
+                let html = `
+                    <div class="summary-section">
+                        <div class="summary-title">Datos del cliente</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Código cliente:</strong> ${$('#codigo-cliente').val()}</div>
+                            <div class="summary-item"><strong>Nombre:</strong> ${$('#nombre-afiliado').val()}</div>
+                            <div='summary-item'><strong>Teléfono:</strong> ${$('#telefono-afiliado').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Direcciones</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Recogida:</strong> ${$('#afiliado-recogida').val()}, ${$('#piso-recogida-afiliado').val() || 'N/A'}, CP: ${$('#cp-recogida-afiliado').val()}</div>
+                            <div class="summary-item"><strong>Entrega:</strong> ${$('#afiliado-entrega').val()}, ${$('#piso-entrega-afiliado').val() || 'N/A'}, CP: ${$('#cp-entrega-afiliado').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Fecha y hora</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Fecha:</strong> ${$('#afiliado-fecha').val()}</div>
+                            <div class="summary-item"><strong>Hora:</strong> ${$('#afiliado-hora').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Tipo de producto</div>
+                        <div class="summary-content">
+                            <div class="summary-item">${tipoProductoText}</div>
+                        </div>
+                    </div>
+                `;
+                
+                resumen.html(html);
+            }
+            
+            // Generar resumen para afiliación
+            function generateResumenAfiliacion() {
+                const resumen = $('#resumen-afiliacion');
+                
+                let volumenText = '';
+                const volumen = $('input[name="volumen-envios"]:checked');
+                if (volumen.length) {
+                    volumenText = volumen.parent().text().trim();
+                    if (volumen.val() === 'otro') {
+                        const volumenOtro = $('#volumen-otro-desc').val();
+                        volumenText += `: ${volumenOtro} envíos/mes`;
+                    } else {
+                        volumenText += ' envíos/mes';
+                    }
+                }
+                
+                let html = `
+                    <div class="summary-section">
+                        <div class="summary-title">Datos de la empresa</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Nombre:</strong> ${$('#nombre-empresa').val()}</div>
+                            <div class="summary-item"><strong>CIF:</strong> ${$('#cif').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Responsable</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Nombre:</strong> ${$('#responsable').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Contacto</div>
+                        <div class="summary-content">
+                            <div class="summary-item"><strong>Teléfono:</strong> ${$('#telefono-empresa').val()}</div>
+                            <div class="summary-item"><strong>Email:</strong> ${$('#email-empresa').val()}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-section">
+                        <div class="summary-title">Volumen de envíos</div>
+                        <div class="summary-content">
+                            <div class="summary-item">${volumenText}</div>
+                        </div>
+                    </div>
+                `;
+                
+                resumen.html(html);
+            }
+            
+            // Funcionalidad para los controles de cantidad
+            $(document).on('click', '.quantity-plus', function() {
+                const input = $(this).closest('.quantity-controls').find('.product-button-quantity');
+                input.val(parseInt(input.val()) + 1);
+                input.trigger('change');
+            });
+            
+            $(document).on('click', '.quantity-minus', function() {
+                const input = $(this).closest('.quantity-controls').find('.product-button-quantity');
+                if (parseInt(input.val()) > 1) {
+                    input.val(parseInt(input.val()) - 1);
+                    input.trigger('change');
+                }
+            });
+            
+            // Validar entrada manual en los inputs de cantidad
+            $('.product-button-quantity').change(function() {
+                if ($(this).val() < 1 || isNaN($(this).val())) {
+                    $(this).val(1);
+                }
+            });
+            
+            // Manejar botones de productos
+            $('.product-button').click(function(e) {
+                const checkbox = $(this).find('input[type="checkbox"]');
+                const quantityControls = $(this).find('.quantity-controls');
+                
+                // Si el clic no fue en los controles de cantidad
+                if (!quantityControls.is(e.target) && quantityControls.has(e.target).length === 0) {
+                    checkbox.prop('checked', !checkbox.prop('checked'));
+                    $(this).toggleClass('selected', checkbox.prop('checked'));
+                    
+                    // Manejar campos especiales si existen
+                    const specialType = checkbox.data('special');
+                    if (specialType) {
+                        const container = $('#' + specialType + '-container');
+                        if (container.length) {
+                            container.toggle(checkbox.prop('checked'));
+                            if (!checkbox.prop('checked')) {
+                                container.find('input').val('');
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Manejar botones de contacto
+            $('.contacto-button').click(function(e) {
+                const checkbox = $(this).find('input[type="checkbox"]');
+                checkbox.prop('checked', !checkbox.prop('checked'));
+                $(this).toggleClass('selected', checkbox.prop('checked'));
+                
+                // Mostrar/ocultar campo de detalle
+                const detalleContainer = $(this).closest('.contacto-option').find('.contacto-detalle-container');
+                detalleContainer.toggle(checkbox.prop('checked'));
+                
+                if (!checkbox.prop('checked')) {
+                    detalleContainer.find('input').val('');
+                }
+            });
+            
+            // Manejar botones de radio con estilo
+            $('.radio-button-option, .volume-option').click(function() {
+                const radio = $(this).find('input[type="radio"]');
+                const groupName = radio.attr('name');
+                
+                // Deseleccionar otros botones en el mismo grupo
+                $('input[name="' + groupName + '"]').prop('checked', false).parent().removeClass('selected');
+                
+                // Seleccionar el actual
+                radio.prop('checked', true);
+                $(this).addClass('selected');
+                
+                // Mostrar/ocultar campos especiales según la selección
+                if (radio.attr('id') === 'producto-no-acordado') {
+                    $('#producto-no-acordado-container').show();
+                } else if (radio.attr('id') === 'volumen-otro') {
+                    $('#volumen-otro-container').show();
+                } else {
+                    // Ocultar campos especiales si no son relevantes
+                    $('#producto-no-acordado-container, #volumen-otro-container').hide();
+                }
+            });
+            
+            // Actualizar valor del slider de peso
+            $('.weight-slider').on('input', function() {
+                const value = $(this).val();
+                $(this).next('.weight-value').text(value + ' kg');
+            });
+            
+            // Botón "No aplica" para peso estimado
+            $('.unknown-button').click(function() {
+                const sliderId = $(this).attr('id').replace('unknown-weight', 'weight-slider');
+                $('#' + sliderId).val(0);
+                $('#' + sliderId).next('.weight-value').text('0 kg');
+            });
+            
+            // Validar campos de teléfono para que solo acepten números
+            $('input[type="tel"]').on('input', function() {
+                $(this).val($(this).val().replace(/[^0-9]/g, ''));
+            });
+            
+            // Mejorar la usabilidad táctil en dispositivos móviles
+            $('button, .product-button, .empresa-option, .radio-button-option, .volume-option, .quantity-btn, .contacto-button').on('touchstart', function() {
+                $(this).css('transform', 'scale(0.98)');
+            }).on('touchend', function() {
+                $(this).css('transform', '');
+            });
+        });
+    </script>
+
+</body>
+</html>

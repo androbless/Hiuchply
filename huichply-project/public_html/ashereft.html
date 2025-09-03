@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistente Virtual con IA</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-light: #eef2ff;
+            --secondary-color: #3f37c9;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --warning-color: #f72585;
+            --border-radius: 12px;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 70px;
+        }
+        
+        /* Navbar superior */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 1rem;
+        }
+        
+        .navbar-brand {
+            font-weight: 600;
+            color: var(--primary-color) !important;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            height: calc(100vh - 70px);
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 250px;
+            padding-top: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.85);
+            padding: 0.8rem 1.2rem;
+            margin: 0.15rem 0.8rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 12px;
+            font-size: 1.1rem;
+            width: 24px;
+            text-align: center;
+        }
+        
+        /* Contenido principal */
+        .main-content {
+            margin-left: 250px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Tarjetas */
+        .dashboard-card {
+            border-radius: var(--border-radius);
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .dashboard-card .card-body {
+            padding: 1.5rem;
+        }
+        
+        /* Elementos de email */
+        .email-item {
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .email-item:hover {
+            background-color: var(--primary-light);
+            border-left-color: var(--primary-color);
+        }
+        
+        .email-item.unread {
+            background-color: var(--primary-light);
+            font-weight: 500;
+        }
+        
+        /* Calendario */
+        .calendar-day {
+            height: 110px;
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            overflow-y: auto;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .calendar-day:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .calendar-day.current-day {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+        
+        .calendar-event {
+            font-size: 0.75rem;
+            padding: 3px 6px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            background-color: var(--primary-light);
+            border-left: 3px solid var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .calendar-event:hover {
+            opacity: 0.9;
+        }
+        
+        /* Botones */
+        .btn {
+            border-radius: 8px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 500;
+        }
+        
+        .btn-sm {
+            padding: 0.35rem 0.8rem;
+            font-size: 0.85rem;
+        }
+        
+        /* Mejoras responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 220px;
+            }
+            
+            .main-content {
+                margin-left: 220px;
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: fixed;
+                top: 60px;
+                left: -100%;
+                padding: 15px;
+                box-shadow: none;
+                z-index: 999;
+                overflow-y: auto;
+                max-height: calc(100vh - 60px);
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .dashboard-card .card-body {
+                padding: 1.2rem;
+            }
+            
+            /* Menú hamburguesa */
+            .navbar-toggler {
+                border: none;
+                font-size: 1.2rem;
+            }
+            
+            .navbar-toggler:focus {
+                box-shadow: none;
+            }
+            
+            /* Ajustes para móviles en el módulo de email */
+            .email-actions {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            
+            .email-actions .btn-group {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-box {
+                width: 100% !important;
+                margin-top: 10px;
+            }
+            
+            /* Calendario en móviles */
+            .calendar-day {
+                height: 80px;
+                font-size: 0.9rem;
+                padding: 5px;
+            }
+            
+            .calendar-event {
+                font-size: 0.7rem;
+                padding: 2px 4px;
+            }
+            
+            /* Modal en móviles */
+            .modal-dialog {
+                margin: 20px 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 10px;
+            }
+            
+            .dashboard-card .card-body {
+                padding: 1rem;
+            }
+            
+            .card-stats {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .card-stats .icon-container {
+                margin-top: 10px;
+                margin-left: 0 !important;
+            }
+            
+            .calendar-table {
+                font-size: 0.8rem;
+            }
+            
+            .calendar-day {
+                height: 70px;
+                font-size: 0.8rem;
+            }
+            
+            .btn {
+                padding: 0.4rem 1rem;
+            }
+        }
+        
+        /* Utilidades adicionales */
+        .icon-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .text-xs {
+            font-size: 0.8rem;
+        }
+        
+        .menu-toggle {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background-color: var(--primary-color);
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+        }
+        
+        /* Mejora para el gráfico */
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        /* Spinner para operaciones de carga */
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Notificaciones toast */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1100;
+        }
+
+        /* Estilos para la configuración de API */
+        .api-config-card {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .api-config-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .api-config-card.selected {
+            border: 2px solid var(--primary-color);
+        }
+        
+        /* Indicador de conexión */
+        .connection-status {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .connection-status.connected {
+            background-color: #28a745;
+        }
+        
+        .connection-status.disconnected {
+            background-color: #dc3545;
+        }
+        
+        .connection-status.connecting {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación superior -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-2" href="#">
+                <i class="bi bi-robot"></i> Asistente Virtual IA
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Usuario
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Perfil</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configuración</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menú lateral -->
+    <div class="sidebar" id="sidebar">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard" data-bs-target="dashboard">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#correo" data-bs-target="correo">
+                    <i class="bi bi-envelope"></i> Correo Electrónico
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#citas" data-bs-target="citas">
+                    <i class="bi bi-calendar-event"></i> Gestión de Citas
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#apis" data-bs-target="apis">
+                    <i class="bi bi-plug"></i> Conexión APIs
+                </a>
+            </li>
+            <li class="nav-item mt-4">
+                <a class="nav-link" href="#configuracion" data-bs-target="configuracion">
+                    <i class="bi bi-gear"></i> Configuración
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#soporte" data-bs-target="soporte">
+                    <i class="bi bi-question-circle"></i> Soporte
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Botón para toggle del menú en móviles -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="bi bi-list"></i>
+    </button>
+
+    <!-- Contenedor para notificaciones toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Contenido principal -->
+    <div class="main-content" id="mainContent">
+        <!-- Sección Dashboard -->
+        <div class="content-section" id="dashboard">
+            <h2 class="mb-4 section-title">Dashboard</h2>
+            
+            <div class="row">
+                <!-- Tarjeta de Correos Procesados -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card dashboard-card border-top-0 border-bottom-0 border-end-0 border-start-3 border-start-primary h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center card-stats">
+                                <div class="flex-grow-1">
+                                    <div class="small fw-bold text-primary mb-1">Correos procesados</div>
+                                    <div class="h5" id="processedEmailsCount">142</div>
+                                    <div class="text-xs text-success">
+                                        <i class="bi bi-arrow-up"></i> 12% desde ayer
+                                    </div>
+                                </div>
+                                <div class="ms-2 icon-container">
+                                    <i class="bi bi-envelope fs-3 text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta de Citas Agendadas -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card dashboard-card border-top-0 border-bottom-0 border-end-0 border-start-3 border-start-success h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center card-stats">
+                                <div class="flex-grow-1">
+                                    <div class="small fw-bold text-success mb-1">Citas agendadas</div>
+                                    <div class="h5" id="scheduledMeetingsCount">24</div>
+                                    <div class="text-xs text-success">
+                                        <i class="bi bi-arrow-up"></i> 5% esta semana
+                                    </div>
+                                </div>
+                                <div class="ms-2 icon-container">
+                                    <i class="bi bi-calendar-check fs-3 text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta de Respuestas de IA -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card dashboard-card border-top-0 border-bottom-0 border-end-0 border-start-3 border-start-warning h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center card-stats">
+                                <div class="flex-grow-1">
+                                    <div class="small fw-bold text-warning mb-1">Respuestas de IA</div>
+                                    <div class="h5" id="aiResponsesCount">56</div>
+                                    <div class="text-xs text-success">
+                                        <i class="bi bi-arrow-up"></i> 20% este mes
+                                    </div>
+                                </div>
+                                <div class="ms-2 icon-container">
+                                    <i class="bi bi-robot fs-3 text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tarjeta de Tiempo Ahorrado -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card dashboard-card border-top-0 border-bottom-0 border-end-0 border-start-3 border-start-info h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center card-stats">
+                                <div class="flex-grow-1">
+                                    <div class="small fw-bold text-info mb-1">Horas ahorradas</div>
+                                    <div class="h5" id="hoursSavedCount">38.5</div>
+                                    <div class="text-xs text-success">
+                                        <i class="bi bi-arrow-up"></i> 8% esta semana
+                                    </div>
+                                </div>
+                                <div class="ms-2 icon-container">
+                                    <i class="bi bi-clock-history fs-3 text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <!-- Gráfico de actividad reciente -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Actividad reciente</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="activityChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Próximas citas -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card dashboard-card">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Próximas citas</h6>
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="viewAllMeetingsBtn">Ver todas</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush" id="upcomingMeetingsList">
+                                <div class="list-group-item d-flex align-items-center p-3 border-0">
+                                    <div class="bg-primary rounded-circle p-2 me-3">
+                                        <i class="bi bi-calendar-check text-white"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Reunión con Juan Pérez</h6>
+                                        <small class="text-muted">Hoy, 10:30 AM</small>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center p-3 border-0">
+                                    <div class="bg-success rounded-circle p-2 me-3">
+                                        <i class="bi bi-video text-white"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Llamada con equipo</h6>
+                                        <small class="text-muted">Mañana, 9:00 AM</small>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center p-3 border-0">
+                                    <div class="bg-warning rounded-circle p-2 me-3">
+                                        <i class="bi bi-cup-hot text-white"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Café con cliente</h6>
+                                        <small class="text-muted">12 Jun, 4:00 PM</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Correo Electrónico (inicialmente oculta) -->
+        <div class="content-section d-none" id="correo">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Correo Electrónico</h2>
+                <div>
+                    <span id="gmailConnectionStatus" class="badge bg-secondary me-2">
+                        <span class="connection-status disconnected"></span> Gmail
+                    </span>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoCorreoModal">
+                        <i class="bi bi-plus-circle me-1"></i> Nuevo correo
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card dashboard-card">
+                <div class="card-body p-0">
+                    <div class="row g-0">
+                        <div class="col-md-4 col-lg-3 border-end">
+                            <!-- Lista de bandejas -->
+                            <div class="p-3">
+                                <div class="list-group list-group-flush" id="emailFolders">
+                                    <a href="#" class="list-group-item list-group-item-action active border-0 rounded mb-2" data-folder="inbox">
+                                        <i class="bi bi-inbox me-2"></i> Bandeja de entrada
+                                        <span class="badge bg-primary rounded-pill float-end" id="inboxCount">12</span>
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-folder="starred">
+                                        <i class="bi bi-star me-2"></i> Destacados
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-folder="pending">
+                                        <i class="bi bi-clock me-2"></i> Pendientes
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-folder="sent">
+                                        <i class="bi bi-send me-2"></i> Enviados
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-folder="trash">
+                                        <i class="bi bi-trash me-2"></i> Papelera
+                                    </a>
+                                </div>
+                                
+                                <!-- Filtros -->
+                                <h6 class="mt-4 mb-3 ps-2">Filtros</h6>
+                                <div class="list-group list-group-flush" id="emailFilters">
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-filter="clients">
+                                        <i class="bi bi-tag-fill text-primary me-2"></i> Clientes
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-filter="suppliers">
+                                        <i class="bi bi-tag-fill text-success me-2"></i> Proveedores
+                                    </a>
+                                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2" data-filter="internal">
+                                        <i class="bi bi-tag-fill text-warning me-2"></i> Interno
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-8 col-lg-9">
+                            <div class="p-3">
+                                <!-- Barra de búsqueda y acciones -->
+                                <div class="d-flex justify-content-between align-items-center email-actions">
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check me-3">
+                                            <input class="form-check-input" type="checkbox" id="selectAll">
+                                        </div>
+                                        <div class="btn-group me-2">
+                                            <button class="btn btn-sm btn-outline-secondary" id="refreshEmailsBtn">
+                                                <i class="bi bi-arrow-repeat"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary" id="tagEmailsBtn">
+                                                <i class="bi bi-tag"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary" id="deleteEmailsBtn">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="input-group input-group-sm search-box" style="width: 200px;">
+                                            <input type="text" class="form-control" id="emailSearchInput" placeholder="Buscar correos...">
+                                            <button class="btn btn-outline-secondary" type="button" id="emailSearchBtn">
+                                                <i class="bi bi-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Lista de correos -->
+                                <div class="mt-3" id="emailList">
+                                    <!-- Los correos se cargarán dinámicamente -->
+                                </div>
+
+                                <!-- Paginación -->
+                                <nav aria-label="Page navigation" class="mt-3">
+                                    <ul class="pagination pagination-sm justify-content-center" id="emailPagination">
+                                        <li class="page-item disabled">
+                                            <a class="page-link" href="#" tabindex="-1">Anterior</a>
+                                        </li>
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">Siguiente</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Gestión de Citas (inicialmente oculta) -->
+        <div class="content-section d-none" id="citas">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="section-title">Gestión de Citas</h2>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevaCitaModal">
+                    <i class="bi bi-plus-circle me-1"></i> Nueva cita
+                </button>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card dashboard-card mb-4">
+                        <div class="card-header bg-white d-flex justify-content-between align-items-center border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Calendario</h6>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-1" id="prevWeek">
+                                    <i class="bi bi-chevron-left"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-primary" id="nextWeek">
+                                    <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="calendar">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered calendar-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Lun</th>
+                                                <th class="text-center">Mar</th>
+                                                <th class="text-center">Mié</th>
+                                                <th class="text-center">Jue</th>
+                                                <th class="text-center">Vie</th>
+                                                <th class="text-center">Sáb</th>
+                                                <th class="text-center">Dom</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="calendar-day">5
+                                                    <div class="calendar-event">Reunión equipo 10:00</div>
+                                                </td>
+                                                <td class="calendar-day">6
+                                                    <div class="calendar-event">Almuerzo cliente 13:00</div>
+                                                </td>
+                                                <td class="calendar-day">7</td>
+                                                <td class="calendar-day current-day">8
+                                                    <div class="calendar-event">Presentación 11:00</div>
+                                                    <div class="calendar-event">Cita médico 16:30</div>
+                                                </td>
+                                                <td class="calendar-day">9</td>
+                                                <td class="calendar-day">10</td>
+                                                <td class="calendar-day">11</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card dashboard-card mb-4">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Próximas citas</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush" id="meetingsList">
+                                <div class="list-group-item d-flex align-items-center p-3 border-0" data-meeting-id="1">
+                                    <div class="bg-primary rounded-circle p-2 me-3">
+                                        <i class="bi bi-calendar-check text-white"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Reunión con Juan Pérez</h6>
+                                        <small class="text-muted">Hoy, 10:30 AM</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <button class="btn btn-sm btn-outline-secondary btn-edit-meeting" data-meeting-id="1">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center p-3 border-0" data-meeting-id="2">
+                                    <div class="bg-success rounded-circle p-2 me-3">
+                                        <i class="bi bi-video text-white"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Llamada con equipo</h6>
+                                        <small class="text-muted">Mañana, 9:00 AM</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <button class="btn btn-sm btn-outline-secondary btn-edit-meeting" data-meeting-id="2">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="list-group-item d-flex align-items-center p-3 border-0" data-meeting-id="3">
+                                    <div class="bg-warning rounded-circle p-2 me-3">
+                                        <i class="bi bi-cup-hot text-white"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-0">Café con cliente</h6>
+                                        <small class="text-muted">12 Jun, 4:00 PM</small>
+                                    </div>
+                                    <div class="ms-auto">
+                                        <button class="btn btn-sm btn-outline-secondary btn-edit-meeting" data-meeting-id="3">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card dashboard-card">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Configuración de disponibilidad</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="availabilityForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Días laborables</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="monday" checked>
+                                        <label class="form-check-label" for="monday">Lunes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="tuesday" checked>
+                                        <label class="form-check-label" for="tuesday">Martes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="wednesday" checked>
+                                        <label class="form-check-label" for="wednesday">Miércoles</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="thursday" checked>
+                                        <label class="form-check-label" for="thursday">Jueves</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="friday" checked>
+                                        <label class="form-check-label" for="friday">Viernes</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="startTime" class="form-label">Hora de inicio</label>
+                                    <input type="time" class="form-control" id="startTime" value="09:00">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="endTime" class="form-label">Hora de fin</label>
+                                    <input type="time" class="form-control" id="endTime" value="17:00">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">Guardar configuración</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Conexión APIs (inicialmente oculta) -->
+        <div class="content-section d-none" id="apis">
+            <h2 class="mb-4 section-title">Conexión con APIs</h2>
+            
+            <div class="row">
+                <!-- Conexión Gmail -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card api-config-card" id="gmailConfigCard">
+                        <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                <i class="bi bi-google me-2"></i> Conexión Gmail
+                            </h6>
+                            <span id="gmailStatusBadge" class="badge bg-secondary">
+                                <span class="connection-status disconnected"></span> No conectado
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Conecta tu cuenta de Gmail para gestionar tus correos electrónicos directamente desde la plataforma.</p>
+                            
+                            <div class="mb-3">
+                                <label for="gmailClientId" class="form-label">Client ID</label>
+                                <input type="text" class="form-control" id="gmailClientId" placeholder="Ingresa tu Client ID de Google API">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="gmailApiKey" class="form-label">API Key</label>
+                                <input type="password" class="form-control" id="gmailApiKey" placeholder="Ingresa tu API Key">
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="button" id="connectGmailBtn">
+                                    <i class="bi bi-plug me-1"></i> Conectar con Gmail
+                                </button>
+                                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#gmailHelp">
+                                    <i class="bi bi-question-circle me-1"></i> ¿Cómo obtener las credenciales?
+                                </button>
+                            </div>
+                            
+                            <div class="collapse mt-3" id="gmailHelp">
+                                <div class="card card-body">
+                                    <h6>Para conectar con Gmail API:</h6>
+                                    <ol class="small">
+                                        <li>Ve a la <a href="https://console.developers.google.com/" target="_blank">Consola de Google Cloud</a></li>
+                                        <li>Crea un nuevo proyecto o selecciona uno existente</li>
+                                        <li>Habilita la API de Gmail para tu proyecto</li>
+                                        <li>Crea credenciales de tipo OAuth 2.0 Client ID</li>
+                                        <li>Configura la pantalla de consentimiento de OAuth</li>
+                                        <li>Añade tu dominio y URLs de redireccionamiento</li>
+                                        <li>Copia el Client ID y API Key en los campos anteriores</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Conexión OpenAI -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card dashboard-card api-config-card" id="openaiConfigCard">
+                        <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                <i class="bi bi-cpu me-2"></i> Conexión OpenAI
+                            </h6>
+                            <span id="openaiStatusBadge" class="badge bg-secondary">
+                                <span class="connection-status disconnected"></span> No conectado
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Conecta con OpenAI para generar respuestas automáticas inteligentes y asistencia en la gestión de correos.</p>
+                            
+                            <div class="mb-3">
+                                <label for="openaiApiKey" class="form-label">API Key</label>
+                                <input type="password" class="form-control" id="openaiApiKey" placeholder="Ingresa tu API Key de OpenAI">
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="openaiModel" class="form-label">Modelo</label>
+                                <select class="form-select" id="openaiModel">
+                                    <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                                    <option value="gpt-4">GPT-4</option>
+                                    <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                                </select>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="button" id="connectOpenAIBtn">
+                                    <i class="bi bi-plug me-1"></i> Conectar con OpenAI
+                                </button>
+                                <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#openaiHelp">
+                                    <i class="bi bi-question-circle me-1"></i> ¿Cómo obtener la API Key?
+                                </button>
+                            </div>
+                            
+                            <div class="collapse mt-3" id="openaiHelp">
+                                <div class="card card-body">
+                                    <h6>Para obtener tu API Key de OpenAI:</h6>
+                                    <ol class="small">
+                                        <li>Ve a la <a href="https://platform.openai.com/" target="_blank">plataforma de OpenAI</a></li>
+                                        <li>Inicia sesión o crea una cuenta nueva</li>
+                                        <li>Accede a la sección "API Keys" en tu dashboard</li>
+                                        <li>Haz clic en "Create new secret key"</li>
+                                        <li>Copia la clave generada y pégala en el campo anterior</li>
+                                        <li>Asegúrate de tener créditos suficientes en tu cuenta</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card dashboard-card">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Prueba de conexión</h6>
+                        </div>
+                        <div class="card-body">
+                            <p>Una vez configuradas las APIs, puedes probar la conexión y funcionalidad aquí:</p>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-primary" id="testGmailBtn" disabled>
+                                    <i class="bi bi-google me-1"></i> Probar Gmail
+                                </button>
+                                <button class="btn btn-outline-primary" id="testOpenAIBtn" disabled>
+                                    <i class="bi bi-cpu me-1"></i> Probar OpenAI
+                                </button>
+                                <button class="btn btn-primary" id="testIntegrationBtn" disabled>
+                                    <i class="bi bi-gear me-1"></i> Probar integración completa
+                                </button>
+                            </div>
+                            <div class="mt-3" id="testResults">
+                                <!-- Los resultados de las pruebas aparecerán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Configuración (inicialmente oculta) -->
+        <div class="content-section d-none" id="configuracion">
+            <h2 class="mb-4 section-title">Configuración</h2>
+            
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card dashboard-card mb-4">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Preferencias de IA</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="aiPreferencesForm">
+                                <div class="mb-3">
+                                    <label for="aiTone" class="form-label">Tono predeterminado</label>
+                                    <select class="form-select" id="aiTone">
+                                        <option value="formal">Formal</option>
+                                        <option value="informal" selected>Informal</option>
+                                        <option value="friendly">Amigable</option>
+                                        <option value="professional">Profesional</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="responseLength" class="form-label">Longitud de respuesta</label>
+                                    <select class="form-select" id="responseLength">
+                                        <option value="short">Corta</option>
+                                        <option value="medium" selected>Media</option>
+                                        <option value="long">Larga</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="autoGenerateResponses" checked>
+                                    <label class="form-check-label" for="autoGenerateResponses">Generar respuestas automáticamente</label>
+                                </div>
+                                
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="suggestEdits" checked>
+                                    <label class="form-check-label" for="suggestEdits">Sugerir ediciones a respuestas</label>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Guardar preferencias</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card dashboard-card mb-4">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Notificaciones</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="notificationsForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Tipo de notificaciones</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                        <label class="form-check-label" for="emailNotifications">Correo electrónico</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="browserNotifications" checked>
+                                        <label class="form-check-label" for="browserNotifications">Navegador</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="pushNotifications">
+                                        <label class="form-check-label" for="pushNotifications">Push (dispositivo móvil)</label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Eventos para notificar</label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newEmailsNotification" checked>
+                                        <label class="form-check-label" for="newEmailsNotification">Nuevos correos importantes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="meetingReminders" checked>
+                                        <label class="form-check-label" for="meetingReminders">Recordatorios de citas</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="aiResponsesReady">
+                                        <label class="form-check-label" for="aiResponsesReady">Respuestas de IA listas</label>
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Guardar configuración</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección Soporte (inicialmente oculta) -->
+        <div class="content-section d-none" id="soporte">
+            <h2 class="mb-4 section-title">Soporte</h2>
+            
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card dashboard-card mb-4">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Preguntas frecuentes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="faqAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            ¿Cómo funciona el asistente de IA para correos?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Nuestro asistente de IA analiza el contenido de los correos entrantes y sugiere respuestas contextuales basadas en el tipo de mensaje, el remitente y tu historial de comunicaciones. Puedes personalizar las respuestas antes de enviarlas.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            ¿Cómo programo una nueva cita?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Para programar una nueva cita, ve a la sección "Gestión de Citas" y haz clic en el botón "Nueva cita". Completa los detalles de la cita (título, participante, fecha, hora, duración y descripción) y haz clic en "Agendar cita".
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            ¿Puedo integrar con mi calendario existente?
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                                        <div class="accordion-body">
+                                            Sí, nuestra plataforma permite la integración con Google Calendar, Outlook y otros calendarios populares. Ve a la sección de Configuración > Integraciones para conectar tus calendarios.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card dashboard-card mb-4">
+                        <div class="card-header bg-white border-0 pt-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Contactar soporte</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="supportForm">
+                                <div class="mb-3">
+                                    <label for="supportSubject" class="form-label">Asunto</label>
+                                    <input type="text" class="form-control" id="supportSubject" placeholder="Describa brevemente su consulta">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="supportMessage" class="form-label">Mensaje</label>
+                                    <textarea class="form-control" id="supportMessage" rows="4" placeholder="Describa su problema o consulta en detalle..."></textarea>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="supportPriority" class="form-label">Prioridad</label>
+                                    <select class="form-select" id="supportPriority">
+                                        <option value="low">Baja</option>
+                                        <option value="medium" selected>Media</option>
+                                        <option value="high">Alta</option>
+                                        <option value="urgent">Urgente</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary w-100">Enviar consulta</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para respuesta con IA -->
+    <div class="modal fade" id="respuestaIAModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Generar respuesta con IA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tipoRespuesta" class="form-label">Tipo de respuesta</label>
+                        <select class="form-select" id="tipoRespuesta">
+                            <option value="formal">Formal</option>
+                            <option value="informal">Informal</option>
+                            <option value="agradecimiento">Agradecimiento</option>
+                            <option value="seguimiento">Seguimiento</option>
+                            <option value="reunion">Agendar reunión</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="puntosClave" class="form-label">Puntos clave a incluir</label>
+                        <textarea class="form-control" id="puntosClave" rows="3" placeholder="Ej: Confirmar disponibilidad para el jueves, solicitar información adicional..."></textarea>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center my-3">
+                        <button class="btn btn-primary" id="generarRespuesta">
+                            <i class="bi bi-robot"></i> Generar respuesta
+                        </button>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="respuestaGenerada" class="form-label">Respuesta generada</label>
+                        <textarea class="form-control" id="respuestaGenerada" rows="6" readonly></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="edicionRespuesta" class="form-label">Editar respuesta (opcional)</label>
+                        <textarea class="form-control" id="edicionRespuesta" rows="6"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="sendAIResponseBtn">Enviar respuesta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para nueva cita -->
+    <div class="modal fade" id="nuevaCitaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agendar nueva cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="nuevaCitaForm">
+                        <div class="mb-3">
+                            <label for="tituloCita" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="tituloCita" placeholder="Reunión, Llamada, etc." required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="participanteCita" class="form-label">Participante(s)</label>
+                            <input type="text" class="form-control" id="participanteCita" placeholder="Nombre o email" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="fechaCita" class="form-label">Fecha</label>
+                                <input type="date" class="form-control" id="fechaCita" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="horaCita" class="form-label">Hora</label>
+                                <input type="time" class="form-control" id="horaCita" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="duracionCita" class="form-label">Duración</label>
+                            <select class="form-select" id="duracionCita">
+                                <option value="30">30 minutos</option>
+                                <option value="60" selected>1 hora</option>
+                                <option value="90">1.5 horas</option>
+                                <option value="120">2 horas</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="descripcionCita" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcionCita" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="recordatorioCita">
+                            <label class="form-check-label" for="recordatorioCita">Enviar recordatorio</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveMeetingBtn">Agendar cita</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para nuevo correo -->
+    <div class="modal fade" id="nuevoCorreoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo correo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="nuevoCorreoForm">
+                        <div class="mb-3">
+                            <label for="destinatarioCorreo" class="form-label">Para</label>
+                            <input type="email" class="form-control" id="destinatarioCorreo" placeholder="correo@ejemplo.com" required multiple>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="asuntoCorreo" class="form-label">Asunto</label>
+                            <input type="text" class="form-control" id="asuntoCorreo" placeholder="Asunto del correo" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="contenidoCorreo" class="form-label">Mensaje</label>
+                            <textarea class="form-control" id="contenidoCorreo" rows="8" required></textarea>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="usarIAcorreo">
+                            <label class="form-check-label" for="usarIAcorreo">Optimizar con IA</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="sendEmailBtn">Enviar correo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Almacenamiento de datos de la aplicación
+        const appData = {
+            emails: [
+                { id: 1, from: "Juan Pérez", subject: "Propuesta de colaboración para el próximo trimestre", content: "Hola, me gustaría agendar una reunión para presentarte nuestra propuesta de colaboración...", date: "Hace 15 min", read: false, folder: "inbox" },
+                { id: 2, from: "María García", subject: "Confirmación de cita para el jueves", content: "Te escribo para confirmar nuestra cita del jueves a las 11:00 AM. Por favor...", date: "Hace 2 horas", read: true, folder: "inbox" },
+                { id: 3, from: "Carlos Rodríguez", subject: "Solicitud de información sobre servicios", content: "Buenos días, estoy interesado en conocer más sobre los servicios que ofrecen. Podrían...", date: "Ayer", read: true, folder: "inbox" }
+            ],
+            meetings: [
+                { id: 1, title: "Reunión con Juan Pérez", date: "Hoy, 10:30 AM", type: "meeting" },
+                { id: 2, title: "Llamada con equipo", date: "Mañana, 9:00 AM", type: "call" },
+                { id: 3, title: "Café con cliente", date: "12 Jun, 4:00 PM", type: "coffee" }
+            ],
+            stats: {
+                processedEmails: 142,
+                scheduledMeetings: 24,
+                aiResponses: 56,
+                hoursSaved: 38.5
+            },
+            currentEmail: null,
+            currentMeeting: null,
+            apiConfig: {
+                gmail: {
+                    clientId: "",
+                    apiKey: "",
+                    connected: false
+                },
+                openai: {
+                    apiKey: "",
+                    model: "gpt-3.5-turbo",
+                    connected: false
+                }
+            }
+        };
+
+        // Función para mostrar notificaciones toast
+        function showToast(message, type = 'success') {
+            const toastContainer = document.getElementById('toastContainer');
+            const toastId = 'toast-' + Date.now();
+            
+            const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+            
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, {
+                delay: 3000
+            });
+            toast.show();
+            
+            // Eliminar el toast del DOM después de que se oculte
+            toastElement.addEventListener('hidden.bs.toast', function () {
+                toastElement.remove();
+            });
+        }
+
+        // Función para actualizar estadísticas en el dashboard
+        function updateStats() {
+            document.getElementById('processedEmailsCount').textContent = appData.stats.processedEmails;
+            document.getElementById('scheduledMeetingsCount').textContent = appData.stats.scheduledMeetings;
+            document.getElementById('aiResponsesCount').textContent = appData.stats.aiResponses;
+            document.getElementById('hoursSavedCount').textContent = appData.stats.hoursSaved;
+        }
+
+        // Función para renderizar la lista de correos
+        function renderEmailList() {
+            const emailList = document.getElementById('emailList');
+            emailList.innerHTML = '';
+            
+            appData.emails.forEach(email => {
+                const emailItem = document.createElement('div');
+                emailItem.className = `p-3 email-item ${email.read ? '' : 'unread'} rounded mt-3`;
+                emailItem.setAttribute('data-email-id', email.id);
+                
+                emailItem.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between align-items-start">
+                        <div class="form-check me-3 mt-1">
+                            <input class="form-check-input email-checkbox" type="checkbox" data-email-id="${email.id}">
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="mb-1">${email.from}</h6>
+                                <small class="text-muted">${email.date}</small>
+                            </div>
+                            <p class="mb-1 mt-2 fw-bold">${email.subject}</p>
+                            <p class="mb-2 text-muted">${email.content}</p>
+                            <div class="mt-2">
+                                <button class="btn btn-sm btn-outline-primary me-1 btn-responder" data-bs-toggle="modal" data-bs-target="#respuestaIAModal" data-email-id="${email.id}">
+                                    <i class="bi bi-robot me-1"></i>Responder con IA
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary btn-archive" data-email-id="${email.id}">
+                                    <i class="bi bi-archive me-1"></i>Archivar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                emailList.appendChild(emailItem);
+            });
+            
+            // Actualizar contador de bandeja de entrada
+            document.getElementById('inboxCount').textContent = appData.emails.filter(email => email.folder === 'inbox').length;
+            
+            // Agregar event listeners a los botones recién creados
+            document.querySelectorAll('.btn-responder').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const emailId = this.getAttribute('data-email-id');
+                    appData.currentEmail = appData.emails.find(email => email.id == emailId);
+                    document.getElementById('puntosClave').value = `Respondiendo a: ${appData.currentEmail.subject}`;
+                });
+            });
+            
+            document.querySelectorAll('.btn-archive').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const emailId = this.getAttribute('data-email-id');
+                    archiveEmail(emailId);
+                });
+            });
+            
+            document.querySelectorAll('.email-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectAllCheckbox();
+                });
+            });
+        }
+
+        // Función para archivar un correo
+        function archiveEmail(emailId) {
+            const emailIndex = appData.emails.findIndex(email => email.id == emailId);
+            if (emailIndex !== -1) {
+                appData.emails[emailIndex].folder = 'archived';
+                appData.emails.splice(emailIndex, 1);
+                renderEmailList();
+                showToast('Correo archivado correctamente');
+            }
+        }
+
+        // Función para actualizar el estado del checkbox "Seleccionar todos"
+        function updateSelectAllCheckbox() {
+            const checkboxes = document.querySelectorAll('.email-checkbox');
+            const selectAll = document.getElementById('selectAll');
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            const someChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            
+            selectAll.checked = allChecked;
+            selectAll.indeterminate = someChecked && !allChecked;
+        }
+
+        // Función para renderizar la lista de reuniones
+        function renderMeetingsList() {
+            const meetingsList = document.getElementById('meetingsList');
+            meetingsList.innerHTML = '';
+            
+            const upcomingMeetingsList = document.getElementById('upcomingMeetingsList');
+            upcomingMeetingsList.innerHTML = '';
+            
+            appData.meetings.forEach(meeting => {
+                let iconClass = '';
+                let bgColor = '';
+                
+                switch(meeting.type) {
+                    case 'meeting':
+                        iconClass = 'bi-calendar-check';
+                        bgColor = 'bg-primary';
+                        break;
+                    case 'call':
+                        iconClass = 'bi-video';
+                        bgColor = 'bg-success';
+                        break;
+                    case 'coffee':
+                        iconClass = 'bi-cup-hot';
+                        bgColor = 'bg-warning';
+                        break;
+                    default:
+                        iconClass = 'bi-calendar-event';
+                        bgColor = 'bg-info';
+                }
+                
+                const meetingItem = document.createElement('div');
+                meetingItem.className = 'list-group-item d-flex align-items-center p-3 border-0';
+                meetingItem.setAttribute('data-meeting-id', meeting.id);
+                
+                meetingItem.innerHTML = `
+                    <div class="${bgColor} rounded-circle p-2 me-3">
+                        <i class="${iconClass} text-white"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0">${meeting.title}</h6>
+                        <small class="text-muted">${meeting.date}</small>
+                    </div>
+                    <div class="ms-auto">
+                        <button class="btn btn-sm btn-outline-secondary btn-edit-meeting" data-meeting-id="${meeting.id}">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                    </div>
+                `;
+                
+                meetingsList.appendChild(meetingItem.cloneNode(true));
+                upcomingMeetingsList.appendChild(meetingItem);
+            });
+            
+            // Agregar event listeners a los botones de edición
+            document.querySelectorAll('.btn-edit-meeting').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const meetingId = this.getAttribute('data-meeting-id');
+                    editMeeting(meetingId);
+                });
+            });
+        }
+
+        // Función para editar una reunión
+        function editMeeting(meetingId) {
+            const meeting = appData.meetings.find(m => m.id == meetingId);
+            if (meeting) {
+                appData.currentMeeting = meeting;
+                // En una implementación real, llenaríamos un modal de edición con los datos de la reunión
+                showToast(`Editando reunión: ${meeting.title}`, 'info');
+            }
+        }
+
+        // Función para agregar una nueva reunión
+        function addNewMeeting(meetingData) {
+            const newId = appData.meetings.length > 0 ? Math.max(...appData.meetings.map(m => m.id)) + 1 : 1;
+            const newMeeting = {
+                id: newId,
+                title: meetingData.title,
+                date: `${meetingData.date}, ${meetingData.time}`,
+                type: meetingData.type || 'meeting'
+            };
+            
+            appData.meetings.push(newMeeting);
+            appData.stats.scheduledMeetings++;
+            
+            renderMeetingsList();
+            updateStats();
+            showToast('Cita agendada correctamente');
+        }
+
+        // Función para conectar con Gmail API
+        function connectGmail() {
+            const clientId = document.getElementById('gmailClientId').value;
+            const apiKey = document.getElementById('gmailApiKey').value;
+            
+            if (!clientId || !apiKey) {
+                showToast('Por favor, ingresa el Client ID y API Key de Gmail', 'warning');
+                return;
+            }
+            
+            // Actualizar UI para mostrar estado de conexión
+            const statusBadge = document.getElementById('gmailStatusBadge');
+            statusBadge.innerHTML = '<span class="connection-status connecting"></span> Conectando...';
+            statusBadge.className = 'badge bg-warning';
+            
+            // Simular conexión con Gmail API
+            setTimeout(() => {
+                // En una implementación real, aquí se haría la autenticación con OAuth 2.0
+                appData.apiConfig.gmail = {
+                    clientId: clientId,
+                    apiKey: apiKey,
+                    connected: true
+                };
+                
+                // Actualizar UI
+                statusBadge.innerHTML = '<span class="connection-status connected"></span> Conectado';
+                statusBadge.className = 'badge bg-success';
+                document.getElementById('gmailConnectionStatus').innerHTML = '<span class="connection-status connected"></span> Gmail';
+                
+                // Habilitar botones de prueba
+                document.getElementById('testGmailBtn').disabled = false;
+                document.getElementById('testIntegrationBtn').disabled = !(appData.apiConfig.gmail.connected && appData.apiConfig.openai.connected);
+                
+                showToast('Conexión con Gmail establecida correctamente');
+            }, 2000);
+        }
+
+        // Función para conectar con OpenAI API
+        function connectOpenAI() {
+            const apiKey = document.getElementById('openaiApiKey').value;
+            const model = document.getElementById('openaiModel').value;
+            
+            if (!apiKey) {
+                showToast('Por favor, ingresa la API Key de OpenAI', 'warning');
+                return;
+            }
+            
+            // Actualizar UI para mostrar estado de conexión
+            const statusBadge = document.getElementById('openaiStatusBadge');
+            statusBadge.innerHTML = '<span class="connection-status connecting"></span> Conectando...';
+            statusBadge.className = 'badge bg-warning';
+            
+            // Simular conexión con OpenAI API
+            setTimeout(() => {
+                appData.apiConfig.openai = {
+                    apiKey: apiKey,
+                    model: model,
+                    connected: true
+                };
+                
+                // Actualizar UI
+                statusBadge.innerHTML = '<span class="connection-status connected"></span> Conectado';
+                statusBadge.className = 'badge bg-success';
+                
+                // Habilitar botones de prueba
+                document.getElementById('testOpenAIBtn').disabled = false;
+                document.getElementById('testIntegrationBtn').disabled = !(appData.apiConfig.gmail.connected && appData.apiConfig.openai.connected);
+                
+                showToast('Conexión con OpenAI establecida correctamente');
+            }, 2000);
+        }
+
+        // Función para probar la conexión con Gmail
+        function testGmailConnection() {
+            const testResults = document.getElementById('testResults');
+            testResults.innerHTML = '<div class="alert alert-info">Probando conexión con Gmail...</div>';
+            
+            // Simular prueba de conexión
+            setTimeout(() => {
+                testResults.innerHTML = `
+                    <div class="alert alert-success">
+                        <h6><i class="bi bi-check-circle-fill"></i> Conexión con Gmail exitosa</h6>
+                        <ul class="mb-0">
+                            <li>Autenticación OAuth 2.0: <span class="text-success">Correcta</span></li>
+                            <li>Permisos de API: <span class="text-success">Concedidos</span></li>
+                            <li>Bandeja de entrada accesible: <span class="text-success">Sí</span></li>
+                            <li>Capacidad de enviar correos: <span class="text-success">Sí</span></li>
+                        </ul>
+                    </div>
+                `;
+            }, 1500);
+        }
+
+        // Función para probar la conexión con OpenAI
+        function testOpenAIConnection() {
+            const testResults = document.getElementById('testResults');
+            testResults.innerHTML = '<div class="alert alert-info">Probando conexión con OpenAI...</div>';
+            
+            // Simular prueba de conexión
+            setTimeout(() => {
+                testResults.innerHTML = `
+                    <div class="alert alert-success">
+                        <h6><i class="bi bi-check-circle-fill"></i> Conexión con OpenAI exitosa</h6>
+                        <ul class="mb-0">
+                            <li>Autenticación API: <span class="text-success">Correcta</span></li>
+                            <li>Modelo seleccionado: <span class="text-success">${appData.apiConfig.openai.model}</span></li>
+                            <li>Créditos disponibles: <span class="text-success">Suficientes</span></li>
+                            <li>Capacidad de generar respuestas: <span class="text-success">Sí</span></li>
+                        </ul>
+                    </div>
+                `;
+            }, 1500);
+        }
+
+        // Función para probar la integración completa
+        function testIntegration() {
+            const testResults = document.getElementById('testResults');
+            testResults.innerHTML = '<div class="alert alert-info">Probando integración completa...</div>';
+            
+            // Simular prueba de integración
+            setTimeout(() => {
+                testResults.innerHTML = `
+                    <div class="alert alert-success">
+                        <h6><i class="bi bi-check-circle-fill"></i> Integración completa exitosa</h6>
+                        <ul class="mb-0">
+                            <li>Conexión Gmail + OpenAI: <span class="text-success">Funcionando</span></li>
+                            <li>Lectura de correos: <span class="text-success">Correcta</span></li>
+                            <li>Generación de respuestas IA: <span class="text-success">Operativa</span></li>
+                            <li>Envío de respuestas: <span class="text-success">Configurado</span></li>
+                        </ul>
+                    </div>
+                `;
+            }, 2000);
+        }
+
+        // Inicializar la aplicación cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar la fecha actual en el formulario de nueva cita
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('fechaCita').value = formattedDate;
+            
+            // Manejar clic en enlaces del menú lateral
+            const navLinks = document.querySelectorAll('.sidebar .nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Quitar active de todos los enlaces
+                    navLinks.forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    
+                    // Agregar active al enlace clickeado
+                    this.classList.add('active');
+                    
+                    // Ocultar todas las secciones
+                    contentSections.forEach(section => {
+                        section.classList.add('d-none');
+                    });
+                    
+                    // Mostrar la sección correspondiente
+                    const targetId = this.getAttribute('data-bs-target');
+                    document.getElementById(targetId).classList.remove('d-none');
+                    
+                    // En móviles, cerrar el sidebar después de hacer clic
+                    if (window.innerWidth < 768) {
+                        document.getElementById('sidebar').classList.remove('active');
+                    }
+                });
+            });
+            
+            // Toggle del menú en móviles
+            document.getElementById('menuToggle').addEventListener('click', function() {
+                document.getElementById('sidebar').classList.toggle('active');
+            });
+            
+            // Cerrar el menú al hacer clic fuera de él en móviles
+            document.addEventListener('click', function(event) {
+                const sidebar = document.getElementById('sidebar');
+                const menuToggle = document.getElementById('menuToggle');
+                
+                if (window.innerWidth < 768 && 
+                    sidebar.classList.contains('active') && 
+                    !sidebar.contains(event.target) && 
+                    !menuToggle.contains(event.target)) {
+                    sidebar.classList.remove('active');
+                }
+            });
+            
+            // Simular generación de respuesta con IA
+            document.getElementById('generarRespuesta').addEventListener('click', function() {
+                const tipoRespuesta = document.getElementById('tipoRespuesta').value;
+                const puntosClave = document.getElementById('puntosClave').value;
+                
+                // Verificar si OpenAI está conectado
+                if (!appData.apiConfig.openai.connected) {
+                    showToast('Primero debes conectar con OpenAI en la sección de APIs', 'warning');
+                    return;
+                }
+                
+                // Mostrar indicador de carga
+                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Generando...';
+                this.disabled = true;
+                
+                // Simular llamada a API (en una implementación real, sería una llamada AJAX a OpenAI)
+                setTimeout(() => {
+                    let respuesta = '';
+                    
+                    switch(tipoRespuesta) {
+                        case 'formal':
+                            respuesta = 'Estimado/a,\n\nAgradezco su comunicación. ';
+                            break;
+                        case 'informal':
+                            respuesta = '¡Hola!\n\nMe pongo en contacto contigo para ';
+                            break;
+                        case 'agradecimiento':
+                            respuesta = 'Le escribo para agradecerle por ';
+                            break;
+                        case 'reunion':
+                            respuesta = 'Me complace confirmar nuestra reunión para ';
+                            break;
+                        default:
+                            respuesta = 'Agradezco su mensaje. ';
+                    }
+                    
+                    if (puntosClave) {
+                        respuesta += puntosClave + '. ';
+                    }
+                    
+                    respuesta += '\n\nQuedo atento/a a su respuesta.\n\nSaludos cordiales.';
+                    
+                    document.getElementById('respuestaGenerada').value = respuesta;
+                    document.getElementById('edicionRespuesta').value = respuesta;
+                    
+                    // Restaurar el botón
+                    this.innerHTML = '<i class="bi bi-robot"></i> Generar respuesta';
+                    this.disabled = false;
+                    
+                    // Incrementar contador de respuestas de IA
+                    appData.stats.aiResponses++;
+                    updateStats();
+                    
+                    showToast('Respuesta generada con éxito');
+                }, 1500);
+            });
+            
+            // Enviar respuesta de IA
+            document.getElementById('sendAIResponseBtn').addEventListener('click', function() {
+                const respuesta = document.getElementById('edicionRespuesta').value;
+                if (respuesta.trim() === '') {
+                    showToast('Por favor, genere una respuesta primero', 'warning');
+                    return;
+                }
+                
+                // Verificar si Gmail está conectado
+                if (!appData.apiConfig.gmail.connected) {
+                    showToast('Primero debes conectar con Gmail en la sección de APIs', 'warning');
+                    return;
+                }
+                
+                // Simular envío de respuesta
+                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
+                
+                setTimeout(() => {
+                    // Cerrar el modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('respuestaIAModal'));
+                    modal.hide();
+                    
+                    // Restaurar el botón
+                    this.innerHTML = 'Enviar respuesta';
+                    
+                    // Mostrar notificación de éxito
+                    showToast('Respuesta enviada correctamente');
+                    
+                    // Incrementar contador de correos procesados
+                    appData.stats.processedEmails++;
+                    appData.stats.hoursSaved += 0.5;
+                    updateStats();
+                }, 1000);
+            });
+            
+            // Agendar nueva cita
+            document.getElementById('saveMeetingBtn').addEventListener('click', function() {
+                const titulo = document.getElementById('tituloCita').value;
+                const participante = document.getElementById('participanteCita').value;
+                const fecha = document.getElementById('fechaCita').value;
+                const hora = document.getElementById('horaCita').value;
+                const duracion = document.getElementById('duracionCita').value;
+                const descripcion = document.getElementById('descripcionCita').value;
+                const recordatorio = document.getElementById('recordatorioCita').checked;
+                
+                if (!titulo || !participante || !fecha || !hora) {
+                    showToast('Por favor, complete todos los campos obligatorios', 'warning');
+                    return;
+                }
+                
+                // Formatear fecha para mostrar
+                const fechaObj = new Date(fecha);
+                const opciones = { day: 'numeric', month: 'short' };
+                const fechaFormateada = fechaObj.toLocaleDateString('es-ES', opciones);
+                
+                // Agregar la nueva cita
+                addNewMeeting({
+                    title: titulo,
+                    date: fechaFormateada,
+                    time: hora,
+                    participant: participante,
+                    duration: duracion,
+                    description: descripcion,
+                    reminder: recordatorio
+                });
+                
+                // Cerrar el modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('nuevaCitaModal'));
+                modal.hide();
+                
+                // Resetear el formulario
+                document.getElementById('nuevaCitaForm').reset();
+                
+                // Establecer fecha actual
+                const today = new Date();
+                const formattedDate = today.toISOString().split('T')[0];
+                document.getElementById('fechaCita').value = formattedDate;
+            });
+            
+            // Enviar nuevo correo
+            document.getElementById('sendEmailBtn').addEventListener('click', function() {
+                const destinatario = document.getElementById('destinatarioCorreo').value;
+                const asunto = document.getElementById('asuntoCorreo').value;
+                const contenido = document.getElementById('contenidoCorreo').value;
+                const usarIA = document.getElementById('usarIAcorreo').checked;
+                
+                if (!destinatario || !asunto || !contenido) {
+                    showToast('Por favor, complete todos los campos', 'warning');
+                    return;
+                }
+                
+                // Verificar si Gmail está conectado
+                if (!appData.apiConfig.gmail.connected) {
+                    showToast('Primero debes conectar con Gmail en la sección de APIs', 'warning');
+                    return;
+                }
+                
+                // Simular envío de correo
+                this.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Enviando...';
+                
+                setTimeout(() => {
+                    // Cerrar el modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('nuevoCorreoModal'));
+                    modal.hide();
+                    
+                    // Restaurar el botón
+                    this.innerHTML = 'Enviar correo';
+                    
+                    // Mostrar notificación de éxito
+                    showToast('Correo enviado correctamente');
+                    
+                    // Incrementar contador de correos procesados
+                    appData.stats.processedEmails++;
+                    updateStats();
+                    
+                    // Resetear el formulario
+                    document.getElementById('nuevoCorreoForm').reset();
+                }, 1000);
+            });
+            
+            // Navegación del calendario (semana anterior/siguiente)
+            document.getElementById('prevWeek').addEventListener('click', function() {
+                showToast('Mostrando semana anterior', 'info');
+                // En una implementación real, aquí se actualizaría el calendario
+            });
+            
+            document.getElementById('nextWeek').addEventListener('click', function() {
+                showToast('Mostrando semana siguiente', 'info');
+                // En una implementación real, aquí se actualizaría el calendario
+            });
+            
+            // Ver todas las reuniones
+            document.getElementById('viewAllMeetingsBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                // Navegar a la sección de citas
+                document.querySelectorAll('.sidebar .nav-link').forEach(link => link.classList.remove('active'));
+                document.querySelector('.sidebar .nav-link[data-bs-target="citas"]').classList.add('active');
+                
+                document.querySelectorAll('.content-section').forEach(section => section.classList.add('d-none'));
+                document.getElementById('citas').classList.remove('d-none');
+            });
+            
+            // Seleccionar/deseleccionar todos los correos
+            document.getElementById('selectAll').addEventListener('change', function() {
+                const checkboxes = document.querySelectorAll('.email-checkbox');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            // Configuración de disponibilidad
+            document.getElementById('availabilityForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const startTime = document.getElementById('startTime').value;
+                const endTime = document.getElementById('endTime').value;
+                
+                // Guardar configuración (simulado)
+                showToast('Configuración de disponibilidad guardada');
+            });
+            
+            // Preferencias de IA
+            document.getElementById('aiPreferencesForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showToast('Preferencias de IA guardadas');
+            });
+            
+            // Configuración de notificaciones
+            document.getElementById('notificationsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                showToast('Configuración de notificaciones guardada');
+            });
+            
+            // Formulario de soporte
+            document.getElementById('supportForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subject = document.getElementById('supportSubject').value;
+                const message = document.getElementById('supportMessage').value;
+                
+                if (!subject || !message) {
+                    showToast('Por favor, complete todos los campos', 'warning');
+                    return;
+                }
+                
+                // Simular envío de consulta de soporte
+                showToast('Consulta enviada. Nos pondremos en contacto pronto.');
+                this.reset();
+            });
+            
+            // Conexión con Gmail
+            document.getElementById('connectGmailBtn').addEventListener('click', connectGmail);
+            
+            // Conexión con OpenAI
+            document.getElementById('connectOpenAIBtn').addEventListener('click', connectOpenAI);
+            
+            // Pruebas de conexión
+            document.getElementById('testGmailBtn').addEventListener('click', testGmailConnection);
+            document.getElementById('testOpenAIBtn').addEventListener('click', testOpenAIConnection);
+            document.getElementById('testIntegrationBtn').addEventListener('click', testIntegration);
+            
+            // Cerrar sesión
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('¿Está seguro de que desea cerrar sesión?')) {
+                    showToast('Sesión cerrada correctamente');
+                    // En una implementación real, aquí redirigiríamos al login
+                }
+            });
+            
+            // Inicializar gráfico de actividad
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            const activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    datasets: [{
+                        label: 'Correos procesados',
+                        data: [12, 19, 15, 17, 14, 5, 3],
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }, {
+                        label: 'Citas agendadas',
+                        data: [5, 8, 6, 9, 7, 2, 1],
+                        borderColor: '#4cc9f0',
+                        backgroundColor: 'rgba(76, 201, 240, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                drawBorder: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Inicializar los datos de la aplicación
+            updateStats();
+            renderEmailList();
+            renderMeetingsList();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Header Blanco y Negro</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .transition-all {
+      transition: all 0.5s ease-in-out;
+    }
+
+    #floating-menu {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(100%);
+      transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    }
+
+    #floating-menu.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-white text-black">
+
+  <!-- HEADER FIJO -->
+  <header id="main-header" class="fixed top-0 left-0 w-full bg-white shadow z-50 transition-all">
+    <div class="max-w-7xl mx-auto flex justify-center items-center h-20 px-4 relative">
+      <!-- Logo centrado inicialmente -->
+      <div id="logo" class="transition-all text-2xl font-bold">MiLogo</div>
+
+      <!-- Botones ocultos al principio -->
+      <div id="header-buttons" class="absolute right-4 flex space-x-4 opacity-0 transition-all">
+        <button class="bg-black text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-800">Pide ya</button>
+        <button class="bg-white border border-black text-black px-4 py-2 rounded-full text-sm font-medium hover:bg-black hover:text-white">Empresas</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="hero" class="h-screen flex items-center justify-center">
+    <h1 class="text-5xl font-bold">Bienvenido</h1>
+  </section>
+
+  <!-- CONTENIDO -->
+  <main class="min-h-screen p-8">
+    <h2 class="text-3xl font-semibold mb-6">Contenido Principal</h2>
+    <p class="mb-8">Aquí comienza el contenido de la página. Haz scroll para activar el header animado y el menú flotante.</p>
+    <div class="h-[100vh]"></div>
+  </main>
+
+  <!-- MENÚ FLOTANTE INFERIOR -->
+  <div id="floating-menu" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-white border border-black shadow rounded-full px-6 py-3 flex flex-wrap justify-center items-center space-x-6 z-50 text-sm md:text-base">
+    <a href="#" class="hover:underline">Inicio</a>
+    <a href="#" class="hover:underline">Nosotros</a>
+    <a href="#" class="hover:underline">Servicios</a>
+    <a href="#" class="hover:underline">Contacto</a>
+  </div>
+
+  <!-- JS Scroll Animations -->
+  <script>
+    $(window).on('scroll', function () {
+      const scrollTop = $(this).scrollTop();
+      const heroHeight = $('#hero').outerHeight();
+
+      if (scrollTop > heroHeight - 100) {
+        // Cambiar posición del logo
+        $('#logo').removeClass('mx-auto').addClass('absolute left-4');
+        // Mostrar botones
+        $('#header-buttons').removeClass('opacity-0').addClass('opacity-100');
+        // Mostrar menú flotante
+        $('#floating-menu').addClass('show');
+      } else {
+        // Revertir logo al centro
+        $('#logo').removeClass('absolute left-4').addClass('mx-auto');
+        // Ocultar botones
+        $('#header-buttons').removeClass('opacity-100').addClass('opacity-0');
+        // Ocultar menú flotante
+        $('#floating-menu').removeClass('show');
+      }
+    });
+  </script>
+</body>
+</html>

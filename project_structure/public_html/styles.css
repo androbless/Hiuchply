@@ -1,0 +1,455 @@
+/* Reset básico */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* Evitar desplazamientos raros en móviles */
+html, body { height: 100%; overscroll-behavior: none; }
+body{
+  font-family: 'Gabarito', Arial, sans-serif;
+  color:#2a181c;
+  background-color:#ede8dd;
+  line-height:1.4;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  padding-top:60px;
+  overflow-x: hidden;          /* evita scroll lateral */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body.modal-open { overflow: hidden; } /* bloqueo de scroll al abrir wizard */
+
+header{
+  text-align:center;
+  padding:15px 0;
+  width:100%;
+  position:fixed;
+  top:0; left:0;
+  z-index:1100;
+  background-color:#ede8dd;
+}
+
+.logo{ height:30px; width:auto; display:block; margin:0 auto; max-width:90%; }
+
+/* HERO ESTÁTICO (sin desplazamiento) */
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:0 20px;
+  position:fixed;       /* mantiene el hero inmóvil */
+  inset:0;
+  z-index:1;            /* por debajo de los wizards (1200) y por encima del body */
+  overflow:hidden;
+}
+
+/* Imágenes flotantes visibles en desktop; ocultas ≤768px */
+.floating-images{
+  position:absolute;
+  width:100%;
+  height:100%;
+  pointer-events:none;  /* no bloquean clics en botones del hero */
+  z-index:1;
+  overflow:hidden;
+}
+
+/* Posiciones base */
+.floating-img{
+  position:absolute;
+  height:auto;
+  opacity:.9;
+  filter:brightness(1.12);
+  will-change: transform;       /* hint de rendimiento */
+  backface-visibility: hidden;  /* FIX: evita parpadeos en algunos navegadores */
+}
+
+/* Colocación de cada asset */
+.img1{ width:150px; top:10%; left:10%; }
+.img2{ width:170px; top:10%; right:10%; }
+.img3{ width:120px; bottom:10%; left:10%; }
+.img4{ width:180px; bottom:15%; right:10%; }
+/* Estas dos se centran verticalmente respecto a su punto */
+.img5{ width:150px; top:52%; left:20%; transform:translateY(-50%); }
+.img6{ width:150px; top:50%; left:80%; transform:translate(-50%,-50%); }
+
+.hero-content{ position:relative; z-index:2; max-width:800px; margin:0 auto; }
+.hero h2{
+  font-family:'Climate Crisis', sans-serif; font-weight:400; font-size:3.5rem; line-height:1.1;
+  margin-bottom:40px; text-transform:uppercase; color:#2a181c;
+}
+
+.botones{ display:flex; justify-content:center; gap:25px; margin-top:20px; flex-wrap:wrap; width:100%; }
+.botones button{
+  font-family:'Gabarito',sans-serif; padding:16px 40px; font-size:1.1rem; font-weight:700;
+  background-color:#ff6700; color:#ede8dd; border:0; /* FIX: border innecesario a 0 */
+  border-radius:50px; cursor:pointer;
+  transition:all .3s ease; letter-spacing:1px; min-width:200px;
+}
+.botones button:hover{ background-color:#ec92ff; color:#2a181c; transform:translateY(-3px); }
+/* FIX: accesibilidad focus */
+.botones button:focus-visible{ outline:2px solid #ff6700; outline-offset:3px; }
+
+/* Wizards */
+.wizard-container{
+  /* FIX: quitar display:none para permitir transición con opacity/visibility */
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background-color:#ede8dd; z-index:1200; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.wizard-content{
+  max-width:680px; margin:0 auto; padding:40px 20px; min-height:100vh; display:flex;
+  flex-direction:column; justify-content:center; position:relative;
+}
+.wizard-close-x{
+  position:fixed; top:15px; right:15px; font-size:2.2rem; cursor:pointer; font-weight:700; z-index:1210;
+  width:44px; height:44px; display:flex; align-items:center; justify-content:center; background:#ede8dd;
+  border-radius:50%; color:#2a181c; border:2px solid #2a181c;
+}
+.wizard-close-x:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+.wizard-step{ display:none; }
+.wizard-step.active{ display:block; }
+.wizard-title{ font-family:'Gabarito',sans-serif; font-weight:900; font-size:2rem; margin-bottom:30px; text-align:center; color:#2a181c; }
+
+.wizard-field{ margin-bottom:20px; }
+.wizard-field label{ display:block; margin-bottom:8px; font-weight:700; color:#2a181c; }
+.wizard-field input,
+.wizard-field select,
+.wizard-field textarea,
+.contacto-detalle-container input {
+  width:100%; padding:15px; border:2px solid #2a181c; border-radius:8px; font-family:'Gabarito',sans-serif; font-size:1rem;
+  -webkit-appearance:none; background-color:#fff;
+}
+.wizard-field input:focus,
+.wizard-field select:focus,
+.wizard-field textarea:focus,
+.contacto-detalle-container input:focus { outline:0; border-color:#ff6700; box-shadow:0 0 0 3px rgba(255,103,0,.15); }
+
+.wizard-buttons{ display:flex; justify-content:space-between; margin-top:30px; gap:15px; }
+.wizard-buttons button{
+  padding:15px 25px; font-family:'Gabarito',sans-serif; font-weight:700; background-color:#ede8dd; color:#2a181c;
+  border:2px solid #2a181c; border-radius:50px; cursor:pointer; transition:all .2s ease; flex:1; min-width:120px;
+}
+.wizard-buttons button:hover{ background-color:#2a181c; color:#ede8dd; }
+.wizard-buttons button:disabled{ opacity:.5; cursor:not-allowed; }
+.wizard-buttons button:disabled:hover{ background-color:#ede8dd; color:#2a181c; }
+.wizard-buttons button:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+/* Productos */
+.product-buttons-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; margin-bottom:20px; }
+.product-button{
+  display:flex; align-items:center; padding:14px 12px; border:2px solid #2a181c; border-radius:12px; cursor:pointer;
+  transition:all .2s ease; min-height:76px; background-color:#ede8dd;
+}
+.product-button.selected{ background-color:#2a181c; color:#ede8dd; }
+.product-button input[type=checkbox]{ display:none; }
+.product-button:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+.product-button-content{
+  display:flex; flex-direction:column; justify-content:space-between; align-items:center; width:100%; gap:8px;
+}
+.product-button span{ text-align:center; font-size:.95rem; }
+
+.quantity-controls{ display:none; align-items:center; justify-content:center; gap:8px; }
+.quantity-btn{
+  width:32px; height:32px; border:1px solid #ccc; background-color:#fff; border-radius:6px; cursor:pointer; font-weight:700;
+  display:flex; align-items:center; justify-content:center; font-size:1rem; padding:0; transition:all .2s ease;
+}
+.quantity-btn:hover{ background-color:#f0f0f0; }
+.quantity-btn:active{ transform:scale(.95); }
+.quantity-btn:focus-visible{ outline:2px solid #ff6700; outline-offset:2px; }
+
+.product-button-quantity{
+  width:48px; text-align:center; padding:8px 6px; border:1px solid #ccc; border-radius:6px; -moz-appearance:textfield; margin:0; font-size:1rem;
+}
+.product-button-quantity::-webkit-inner-spin-button,
+.product-button-quantity::-webkit-outer-spin-button{ -webkit-appearance:none; margin:0; }
+.product-button-quantity:focus{ outline:0; border-color:#666; }
+
+/* Inputs especiales */
+.special-input-container{ margin-top:15px; padding:15px; border:2px solid #eee; border-radius:12px; background-color:#f9f9f9; display:none; }
+.special-note{ font-size:.85rem; color:#666; margin-top:8px; font-style:italic; }
+
+/* Opciones empresa */
+.empresa-options{ display:flex; flex-direction:column; gap:15px; margin:30px 0; }
+.empresa-option{
+  padding:20px 15px; border:2px solid #2a181c; border-radius:12px; text-align:center; cursor:pointer; transition:all .2s ease;
+  font-weight:700; background-color:#ede8dd;
+}
+.empresa-option:hover, .empresa-option:focus{ background-color:#2a181c; color:#ede8dd; outline:none; }
+.empresa-option:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+/* Radio / Volume options estilizados */
+.input-error{ border-color:#e4002b !important; box-shadow:0 0 0 3px rgba(228,0,43,.15) !important; }
+.radio-buttons-container{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.radio-button-option{
+  padding:15px; border:2px solid #2a181c; border-radius:12px; cursor:pointer; transition:all .2s ease; text-align:center; background-color:#ede8dd;
+}
+.radio-button-option.selected{ background-color:#2a181c; color:#ede8dd; }
+.radio-button-option input[type=radio]{ display:none; }
+.radio-button-option:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+.volume-options{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.volume-option{
+  padding:15px; border:2px solid #2a181c; border-radius:12px; cursor:pointer; transition:all .2s ease; text-align:center; background-color:#ede8dd;
+}
+.volume-option.selected{ background-color:#2a181c; color:#ede8dd; }
+.volume-option input[type=radio]{ display:none; }
+.volume-option:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+/* Confirmación */
+.confirmation-options{ display:flex; flex-direction:column; gap:15px; margin:20px 0; }
+.confirmation-option{ display:flex; align-items:center; gap:8px; }
+.confirmation-option input{ width:auto; margin-right:6px; }
+
+/* Direcciones */
+.address-fields{ display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.address-full{ grid-column:span 2; }
+.unknown-button{ margin-top:10px; padding:12px 15px; background-color:#f0f0f0; border:1px solid #ccc; border-radius:8px; cursor:pointer; text-align:center; display:inline-block; width:100%; }
+.unknown-button:hover{ background-color:#e0e0e0; }
+.unknown-button:focus-visible{ outline:2px solid #ff6700; outline-offset:2px; }
+
+/* Mensajes de error y éxito */
+.error-message{ color:#e4002b; font-size:.9rem; margin-top:6px; display:none; }
+
+.success-message{ text-align:center; margin:30px 0; }
+.success-icon{ font-size:3rem; margin-bottom:20px; color:#ff6700; }
+
+/* Contacto */
+.selectable-buttons{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.contacto-option{ margin-bottom:15px; }
+.contacto-button{
+  display:flex; align-items:center; padding:12px 15px; border:2px solid #2a181c; border-radius:12px; cursor:pointer; transition:all .2s ease; background-color:#ede8dd;
+}
+.contacto-button.selected{ background-color:#2a181c; color:#ede8dd; }
+.contacto-button input[type=checkbox]{ display:none; }
+.contacto-button:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+.contacto-button-content{ display:flex; justify-content:space-between; align-items:center; width:100%; }
+.contacto-detalle-container{ margin-top:10px; padding:15px; border:2px solid #eee; border-radius:12px; background-color:#f9f9f9; display:none; }
+
+/* Resumen */
+.summary-container{ border:1px solid #ddd; border-radius:12px; padding:20px; margin-bottom:20px; background-color:#f9f9f9; }
+.summary-section{ margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid #eee; }
+.summary-section:last-child{ border-bottom:0; margin-bottom:0; padding-bottom:0; }
+.summary-title{ font-weight:900; margin-bottom:5px; color:#2a181c; }
+.summary-content{ margin-left:10px; }
+.summary-item{ margin-bottom:5px; word-break:break-word; }
+
+/* Medidas por producto */
+.product-measurements{ margin-top:20px; padding:15px; border:1px solid #ddd; border-radius:12px; background-color:#f9f9f9; }
+.product-measurement-item{ margin-bottom:15px; padding-bottom:15px; border-bottom:1px solid #eee; }
+.product-measurement-item:last-child{ border-bottom:0; margin-bottom:0; padding-bottom:0; }
+.measurement-fields{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.measurement-field{ margin-bottom:10px; }
+.measurement-field label{ display:block; margin-bottom:5px; font-weight:600; color:#444; }
+.measurement-field input{ width:100%; padding:12px; border:1px solid #ccc; border-radius:8px; font-family:'Gabarito',sans-serif; font-size:1rem; }
+
+/* Modal */
+.modal-overlay{
+  /* FIX: quitar display:none para poder animar y mantener centrado con flex */
+  position:fixed; top:0; left:0; width:100%; height:100%;
+  background-color:rgba(0,0,0,.6); z-index:2000; justify-content:center; align-items:center; padding:20px;
+  display:flex;
+}
+.modal-content{
+  background-color:#ede8dd; padding:25px; border-radius:12px; max-width:420px; width:100%;
+  text-align:center; border:2px solid #2a181c;
+}
+.modal-buttons{ display:flex; justify-content:center; gap:15px; margin-top:20px; }
+.modal-buttons button{
+  padding:12px 20px; font-family:'Gabarito',sans-serif; font-weight:700; border:2px solid #2a181c; border-radius:50px; cursor:pointer; transition:all .2s ease; flex:1;
+}
+.modal-confirm{ background-color:#2a181c; color:#ede8dd; }
+.modal-cancel{ background-color:#ede8dd; color:#2a181c; }
+.modal-buttons button:hover{ opacity:.85; }
+.modal-buttons button:focus-visible{ outline:3px solid #ff6700; outline-offset:2px; }
+
+/* ===========================
+   ANIMACIONES DE FLOTACIÓN (originales)
+   Activas solo >768px
+   =========================== */
+
+/* Respeta reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .floating-img { animation: none !important; }
+}
+
+/* Desktop: activa el “float” con los keyframes originales */
+@media (min-width: 769px) {
+
+  /* Keyframes originales */
+  @keyframes float1{
+    0%,100%{transform:translate(0,0) rotate(0)}
+    50%{transform:translate(-10px,-10px) rotate(-5deg)}
+  }
+  @keyframes float2{
+    0%,100%{transform:translate(0,0) rotate(0)}
+    50%{transform:translate(10px,-15px) rotate(5deg)}
+  }
+  @keyframes float3{
+    0%,100%{transform:translate(0,0) rotate(0)}
+    50%{transform:translate(-15px,10px) rotate(-8deg)}
+  }
+  @keyframes float4{
+    0%,100%{transform:translate(0,0) rotate(0)}
+    50%{transform:translate(10px,-12px) rotate(10deg)}
+  }
+  @keyframes float5{
+    0%,100%{transform:translate(-50%,-50%) rotate(0)}
+    50%{transform:translate(-50%,-55%) rotate(-5deg)}
+  }
+
+  /* Asignación original */
+  .img1{ animation:float1 8s ease-in-out infinite; }
+  .img2{ animation:float2 9s ease-in-out infinite; }
+  .img3{ animation:float3 7s ease-in-out infinite; }
+  .img4{ animation:float4 10s ease-in-out infinite; }
+  .img5{ animation:float5 8.5s ease-in-out infinite; }
+  .img6{ animation:float5 8.5s ease-in-out infinite; }
+}
+
+/* Responsive */
+@media (max-width:1024px){
+  .hero h2{ font-size:3rem; }
+}
+
+/* Ocultar flotantes en pantallas ≤1300px y ajustes */ /* FIX: comentario aclarado */
+@media (max-width:1300px){
+  .floating-images{ display:none; }
+
+  body{ padding-top:55px; }
+  header{ padding:10px 0; }
+  .logo{ height:25px; }
+  .hero h2{ font-size:3rem; margin-bottom:30px; }
+  .botones{ flex-direction:column; align-items:center; gap:15px; }
+  .botones button{ width:100%; max-width:320px; padding:14px 30px; }
+
+  .wizard-content{ padding:30px 16px; justify-content:flex-start; min-height:auto; padding-top:70px; }
+  .wizard-close-x{ top:10px; right:10px; font-size:2rem; width:40px; height:40px; }
+  .wizard-title{ font-size:1.7rem; margin-bottom:25px; }
+  .wizard-field input, .wizard-field select, .wizard-field textarea{ padding:14px; font-size:16px; }
+  .wizard-buttons{ flex-direction:column-reverse; gap:12px; margin-top:25px; }
+  .wizard-buttons button{ width:100%; padding:14px 20px; }
+
+  .product-buttons-grid{ grid-template-columns:repeat(2,1fr); gap:10px; }
+  .product-button{ min-height:70px; padding:12px; }
+
+  .modal-content{ padding:20px 15px; }
+  .modal-buttons{ flex-direction:column; }
+  .address-fields{ grid-template-columns:1fr; gap:12px; }
+  .address-full{ grid-column:span 1; }
+
+  .measurement-fields{ grid-template-columns:1fr; }
+  .product-measurements{ padding:12px; }
+}
+
+@media (max-width:480px){
+  .hero h2{ font-size:1.9rem; margin-bottom:25px; line-height:1.2; }
+  header{ padding:8px 0; }
+
+  .wizard-content{ padding:25px 12px; padding-top:60px; }
+  .wizard-title{ font-size:1.55rem; margin-bottom:20px; }
+
+  .product-buttons-grid{ grid-template-columns:repeat(2,1fr); }
+  .product-button{ min-height:64px; padding:10px; }
+  .quantity-btn{ width:30px; height:30px; font-size:1rem; }
+  .product-button-quantity{ width:44px; padding:8px; font-size:1rem; min-height:30px; }
+  .wizard-field input, .wizard-field select, .wizard-field textarea{ padding:12px; }
+  .confirmation-options{ gap:12px; }
+  .summary-container{ padding:16px; }
+  .modal-overlay{ padding:15px; }
+  .modal-content{ padding:20px 15px; }
+  .modal-buttons button{ padding:10px 15px; }
+}
+
+@media (max-width:360px){
+  .hero h2{ font-size:1.65rem; }
+  .product-buttons-grid{ grid-template-columns:1fr; }
+  .botones button{ max-width:100%; }
+  .quantity-btn{ width:28px; height:28px; }
+  .product-button-quantity{ width:40px; padding:6px; }
+}
+
+/* Alturas grandes: centra el contenido */
+@media (min-height:1000px){
+  .wizard-content{ justify-content:center; }
+}
+
+/* ===========================
+   ANIMACIONES / TRANSICIONES
+   =========================== */
+
+/* Respeta usuarios con reducir movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .wizard-container, .wizard-step, .modal-overlay,
+  .hero-content, header .logo { transition: none !important; animation: none !important; }
+}
+
+/* --- Page load (al cargar) --- */
+.hero-content,
+header .logo {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+body.is-ready .hero-content,
+body.is-ready header .logo {
+  opacity: 1;
+  transform: none;
+}
+
+/* Pequeño delay escalonado para un efecto más fino */
+header .logo { transition-delay: .05s; }
+.hero-content { transition-delay: .15s; }
+
+/* --- Transición de contenedores (wizards y modal) --- */
+/* Activa con la clase .is-open desde JS */
+.wizard-container,
+.modal-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .35s ease, visibility .35s ease;
+}
+.wizard-container.is-open,
+.modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* --- Transición de pasos del wizard --- */
+.wizard-step {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .28s ease, transform .28s ease;
+}
+.wizard-step.active {
+  opacity: 1;
+  transform: none;
+}
+
+/* Botón con micro-interacción */
+.wizard-buttons button,
+.botones button {
+  transition: transform .15s ease, background-color .25s ease, color .25s ease, box-shadow .25s ease;
+}
+.wizard-buttons button:active,
+.botones button:active {
+  transform: translateY(1px) scale(.99);
+}
+
+/* --- Reveal on scroll reutilizable --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .45s ease, transform .45s ease;
+}
+.reveal.reveal--visible {
+  opacity: 1;
+  transform: none;
+}

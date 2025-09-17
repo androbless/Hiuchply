@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Huichply</title>
+
+  <!-- Preconexiones a fuentes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+
+  <!-- Fuentes e iconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Gabarito:wght@400..900&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Favicon opcional -->
+  <link rel="icon" href="assets/images/Recurso 21CHOCOLATE.svg" type="image/svg+xml"/>
+</head>
+<body>
+  <noscript>
+    <div style="background:#ffe1e1;color:#7a0000;padding:12px;text-align:center;">
+      Para usar Huichply necesitas habilitar JavaScript.
+    </div>
+  </noscript>
+
+  <!-- Modal de confirmación para cerrar wizard -->
+  <div class="modal-overlay" id="close-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="close-confirm-title">
+    <div class="modal-content">
+      <h3 id="close-confirm-title">¿Estás seguro de que deseas salir?</h3>
+      <p>Si sales, deberás comenzar con el formulario de nuevo.</p>
+      <div class="modal-buttons">
+        <button type="button" class="modal-cancel" id="modal-cancel">Cancelar</button>
+        <button type="button" class="modal-confirm" id="modal-confirm">Sí, salir</button>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <img src="assets/images/Recurso 21CHOCOLATE.svg" alt="Huichply" class="logo">
+  </header>
+
+  <section class="hero" aria-label="Hero">
+    <div class="floating-images" aria-hidden="true">
+      <img src="assets/images/Recurso 9primer contacto.png" alt="" class="floating-img img1">
+      <img src="assets/images/Recurso 8primer contacto.png" alt="" class="floating-img img2">
+      <img src="assets/images/Recurso 14primer contacto.png" alt="" class="floating-img img3">
+      <img src="assets/images/Recurso 12primer contacto.png" alt="" class="floating-img img4">
+      <img src="assets/images/Recurso 10primer contacto.png" alt="" class="floating-img img5">
+      <img src="assets/images/Recurso 16primer contacto.png" alt="" class="floating-img img6">
+    </div>
+
+    <div class="hero-content">
+      <h2>TODO LO QUE ENTRE EN UNA FURGONETA</h2>
+      <div class="botones">
+        <button type="button" id="btn-pide-ya">Pide un Huichply</button>
+        <button type="button" id="btn-empresas">Empresas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wizard: Selección de tipo de servicio para Pide un Huichply -->
+  <div id="wizard-pide-ya-seleccion" class="wizard-container" aria-label="Selector de servicio">
+    <div class="wizard-content">
+      <span class="wizard-close-x" data-wizard="wizard-pide-ya-seleccion" role="button" aria-label="Cerrar" tabindex="0">×</span>
+      <div class="wizard-step active" data-step="1">
+        <h2 class="wizard-title">Pide un Huichply</h2>
+        <p>Selecciona una opción:</p>
+        <div class="empresa-options">
+          <div class="empresa-option" data-option="domicilio" role="button" tabindex="0">A un domicilio</div>
+          <div class="empresa-option" data-option="punto-limpio" role="button" tabindex="0">Punto limpio</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-close-confirm">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard: A un domicilio -->
+  <div id="wizard-domicilio" class="wizard-container" aria-label="Solicitud a domicilio">
+    <div class="wizard-content">
+      <span class="wizard-close-x" data-wizard="wizard-domicilio" role="button" aria-label="Cerrar" tabindex="0">×</span>
+
+      <!-- Paso 1: Nombre completo -->
+      <div class="wizard-step active" data-step="1">
+        <h2 class="wizard-title">A un domicilio</h2>
+
+        <div class="wizard-field">
+          <label for="nombre-domicilio">Nombre completo *</label>
+          <input type="text" id="nombre-domicilio" required autocomplete="name">
+          <div class="error-message">Por favor, ingresa tu nombre</div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-close-confirm">Cerrar</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 2: ¿Qué necesitas transportar? -->
+      <div class="wizard-step" data-step="2">
+        <h2 class="wizard-title">¿Qué necesitas transportar?</h2>
+
+        <div class="product-buttons-grid">
+          <!-- Items -->
+          <label class="product-button" for="sofa-domicilio">
+            <input type="checkbox" id="sofa-domicilio" class="product-checkbox" data-product="Sofá">
+            <div class="product-button-content">
+              <span class="product-name">Sofá</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="canape-domicilio">
+            <input type="checkbox" id="canape-domicilio" class="product-checkbox" data-product="Canapé">
+            <div class="product-button-content">
+              <span class="product-name">Canapé</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="literas-domicilio">
+            <input type="checkbox" id="literas-domicilio" class="product-checkbox" data-product="Literas">
+            <div class="product-button-content">
+              <span class="product-name">Literas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="comedor-domicilio">
+            <input type="checkbox" id="comedor-domicilio" class="product-checkbox" data-product="Comedor">
+            <div class="product-button-content">
+              <span class="product-name">Comedor</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="cama-domicilio">
+            <input type="checkbox" id="cama-domicilio" class="product-checkbox" data-product="Cama">
+            <div class="product-button-content">
+              <span class="product-name">Cama</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="colchones-domicilio">
+            <input type="checkbox" id="colchones-domicilio" class="product-checkbox" data-product="Colchones">
+            <div class="product-button-content">
+              <span class="product-name">Colchones</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="mesa-noche-domicilio">
+            <input type="checkbox" id="mesa-noche-domicilio" class="product-checkbox" data-product="Mesa de noche">
+            <div class="product-button-content">
+              <span class="product-name">Mesa de noche</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="cajas-domicilio">
+            <input type="checkbox" id="cajas-domicilio" class="product-checkbox" data-product="Cajas">
+            <div class="product-button-content">
+              <span class="product-name">Cajas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="maletas-domicilio">
+            <input type="checkbox" id="maletas-domicilio" class="product-checkbox" data-product="Maletas">
+            <div class="product-button-content">
+              <span class="product-name">Maletas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="bolsas-domicilio">
+            <input type="checkbox" id="bolsas-domicilio" class="product-checkbox" data-product="Bolsas">
+            <div class="product-button-content">
+              <span class="product-name">Bolsas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="electrodomesticos-domicilio">
+            <input type="checkbox" id="electrodomesticos-domicilio" class="product-checkbox" data-product="Electrodomésticos" data-special="electrodomesticos-domicilio">
+            <div class="product-button-content">
+              <span class="product-name">Electrodomésticos</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="otros-domicilio">
+            <input type="checkbox" id="otros-domicilio" class="product-checkbox" data-product="Otros" data-special="otros-domicilio">
+            <div class="product-button-content">
+              <span class="product-name">Otros</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Campo para Electrodomésticos -->
+        <div class="special-input-container" id="electrodomesticos-domicilio-container">
+          <div class="wizard-field">
+            <label for="electrodomesticos-desc-domicilio">Describe los electrodomésticos *</label>
+            <input type="text" id="electrodomesticos-desc-domicilio" placeholder="Ejemplo: microondas, licuadora, TV 42 pulgadas" autocomplete="off">
+            <div class="error-message">Por favor, describe los electrodomésticos</div>
+          </div>
+          <div class="special-note">Nota: No transportamos refrigeradoras grandes</div>
+        </div>
+
+        <!-- Campo para Otros -->
+        <div class="special-input-container" id="otros-domicilio-container">
+          <div class="wizard-field">
+            <label for="otros-desc-domicilio">Describe qué necesitas transportar *</label>
+            <input type="text" id="otros-desc-domicilio" placeholder="Ejemplo: bicicleta, escritorio, lámpara" autocomplete="off">
+            <div class="error-message">Por favor, describe qué necesitas transportar</div>
+          </div>
+        </div>
+
+        <div class="wizard-field">
+          <label for="comentario-transporte-domicilio">Comentarios adicionales (opcional)</label>
+          <textarea id="comentario-transporte-domicilio" rows="3" placeholder="Detalles adicionales sobre lo que transportarás"></textarea>
+        </div>
+
+        <div class="error-message" id="transport-error-domicilio">Selecciona al menos un elemento y especifica la cantidad</div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 3: Medidas y peso (opcional) -->
+      <div class="wizard-step" data-step="3">
+        <h2 class="wizard-title">Medidas y peso por producto (opcional)</h2>
+        <p>Puedes especificar las medidas y peso de cada producto si lo deseas:</p>
+        <div id="product-measurements-domicilio" class="product-measurements"></div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 4: Confirmación furgoneta -->
+      <div class="wizard-step" data-step="4">
+        <h2 class="wizard-title">Confirmación</h2>
+        <p>¿Estás seguro de que todo cabe en una furgoneta?</p>
+        <div class="confirmation-options">
+          <div class="confirmation-option">
+            <input type="radio" id="confirm-si-domicilio" name="confirmacion-domicilio" value="si">
+            <label for="confirm-si-domicilio">Sí, estoy seguro</label>
+          </div>
+          <div class="confirmation-option">
+            <input type="radio" id="confirm-no-domicilio" name="confirmacion-domicilio" value="no">
+            <label for="confirm-no-domicilio">No lo estoy</label>
+          </div>
+        </div>
+        <div class="error-message" id="confirmacion-error-domicilio">Por favor, selecciona una opción</div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 5: Dirección de recogida -->
+      <div class="wizard-step" data-step="5">
+        <h2 class="wizard-title">Dirección de recogida</h2>
+
+        <div class="wizard-field address-full">
+          <label for="direccion-recogida-domicilio">Dirección completa *</label>
+          <input type="text" id="direccion-recogida-domicilio" required placeholder="Calle, número" autocomplete="address-line1">
+          <div class="error-message">Por favor, ingresa la dirección de recogida</div>
+        </div>
+
+        <div class="address-fields">
+          <div class="wizard-field">
+            <label for="piso-recogida-domicilio">Piso</label>
+            <input type="text" id="piso-recogida-domicilio" placeholder="Piso, puerta, etc." autocomplete="address-line2">
+          </div>
+          <div class="wizard-field">
+            <label for="cp-recogida-domicilio">Código postal *</label>
+            <input type="text" id="cp-recogida-domicilio" required pattern="[0-9]{5}" placeholder="28001" inputmode="numeric" autocomplete="postal-code">
+            <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+          </div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 6: Dirección de entrega -->
+      <div class="wizard-step" data-step="6">
+        <h2 class="wizard-title">Dirección de entrega</h2>
+
+        <div class="wizard-field address-full">
+          <label for="direccion-entrega-domicilio">Dirección completa *</label>
+          <input type="text" id="direccion-entrega-domicilio" required placeholder="Calle, número" autocomplete="address-line1">
+          <div class="error-message">Por favor, ingresa la dirección de entrega</div>
+        </div>
+
+        <div class="address-fields">
+          <div class="wizard-field">
+            <label for="piso-entrega-domicilio">Piso</label>
+            <input type="text" id="piso-entrega-domicilio" placeholder="Piso, puerta, etc." autocomplete="address-line2">
+          </div>
+          <div class="wizard-field">
+            <label for="cp-entrega-domicilio">Código postal *</label>
+            <input type="text" id="cp-entrega-domicilio" required pattern="[0-9]{5}" placeholder="28001" inputmode="numeric" autocomplete="postal-code">
+            <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+          </div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 7: Fecha y hora -->
+      <div class="wizard-step" data-step="7">
+        <h2 class="wizard-title">Fecha y hora</h2>
+        <div class="wizard-field">
+          <label for="fecha-domicilio">Fecha *</label>
+          <input type="date" id="fecha-domicilio" required>
+          <div class="error-message">Por favor, selecciona una fecha</div>
+        </div>
+        <div class="wizard-field">
+          <label for="franja-horaria-domicilio">Franja horaria *</label>
+          <select id="franja-horaria-domicilio" required>
+            <option value="">Selecciona una franja</option>
+            <option value="mañana">Mañana (9:00 - 14:00)</option>
+            <option value="tarde">Tarde (14:00 - 18:00)</option>
+            <option value="tarde-noche">Tarde-noche (18:00 - 22:00)</option>
+          </select>
+          <div class="error-message">Por favor, selecciona una franja horaria</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 8: Medios de contacto -->
+      <div class="wizard-step" data-step="8">
+        <h2 class="wizard-title">Medios de contacto</h2>
+        <p>Selecciona cómo prefieres que contactemos contigo (puedes elegir más de uno):</p>
+
+        <div class="selectable-buttons">
+
+          <div class="contacto-option">
+            <label class="contacto-button" for="contacto-whatsapp-domicilio">
+              <input type="checkbox" id="contacto-whatsapp-domicilio" class="contacto-checkbox" data-contacto="WhatsApp">
+              <div class="contacto-button-content"><span>WhatsApp</span></div>
+            </label>
+            <div class="contacto-detalle-container">
+              <input type="text" class="contacto-detalle" placeholder="Número de WhatsApp" data-tipo="whatsapp" inputmode="numeric" autocomplete="tel">
+              <div class="error-message">Por favor, ingresa tu número de WhatsApp</div>
+            </div>
+          </div>
+
+          <div class="contacto-option">
+            <label class="contacto-button" for="contacto-email-domicilio">
+              <input type="checkbox" id="contacto-email-domicilio" class="contacto-checkbox" data-contacto="Email">
+              <div class="contacto-button-content"><span>Email</span></div>
+            </label>
+            <div class="contacto-detalle-container">
+              <input type="email" class="contacto-detalle" placeholder="ejemplo@dominio.com" data-tipo="email" autocomplete="email">
+              <div class="error-message">Por favor, ingresa un email válido</div>
+            </div>
+          </div>
+
+          <div class="contacto-option">
+            <label class="contacto-button" for="contacto-llamada-domicilio">
+              <input type="checkbox" id="contacto-llamada-domicilio" class="contacto-checkbox" data-contacto="Llamada telefónica">
+              <div class="contacto-button-content"><span>Llamada telefónica</span></div>
+            </label>
+            <div class="contacto-detalle-container">
+              <input type="text" class="contacto-detalle" placeholder="Número de teléfono" data-tipo="llamada" inputmode="numeric" autocomplete="tel">
+              <div class="error-message">Por favor, ingresa tu número de teléfono</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="error-message" id="contacto-error-domicilio">Selecciona al menos un medio de contacto</div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 9: Resumen -->
+      <div class="wizard-step" data-step="9">
+        <h2 class="wizard-title">Resumen</h2>
+        <div id="resumen-pedido-domicilio" class="summary-container"></div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" id="finalizar-pedido-domicilio">Enviar solicitud</button>
+        </div>
+      </div>
+
+      <!-- Paso 10: Solicitud enviada -->
+      <div class="wizard-step" data-step="10">
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h2 class="wizard-title">¡Solicitud enviada!</h2>
+          <p>Le responderemos en menos de 15 minutos.</p>
+          <div class="wizard-buttons">
+            <button type="button" class="wizard-close">Volver a la página principal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard: Punto limpio -->
+  <div id="wizard-punto-limpio" class="wizard-container" aria-label="Solicitud punto limpio">
+    <div class="wizard-content">
+      <span class="wizard-close-x" data-wizard="wizard-punto-limpio" role="button" aria-label="Cerrar" tabindex="0">×</span>
+
+      <!-- Paso 1 -->
+      <div class="wizard-step active" data-step="1">
+        <h2 class="wizard-title">Punto limpio</h2>
+
+        <div class="wizard-field">
+          <label for="nombre-punto-limpio">Nombre completo *</label>
+          <input type="text" id="nombre-punto-limpio" required autocomplete="name">
+          <div class="error-message">Por favor, ingresa tu nombre</div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-close-confirm">Cerrar</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 2 -->
+      <div class="wizard-step" data-step="2">
+        <h2 class="wizard-title">¿Qué necesitas transportar?</h2>
+        <p class="special-note">Especifica que no llevamos desechos de basura</p>
+
+        <div class="product-buttons-grid">
+          <!-- (mismos productos que domicilio, cambiando sufijo -punto-limpio) -->
+          <label class="product-button" for="sofa-punto-limpio">
+            <input type="checkbox" id="sofa-punto-limpio" class="product-checkbox" data-product="Sofá">
+            <div class="product-button-content">
+              <span class="product-name">Sofá</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="canape-punto-limpio">
+            <input type="checkbox" id="canape-punto-limpio" class="product-checkbox" data-product="Canapé">
+            <div class="product-button-content">
+              <span class="product-name">Canapé</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="literas-punto-limpio">
+            <input type="checkbox" id="literas-punto-limpio" class="product-checkbox" data-product="Literas">
+            <div class="product-button-content">
+              <span class="product-name">Literas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="comedor-punto-limpio">
+            <input type="checkbox" id="comedor-punto-limpio" class="product-checkbox" data-product="Comedor">
+            <div class="product-button-content">
+              <span class="product-name">Comedor</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="cama-punto-limpio">
+            <input type="checkbox" id="cama-punto-limpio" class="product-checkbox" data-product="Cama">
+            <div class="product-button-content">
+              <span class="product-name">Cama</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="colchones-punto-limpio">
+            <input type="checkbox" id="colchones-punto-limpio" class="product-checkbox" data-product="Colchones">
+            <div class="product-button-content">
+              <span class="product-name">Colchones</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="mesa-noche-punto-limpio">
+            <input type="checkbox" id="mesa-noche-punto-limpio" class="product-checkbox" data-product="Mesa de noche">
+            <div class="product-button-content">
+              <span class="product-name">Mesa de noche</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="cajas-punto-limpio">
+            <input type="checkbox" id="cajas-punto-limpio" class="product-checkbox" data-product="Cajas">
+            <div class="product-button-content">
+              <span class="product-name">Cajas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="maletas-punto-limpio">
+            <input type="checkbox" id="maletas-punto-limpio" class="product-checkbox" data-product="Maletas">
+            <div class="product-button-content">
+              <span class="product-name">Maletas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="bolsas-punto-limpio">
+            <input type="checkbox" id="bolsas-punto-limpio" class="product-checkbox" data-product="Bolsas">
+            <div class="product-button-content">
+              <span class="product-name">Bolsas</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="electrodomesticos-punto-limpio">
+            <input type="checkbox" id="electrodomesticos-punto-limpio" class="product-checkbox" data-product="Electrodomésticos" data-special="electrodomesticos-punto-limpio">
+            <div class="product-button-content">
+              <span class="product-name">Electrodomésticos</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+
+          <label class="product-button" for="otros-punto-limpio">
+            <input type="checkbox" id="otros-punto-limpio" class="product-checkbox" data-product="Otros" data-special="otros-punto-limpio">
+            <div class="product-button-content">
+              <span class="product-name">Otros</span>
+              <div class="quantity-controls">
+                <button type="button" class="quantity-btn quantity-minus">-</button>
+                <input type="number" min="1" value="1" class="product-button-quantity" placeholder="1">
+                <button type="button" class="quantity-btn quantity-plus">+</button>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <!-- Campo para Electrodomésticos -->
+        <div class="special-input-container" id="electrodomesticos-punto-limpio-container">
+          <div class="wizard-field">
+            <label for="electrodomesticos-desc-punto-limpio">Describe los electrodomésticos *</label>
+            <input type="text" id="electrodomesticos-desc-punto-limpio" placeholder="Ejemplo: microondas, licuadora, TV 42 pulgadas" autocomplete="off">
+            <div class="error-message">Por favor, describe los electrodomésticos</div>
+          </div>
+          <div class="special-note">Nota: No transportamos refrigeradoras grandes</div>
+        </div>
+
+        <!-- Campo para Otros -->
+        <div class="special-input-container" id="otros-punto-limpio-container">
+          <div class="wizard-field">
+            <label for="otros-desc-punto-limpio">Describe qué necesitas transportar *</label>
+            <input type="text" id="otros-desc-punto-limpio" placeholder="Ejemplo: bicicleta, escritorio, lámpara" autocomplete="off">
+            <div class="error-message">Por favor, describe qué necesitas transportar</div>
+          </div>
+        </div>
+
+        <div class="wizard-field">
+          <label for="comentario-transporte-punto-limpio">Comentarios adicionales (opcional)</label>
+          <textarea id="comentario-transporte-punto-limpio" rows="3" placeholder="Detalles adicionales sobre lo que transportarás"></textarea>
+        </div>
+
+        <div class="error-message" id="transport-error-punto-limpio">Selecciona al menos un elemento y especifica la cantidad</div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 3 -->
+      <div class="wizard-step" data-step="3">
+        <h2 class="wizard-title">Medidas y peso por producto (opcional)</h2>
+        <p>Puedes especificar las medidas y peso de cada producto si lo deseas:</p>
+        <div id="product-measurements-punto-limpio" class="product-measurements"></div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 4 -->
+      <div class="wizard-step" data-step="4">
+        <h2 class="wizard-title">Confirmación</h2>
+        <p>¿Estás seguro de que todo cabe en una furgoneta?</p>
+        <div class="confirmation-options">
+          <div class="confirmation-option">
+            <input type="radio" id="confirm-si-punto-limpio" name="confirmacion-punto-limpio" value="si">
+            <label for="confirm-si-punto-limpio">Sí, estoy seguro</label>
+          </div>
+          <div class="confirmation-option">
+            <input type="radio" id="confirm-no-punto-limpio" name="confirmacion-punto-limpio" value="no">
+            <label for="confirm-no-punto-limpio">No lo estoy</label>
+          </div>
+        </div>
+        <div class="error-message" id="confirmacion-error-punto-limpio">Por favor, selecciona una opción</div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 5 -->
+      <div class="wizard-step" data-step="5">
+        <h2 class="wizard-title">Dirección de recogida</h2>
+
+        <div class="wizard-field address-full">
+          <label for="direccion-recogida-punto-limpio">Dirección completa *</label>
+          <input type="text" id="direccion-recogida-punto-limpio" required placeholder="Calle, número" autocomplete="address-line1">
+          <div class="error-message">Por favor, ingresa la dirección de recogida</div>
+        </div>
+
+        <div class="address-fields">
+          <div class="wizard-field">
+            <label for="piso-recogida-punto-limpio">Piso</label>
+            <input type="text" id="piso-recogida-punto-limpio" placeholder="Piso, puerta, etc." autocomplete="address-line2">
+          </div>
+          <div class="wizard-field">
+            <label for="cp-recogida-punto-limpio">Código postal *</label>
+            <input type="text" id="cp-recogida-punto-limpio" required pattern="[0-9]{5}" placeholder="28001" inputmode="numeric" autocomplete="postal-code">
+            <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+          </div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 6 -->
+      <div class="wizard-step" data-step="6">
+        <h2 class="wizard-title">Fecha y hora</h2>
+        <div class="wizard-field">
+          <label for="fecha-punto-limpio">Fecha *</label>
+          <input type="date" id="fecha-punto-limpio" required>
+          <div class="error-message">Por favor, selecciona una fecha</div>
+        </div>
+        <div class="wizard-field">
+          <label for="franja-horaria-punto-limpio">Franja horaria *</label>
+          <select id="franja-horaria-punto-limpio" required>
+            <option value="">Selecciona una franja</option>
+            <option value="mañana">Mañana (9:00 - 14:00)</option>
+            <option value="tarde">Tarde (14:00 - 18:00)</option>
+            <option value="tarde-noche">Tarde-noche (18:00 - 22:00)</option>
+          </select>
+          <div class="error-message">Por favor, selecciona una franja horaria</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 7 -->
+      <div class="wizard-step" data-step="7">
+        <h2 class="wizard-title">Medios de contacto</h2>
+        <p>Selecciona cómo prefieres que contactemos contigo (puedes elegir más de uno):</p>
+
+        <div class="selectable-buttons">
+          <div class="contacto-option">
+            <label class="contacto-button" for="contacto-whatsapp-punto-limpio">
+              <input type="checkbox" id="contacto-whatsapp-punto-limpio" class="contacto-checkbox" data-contacto="WhatsApp">
+              <div class="contacto-button-content"><span>WhatsApp</span></div>
+            </label>
+            <div class="contacto-detalle-container">
+              <input type="text" class="contacto-detalle" placeholder="Número de WhatsApp" data-tipo="whatsapp" inputmode="numeric" autocomplete="tel">
+              <div class="error-message">Por favor, ingresa tu número de WhatsApp</div>
+            </div>
+          </div>
+
+          <div class="contacto-option">
+            <label class="contacto-button" for="contacto-email-punto-limpio">
+              <input type="checkbox" id="contacto-email-punto-limpio" class="contacto-checkbox" data-contacto="Email">
+              <div class="contacto-button-content"><span>Email</span></div>
+            </label>
+            <div class="contacto-detalle-container">
+              <input type="email" class="contacto-detalle" placeholder="ejemplo@dominio.com" data-tipo="email" autocomplete="email">
+              <div class="error-message">Por favor, ingresa un email válido</div>
+            </div>
+          </div>
+
+          <div class="contacto-option">
+            <label class="contacto-button" for="contacto-llamada-punto-limpio">
+              <input type="checkbox" id="contacto-llamada-punto-limpio" class="contacto-checkbox" data-contacto="Llamada telefónica">
+              <div class="contacto-button-content"><span>Llamada telefónica</span></div>
+            </label>
+            <div class="contacto-detalle-container">
+              <input type="text" class="contacto-detalle" placeholder="Número de teléfono" data-tipo="llamada" inputmode="numeric" autocomplete="tel">
+              <div class="error-message">Por favor, ingresa tu número de teléfono</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="error-message" id="contacto-error-punto-limpio">Selecciona al menos un medio de contacto</div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <!-- Paso 8 -->
+      <div class="wizard-step" data-step="8">
+        <h2 class="wizard-title">Resumen</h2>
+        <div id="resumen-pedido-punto-limpio" class="summary-container"></div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" id="finalizar-pedido-pl">Enviar solicitud</button>
+        </div>
+      </div>
+
+      <!-- Paso 9 -->
+      <div class="wizard-step" data-step="9">
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h2 class="wizard-title">¡Solicitud enviada!</h2>
+          <p>Le responderemos en menos de 15 minutos.</p>
+          <div class="wizard-buttons">
+            <button type="button" class="wizard-close">Volver a la página principal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard: Selección de tipo de empresa -->
+  <div id="wizard-empresa-seleccion" class="wizard-container" aria-label="Selector empresas">
+    <div class="wizard-content">
+      <span class="wizard-close-x" data-wizard="wizard-empresa-seleccion" role="button" aria-label="Cerrar" tabindex="0">×</span>
+      <div class="wizard-step active" data-step="1">
+        <h2 class="wizard-title">Empresas</h2>
+        <p>Selecciona una opción:</p>
+        <div class="empresa-options">
+          <div class="empresa-option" data-option="afiliado" role="button" tabindex="0">¿Eres afiliado?</div>
+          <div class="empresa-option" data-option="afiliacion" role="button" tabindex="0">¿Quieres afiliarte?</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-close-confirm">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard: Empresas (Afiliados) -->
+  <div id="wizard-empresas" class="wizard-container" aria-label="Afiliados empresas">
+    <div class="wizard-content">
+      <span class="wizard-close-x" data-wizard="wizard-empresas" role="button" aria-label="Cerrar" tabindex="0">×</span>
+
+      <div class="wizard-step active" data-step="1">
+        <h2 class="wizard-title">Afiliados</h2>
+
+        <div class="wizard-field">
+          <label for="codigo-cliente">Código de cliente (8 dígitos) *</label>
+          <input type="text" id="codigo-cliente" pattern="[0-9]{8}" required placeholder="12345678" inputmode="numeric" autocomplete="off">
+          <div class="error-message">El código debe tener 8 dígitos numéricos</div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-close-confirm">Cerrar</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="2">
+        <h2 class="wizard-title">Datos del cliente</h2>
+        <div class="wizard-field">
+          <label for="nombre-afiliado">Nombre del cliente *</label>
+          <input type="text" id="nombre-afiliado" required autocomplete="name">
+          <div class="error-message">Por favor, ingresa el nombre del cliente</div>
+        </div>
+        <div class="wizard-field">
+          <label for="telefono-afiliado">Número de teléfono *</label>
+          <input type="tel" id="telefono-afiliado" required pattern="[0-9]*" inputmode="numeric" autocomplete="tel">
+          <div class="error-message">Por favor, ingresa un número de teléfono válido (solo números)</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="3">
+        <h2 class="wizard-title">Direcciones</h2>
+        <div class="wizard-field address-full">
+          <label for="afiliado-recogida">Dirección de recogida *</label>
+          <input type="text" id="afiliado-recogida" required autocomplete="address-line1">
+          <div class="error-message">Por favor, ingresa la dirección de recogida</div>
+        </div>
+        <div class="address-fields">
+          <div class="wizard-field">
+            <label for="piso-recogida-afiliado">Piso</label>
+            <input type="text" id="piso-recogida-afiliado" placeholder="Piso, puerta, etc." autocomplete="address-line2">
+          </div>
+          <div class="wizard-field">
+            <label for="cp-recogida-afiliado">Código postal *</label>
+            <input type="text" id="cp-recogida-afiliado" required pattern="[0-9]{5}" placeholder="28001" inputmode="numeric" autocomplete="postal-code">
+            <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+          </div>
+        </div>
+
+        <div class="wizard-field address-full">
+          <label for="afiliado-entrega">Dirección de entrega *</label>
+          <input type="text" id="afiliado-entrega" required autocomplete="address-line1">
+          <div class="error-message">Por favor, ingresa la dirección de entrega</div>
+        </div>
+        <div class="address-fields">
+          <div class="wizard-field">
+            <label for="piso-entrega-afiliado">Piso</label>
+            <input type="text" id="piso-entrega-afiliado" placeholder="Piso, puerta, etc." autocomplete="address-line2">
+          </div>
+          <div class="wizard-field">
+            <label for="cp-entrega-afiliado">Código postal *</label>
+            <input type="text" id="cp-entrega-afiliado" required pattern="[0-9]{5}" placeholder="28001" inputmode="numeric" autocomplete="postal-code">
+            <div class="error-message">Por favor, ingresa un código postal válido (5 dígitos)</div>
+          </div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="4">
+        <h2 class="wizard-title">Fecha y hora</h2>
+        <div class="wizard-field">
+          <label for="afiliado-fecha">Fecha de recogida *</label>
+          <input type="date" id="afiliado-fecha" required>
+          <div class="error-message">Por favor, selecciona una fecha</div>
+        </div>
+        <div class="wizard-field">
+          <label for="afiliado-hora">Hora de recogida *</label>
+          <input type="time" id="afiliado-hora" required>
+          <div class="error-message">Por favor, selecciona una hora</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="5">
+        <h2 class="wizard-title">Tipo de producto</h2>
+        <div class="radio-buttons-container">
+          <label class="radio-button-option" for="producto-acordado">
+            <input type="radio" id="producto-acordado" name="tipo-producto" value="acordado"> Producto acordado
+          </label>
+          <label class="radio-button-option" for="devolucion">
+            <input type="radio" id="devolucion" name="tipo-producto" value="devolucion"> Devolución
+          </label>
+          <label class="radio-button-option" for="producto-no-acordado">
+            <input type="radio" id="producto-no-acordado" name="tipo-producto" value="no-acordado"> Producto no acordado
+          </label>
+        </div>
+
+        <!-- Campo para especificar producto no acordado -->
+        <div class="special-input-container" id="producto-no-acordado-container">
+          <div class="wizard-field">
+            <label for="producto-no-acordado-desc">Especifica qué producto es *</label>
+            <input type="text" id="producto-no-acordado-desc" placeholder="Describe el producto" autocomplete="off">
+            <div class="error-message">Por favor, describe el producto</div>
+          </div>
+        </div>
+
+        <div class="error-message" id="tipo-producto-error">Por favor, selecciona el tipo de producto</div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="6">
+        <h2 class="wizard-title">Resumen y confirmación</h2>
+        <div id="resumen-afiliado" class="summary-container"></div>
+        <div class="wizard-field">
+          <label for="comentarios">Comentarios adicionales</label>
+          <textarea id="comentarios" rows="4"></textarea>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" id="finalizar-afiliado">Enviar pedido</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="7">
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h2 class="wizard-title">¡Pedido enviado!</h2>
+          <p>Enviaremos un conductor pronto.</p>
+          <div class="wizard-buttons">
+            <button type="button" class="wizard-close">Volver a la página principal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wizard: Quiero afiliarme -->
+  <div id="wizard-afiliacion" class="wizard-container" aria-label="Solicitud de afiliación">
+    <div class="wizard-content">
+      <span class="wizard-close-x" data-wizard="wizard-afiliacion" role="button" aria-label="Cerrar" tabindex="0">×</span>
+
+      <div class="wizard-step active" data-step="1">
+        <h2 class="wizard-title">Quiero afiliarme</h2>
+
+        <div class="wizard-field">
+          <label for="nombre-empresa">Nombre de la empresa *</label>
+          <input type="text" id="nombre-empresa" required autocomplete="organization">
+          <div class="error-message">Por favor, ingresa el nombre de la empresa</div>
+        </div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-close-confirm">Cerrar</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="2">
+        <h2 class="wizard-title">Datos fiscales</h2>
+        <div class="wizard-field">
+          <label for="cif">CIF *</label>
+          <input type="text" id="cif" required pattern="[A-Za-z]{1}[0-9]{7}[A-Za-z]{1}" title="Formato: Letra + 7 números + Letra" autocomplete="off">
+          <div class="error-message">El CIF debe tener el formato: Letra + 7 números + Letra</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="3">
+        <h2 class="wizard-title">Persona responsable</h2>
+        <div class="wizard-field">
+          <label for="responsable">Nombre completo *</label>
+          <input type="text" id="responsable" required autocomplete="name">
+          <div class="error-message">Por favor, ingresa el nombre del responsable</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="4">
+        <h2 class="wizard-title">Contacto</h2>
+        <div class="wizard-field">
+          <label for="telefono-empresa">Teléfono de la empresa *</label>
+          <input type="tel" id="telefono-empresa" required pattern="[0-9]*" inputmode="numeric" autocomplete="tel">
+          <div class="error-message">Por favor, ingresa un número de teléfono válido (solo números)</div>
+        </div>
+        <div class="wizard-field">
+          <label for="email-empresa">Email de la empresa *</label>
+          <input type="email" id="email-empresa" required autocomplete="email">
+          <div class="error-message">Por favor, ingresa un email válido</div>
+        </div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="5">
+        <h2 class="wizard-title">Volumen de envíos</h2>
+        <p>Selecciona el volumen aproximado de envíos mensuales:</p>
+        <div class="volume-options">
+          <label class="volume-option" for="volumen-1-10">
+            <input type="radio" id="volumen-1-10" name="volumen-envios" value="1-10"> 1 - 10
+          </label>
+          <label class="volume-option" for="volumen-10-20">
+            <input type="radio" id="volumen-10-20" name="volumen-envios" value="10-20"> 10 - 20
+          </label>
+          <label class="volume-option" for="volumen-20-30">
+            <input type="radio" id="volumen-20-30" name="volumen-envios" value="20-30"> 20 - 30
+          </label>
+          <label class="volume-option" for="volumen-otro">
+            <input type="radio" id="volumen-otro" name="volumen-envios" value="otro"> Otro
+          </label>
+        </div>
+
+        <!-- Campo para especificar otro volumen -->
+        <div class="special-input-container" id="volumen-otro-container">
+          <div class="wizard-field">
+            <label for="volumen-otro-desc">Especifica el volumen *</label>
+            <input type="number" id="volumen-otro-desc" min="1" placeholder="Número de envíos mensuales" inputmode="numeric">
+            <div class="error-message">Por favor, ingresa un número válido</div>
+          </div>
+        </div>
+
+        <div class="error-message" id="volumen-error">Por favor, selecciona un volumen de envíos</div>
+
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" class="wizard-next">Siguiente</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="6">
+        <h2 class="wizard-title">Resumen y confirmación</h2>
+        <div id="resumen-afiliacion" class="summary-container"></div>
+        <div class="wizard-buttons">
+          <button type="button" class="wizard-prev">Atrás</button>
+          <button type="button" id="finalizar-afiliacion">Enviar solicitud</button>
+        </div>
+      </div>
+
+      <div class="wizard-step" data-step="7">
+        <div class="success-message">
+          <div class="success-icon">✓</div>
+          <h2 class="wizard-title">¡Solicitud enviada!</h2>
+          <p>Se le mandará un coste fijo basado en los datos proporcionados.</p>
+          <div class="wizard-buttons">
+            <button type="button" class="wizard-close">Volver a la página principal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <!-- Script principal -->
+  <script src="script.js"></script>
+  <!-- Refuerzo de seguridad del frontend (opcional) -->
+
+</body>
+</html>

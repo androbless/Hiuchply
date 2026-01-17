@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <base href="../">
+    <title>Mi cuenta - Huichply</title>
+
+    <!-- Bootstrap (grid + modal) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/pages/Usuario.css" />
+
+    <!-- JS -->
+    <script src="assets/js/app.js" defer></script>
+    <script src="assets/js/pages/Usuario.js" defer></script>
+</head>
+
+<body>
+
+    <div id="header-container"></div>
+
+    <section class="profile-section">
+        <div class="container">
+            <div class="profile-header">
+                <div class="profile-hero">
+                    <div class="profile-hero-content">
+                        <div class="avatar-initial" id="profileAvatar">H</div>
+                        <div class="profile-info">
+                            <h1 id="profileName">Tu nombre</h1>
+                            <div class="email" id="profileEmail">correo@ejemplo.com</div>
+                            <div class="username" id="profileUsername">@usuario</div>
+                            <span class="profile-badge mt-3">Cliente Huichply</span>
+                        </div>
+                    </div>
+
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <span class="profile-stat-label">Servicios completados</span>
+                            <div class="profile-stat-value" id="profileServicesCount">0</div>
+                        </div>
+                        <div class="profile-stat">
+                            <span class="profile-stat-label">Valoración media</span>
+                            <div class="profile-stat-value" id="profileRating">0</div>
+                        </div>
+                        <div class="profile-stat">
+                            <span class="profile-stat-label">Cliente desde</span>
+                            <div class="profile-stat-value" id="profileMemberSince">2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-actions-card">
+                    <div class="profile-actions-header">
+                        <div>
+                            <h2>¿Necesitas un servicio?</h2>
+                            <p>Reserva tu próximo traslado en minutos con confirmación inmediata.</p>
+                        </div>
+                    </div>
+                    <div class="profile-actions-buttons">
+                        <button class="btn-cta" id="pedirYaBtn">¡Pide ya!</button>
+                        <button class="btn-ghost" id="cambiarEmpresaBtn">Cambiar a cuenta empresa</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="cardish profile-main-card">
+                        <div class="card-tabs-container">
+                            <div class="card-tabs">
+                                <button class="card-tab active" data-tab="resumen">Resumen</button>
+                                <button class="card-tab" data-tab="servicios">Servicios</button>
+                                <button class="card-tab" data-tab="direcciones">Direcciones</button>
+                                <button class="card-tab" data-tab="ajustes">Datos de cuenta</button>
+                            </div>
+                        </div>
+
+                        <div class="profile-main-body">
+                            <div class="tab-panel active" id="tab-resumen">
+                                <div class="summary-grid">
+                                    <div class="summary-card">
+                                        <span class="summary-label">Servicios completados</span>
+                                        <div class="summary-value" id="summaryServices">0</div>
+                                        <div class="summary-helper">
+                                            Has movido tus cosas con Huichply <strong id="summaryServicesHelper">0
+                                                veces</strong>.
+                                        </div>
+                                    </div>
+
+                                    <div class="summary-card">
+                                        <span class="summary-label">Último servicio</span>
+                                        <div class="summary-value" id="summaryLastServiceDate">—</div>
+                                        <div class="summary-helper" id="summaryLastServiceInfo">
+                                            Aún no has realizado tu primer servicio con nosotros.
+                                        </div>
+                                    </div>
+
+                                    <div class="summary-card">
+                                        <span class="summary-label">Tipo más frecuente</span>
+                                        <div class="summary-value" id="summaryFavType">—</div>
+                                        <div class="summary-helper">
+                                            Guardaremos aquí el tipo de servicio que más utilizas.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5">
+                                    <h3 class="mb-4">Estado de tu cuenta</h3>
+                                    <div class="summary-helper">
+                                        Tu cuenta está <strong>activa</strong> y lista para realizar nuevos pedidos.
+                                        Revisa tus datos de contacto para asegurarte de que están actualizados.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-panel" id="tab-servicios">
+                                <div class="services-header">
+                                    <h3>Historial de servicios</h3>
+                                    <div class="summary-helper">
+                                        Mostrando <span id="servicesCount">0</span> servicios
+                                    </div>
+                                </div>
+
+                                <div id="servicesHistory" class="services-list">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📦</div>
+                                        <h4>No hay servicios aún</h4>
+                                        <p>Cuando realices tu primer servicio con Huichply, aparecerá aquí para que
+                                            puedas consultar los detalles.</p>
+                                        <button class="btn-cta btn-sm" onclick="window.location.href='Pedidos'">
+                                            ¡Reserva tu primer servicio!
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-panel" id="tab-direcciones">
+                                <h3 class="mb-4">Direcciones guardadas</h3>
+                                <p class="summary-helper mb-4">
+                                    Estas son las direcciones que tenemos guardadas para ti. Las usamos para agilizar
+                                    tus reservas.
+                                </p>
+                                <div id="addressesList" class="services-list">
+                                    <div class="empty-state">
+                                        <div class="empty-state-icon">📍</div>
+                                        <h4>No hay direcciones guardadas</h4>
+                                        <p>Cuando hagas tu primer pedido, podrás guardar las direcciones para futuras
+                                            reservas.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-panel" id="tab-ajustes">
+                                <h3 class="mb-4">Información de tu cuenta</h3>
+                                <p class="summary-helper mb-4">
+                                    Información básica de tu perfil. La usamos solo para gestionar tus servicios.
+                                </p>
+
+                                <div class="account-grid">
+                                    <div class="account-field">
+                                        <span class="field-label">Nombre completo</span>
+                                        <div class="field-value" id="fieldFullName">Tu nombre</div>
+                                    </div>
+                                    <div class="account-field">
+                                        <span class="field-label">Nombre de usuario</span>
+                                        <div class="field-value" id="fieldUsername">@usuario</div>
+                                        <div class="field-helper">Te identificamos internamente con este usuario</div>
+                                    </div>
+                                    <div class="account-field">
+                                        <span class="field-label">Correo electrónico</span>
+                                        <div class="field-value" id="fieldEmail">correo@ejemplo.com</div>
+                                        <div class="field-helper">Usamos este email para enviarte confirmaciones</div>
+                                    </div>
+                                    <div class="account-field">
+                                        <span class="field-label">Teléfono</span>
+                                        <div class="field-value" id="fieldPhone">+34 600 000 000</div>
+                                        <div class="field-helper">Lo usamos para confirmar hora y detalles del servicio
+                                        </div>
+                                    </div>
+                                    <div class="account-field account-field-full">
+                                        <span class="field-label">Dirección principal</span>
+                                        <div class="field-value" id="fieldAddress">Añade tu dirección principal</div>
+                                        <div class="field-helper">La dirección que más usas para recogidas</div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-5">
+                                    <h4 class="mb-3">Preferencias</h4>
+                                    <div class="summary-helper">
+                                        <p>¿Quieres recibir notificaciones sobre ofertas y novedades?</p>
+                                        <div class="form-check form-switch mt-2">
+                                            <input class="form-check-input" type="checkbox" id="notificationsSwitch"
+                                                checked>
+                                            <label class="form-check-label" for="notificationsSwitch">Recibir
+                                                notificaciones por email</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="side-section">
+                        <div class="cardish side-card">
+                            <h3>Datos de contacto</h3>
+                            <p>Mantenemos tus datos actualizados para coordinar cada recogida y entrega.</p>
+                            <ul class="contact-list">
+                                <li><strong>Correo:</strong> <span id="sideEmail">correo@ejemplo.com</span></li>
+                                <li><strong>Teléfono:</strong> <span id="sidePhone">+34 600 000 000</span></li>
+                                <li><strong>Dirección principal:</strong> <span id="sideAddress">Añade tu dirección
+                                        principal.</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="cardish side-card" id="rateCard">
+                            <h3 id="rateTitle">Valora nuestros servicios</h3>
+                            <p id="rateDesc">Tu opinión nos ayuda a mejorar. Cuéntanos cómo fue tu experiencia.</p>
+                            <a href="Valorar" class="cta-side-btn" id="rateBtn">Agrega un comentario</a>
+                            <a href="index#valoraciones" class="side-link" id="rateSecondaryLink">Ver valoraciones
+                                <span>→</span></a>
+                        </div>
+
+                        <div class="cardish side-card">
+                            <h3>¿Necesitas ayuda?</h3>
+                            <p>¿Tienes alguna duda sobre tus servicios o necesitas modificar una reserva?</p>
+                            <a href="contacto.html" class="cta-side-btn cta-side-btn--outline">Contactar con soporte</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade service-modal" id="serviceDetailsModal" tabindex="-1"
+        aria-labelledby="serviceDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="serviceDetailsModalLabel">Detalles del Servicio</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="service-summary-card">
+                        <div class="service-summary-header">
+                            <h4>Resumen del Pedido</h4>
+                        </div>
+
+                        <div class="service-summary-grid">
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Nombre</div>
+                                <div class="service-summary-value" id="modal-user-name">-</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Teléfono</div>
+                                <div class="service-summary-value" id="modal-user-phone">-</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Email</div>
+                                <div class="service-summary-value" id="modal-user-email">-</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Tipo de servicio</div>
+                                <div class="service-summary-value" id="modal-service-type">-</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Distancia</div>
+                                <div class="service-summary-value" id="modal-distance">-</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Productos pesados</div>
+                                <div class="service-summary-value" id="modal-heavy-items">0</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Productos pequeños</div>
+                                <div class="service-summary-value" id="modal-light-items">0</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Ayudante extra</div>
+                                <div class="service-summary-value" id="modal-helper">No</div>
+                            </div>
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Fecha y hora</div>
+                                <div class="service-summary-value" id="modal-datetime">-</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <div class="service-summary-item">
+                                <div class="service-summary-label">Dirección recogida</div>
+                                <div class="service-summary-value" id="modal-pickup">-</div>
+                            </div>
+                            <div class="service-summary-item mt-3">
+                                <div class="service-summary-label">Dirección entrega</div>
+                                <div class="service-summary-value" id="modal-delivery">-</div>
+                            </div>
+                        </div>
+
+                        <div class="service-summary-total">
+                            <div class="service-summary-label">Total del servicio</div>
+                            <div class="service-total-price" id="modal-total">0€</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn-cancel-service" id="cancelServiceBtn" disabled>Cancelar
+                        Servicio</button>
+                </div>
+
+                <div class="cancelation-info" id="cancelationInfo">Solo puedes cancelar el servicio con al menos 24
+                    horas de antelación.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <script src="database.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Valoraciones</title>
+
+    <!-- Estilos globales -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+
+    <!-- Estilos de esta página -->
+    <link rel="stylesheet" href="../assets/css/pages/valoraciones.css" />
+</head>
+
+<body>
+    <!-- legacy/valoraciones.html -->
+    <section id="valoraciones" class="valoraciones section-container">
+        <div class="container">
+            <div class="valoraciones-header">
+                <h2>Lo que dicen nuestros clientes</h2>
+                <p id="valoraciones-subtitulo">Reseñas destacadas</p>
+            </div>
+
+            <div class="valoraciones-grid" id="valoraciones-grid"></div>
+
+            <div class="valoraciones-footer">
+                <div class="valoracion-promedio">
+                    <div class="promedio-estrellas" id="promedio-estrellas">
+                        <span class="estrella grande activa">★</span>
+                        <span class="estrella grande activa">★</span>
+                        <span class="estrella grande activa">★</span>
+                        <span class="estrella grande activa">★</span>
+                        <span class="estrella grande activa">★</span>
+                    </div>
+                    <div class="promedio-texto">
+                        <div class="promedio-puntuacion" id="promedio-puntuacion">4.9</div>
+                        <div class="promedio-desc">de 5 estrellas</div>
+                    </div>
+                </div>
+
+                <div class="valoracion-cta">
+                    <a href="../Valorar" class="btn-ghost">Deja tu valoración</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Config opcional de API (por defecto usa la misma base) -->
+    <script>
+        window.__HUICHPLY_API_BASE__ = '';
+    </script>
+
+    <!-- JS de esta página -->
+    <script src="../assets/js/pages/valoraciones.js"></script>
+</body>
+
+</html>

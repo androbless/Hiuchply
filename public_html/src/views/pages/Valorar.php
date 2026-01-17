@@ -1,0 +1,128 @@
+<?php
+declare(strict_types=1);
+?>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Valorar Servicio - Huichply</title>
+
+  <!-- Bootstrap (grid/utilidades) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- CSS de la página -->
+  <link rel="stylesheet" href="/assets/css/pages/Valorar.css" />
+</head>
+
+<body>
+  <!-- Header (compat demo: inyectado desde /header.html) -->
+  <div id="header-container"></div>
+
+  <!-- Sección de valoración -->
+  <section class="section-container">
+    <div class="container">
+      <div class="valorar-container">
+        <div class="valorar-header">
+          <h1>Valora nuestro servicio</h1>
+          <p>Tu opinión nos ayuda a mejorar</p>
+        </div>
+
+        <div class="user-summary">
+          <div class="avatar" id="userAvatar">H</div>
+          <div>
+            <div><strong id="userName">Tu nombre</strong></div>
+            <div class="meta" id="userEmail">correo@ejemplo.com</div>
+          </div>
+
+          <div class="service-select-wrapper">
+            <select class="service-select" id="serviceSelect">
+              <option value="domicilio">Domicilio / Tienda</option>
+              <option value="punto">Punto limpio</option>
+              <option value="minimudanza">Minimudanza</option>
+            </select>
+          </div>
+        </div>
+
+        <form id="formValorar" novalidate>
+          <input type="hidden" id="hiddenUserId">
+          <input type="hidden" id="hiddenOrderId">
+          <input type="hidden" id="hiddenStars" value="5">
+
+          <div class="form-group">
+            <label class="form-label">Valoración</label>
+
+            <div class="stars" role="radiogroup" aria-label="Valoración (1 a 5)">
+              <input type="radio" id="star1" name="stars" value="1">
+              <label class="star" for="star1" data-value="1" aria-label="1 estrella" title="1">★</label>
+
+              <input type="radio" id="star2" name="stars" value="2">
+              <label class="star" for="star2" data-value="2" aria-label="2 estrellas" title="2">★</label>
+
+              <input type="radio" id="star3" name="stars" value="3">
+              <label class="star" for="star3" data-value="3" aria-label="3 estrellas" title="3">★</label>
+
+              <input type="radio" id="star4" name="stars" value="4">
+              <label class="star" for="star4" data-value="4" aria-label="4 estrellas" title="4">★</label>
+
+              <input type="radio" id="star5" name="stars" value="5" checked>
+              <label class="star" for="star5" data-value="5" aria-label="5 estrellas" title="5">★</label>
+            </div>
+
+            <div class="hint" id="starsHint">Has seleccionado: 5 estrellas</div>
+            <div class="validation-message success" id="starsValidation" style="display:block">
+              Tu valoración se registrará. Algunas reseñas pueden mostrarse como destacadas.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="comentario" class="form-label">Comentario</label>
+            <textarea
+              id="comentario"
+              class="form-control"
+              placeholder="Cuéntanos tu experiencia... (mínimo 10 caracteres)"
+              required
+            ></textarea>
+            <div class="validation-message" id="comentarioValidation"></div>
+          </div>
+
+          <button type="submit" class="btn-cta" id="submitBtn">
+            <span id="submitText">Enviar valoración</span>
+            <span id="submitSpinner" class="spinner" style="display: none;"></span>
+          </button>
+
+          <div class="bottom-links">
+            <a href="/Usuario">Volver a mi cuenta</a>
+            <a href="/valoraciones">Ver valoraciones</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (compat demo: inyectado desde /footer_componente.html) -->
+  <div id="footer-container"></div>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyqq46cDfL"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- JS de la página -->
+  <script src="/assets/js/pages/Valorar.js"></script>
+</body>
+</html>

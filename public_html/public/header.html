@@ -1,0 +1,47 @@
+<!-- File: public/header.html -->
+<link rel="stylesheet" href="/assets/css/header.css" />
+
+<header class="site-header" role="banner">
+    <div class="header-shell">
+        <div class="header-row">
+            <!-- Marca -->
+            <a href="/" class="brand" aria-label="Inicio">
+                <img src="/assets/img/logo12.png" alt="Logo de Huichply" class="brand-logo" loading="eager"
+                    decoding="async" />
+            </a>
+
+            <!-- Botón hamburguesa (<=1150px) -->
+            <button class="mobile-menu-toggle mobile-only" id="mobileMenuToggle" type="button" aria-label="Abrir menú"
+                aria-controls="mobileMenu" aria-expanded="false">
+                ☰
+            </button>
+
+            <!-- Navegación desktop (>1150px) -->
+            <nav class="nav-links desktop-only" aria-label="Navegación principal">
+                <a href="/#hero">Inicio</a>
+                <a href="/#como">Cómo trabajamos</a>
+                <a href="/#precios">Precios</a>
+                <a href="/#calculadora">Calcula</a>
+                <a href="/#faq">FAQ</a>
+            </nav>
+
+            <!-- Zona de autenticación desktop -->
+            <div class="auth desktop-only" id="authSection"></div>
+        </div>
+
+        <!-- Menú móvil -->
+        <div class="mobile-menu" id="mobileMenu" hidden>
+            <div class="mobile-nav-links">
+                <a href="/#hero">Inicio</a>
+                <a href="/#como">Cómo trabajamos</a>
+                <a href="/#precios">Precios</a>
+                <a href="/#calculadora">Calcula</a>
+                <a href="/#faq">FAQ</a>
+            </div>
+
+            <div class="mobile-auth" id="mobileAuthSection"></div>
+        </div>
+    </div>
+</header>
+
+<script src="/assets/js/header.js" defer></script>

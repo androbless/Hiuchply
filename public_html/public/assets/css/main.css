@@ -1,0 +1,975 @@
+:root {
+    --brand-yellow: #e4fc53;
+    --brand-blue: #2d51ff;
+    --ink: #0b0b0f;
+    --muted: #63666f;
+    --bg: #f6f7fa;
+    --surface: #ffffff;
+    --ring: #e9ebf2;
+
+    --radius: 28px;
+    --radius-pill: 9999px;
+    --shadow-sm: 0 6px 24px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 36px rgba(0, 0, 0, 0.08);
+
+    /* Se actualiza por JS según la altura real del header */
+    --header-h: 72px;
+
+    --section-gap: 120px;
+    --plan-banner-h: auto;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+        "Apple Color Emoji", "Segoe UI Emoji";
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    scroll-padding-top: var(--header-h);
+    overscroll-behavior-y: contain;
+    padding-top: var(--header-h);
+}
+
+/* Layout de secciones */
+.section-container {
+    margin-block: var(--section-gap);
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    padding: 96px 0;
+}
+
+.hero {
+    padding: clamp(60px, 8vw, 160px) 0;
+    min-height: 100vh;
+    margin-block: 0 var(--section-gap);
+}
+
+.how,
+.pricing,
+.calculator,
+.faq {
+    padding: clamp(60px, 8vw, 120px) 0;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    background: var(--brand-blue);
+    color: white;
+}
+
+.hero h1 {
+    font-size: clamp(40px, 8vw, 92px);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+    font-weight: 900;
+    margin: 0 0 14px;
+    color: #fff;
+}
+
+.hero p {
+    max-width: 820px;
+    margin: 0 auto 26px;
+    color: #fff;
+    font-size: clamp(15px, 1.2vw, 18px);
+    opacity: 0.9;
+}
+
+.hero strong {
+    color: var(--brand-yellow);
+    font-weight: 900;
+}
+
+/* Botones */
+.cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.btn-cta,
+.btn-plan,
+.btn-darkish {
+    --btn-h: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    height: var(--btn-h);
+    padding: 0 28px;
+    border-radius: var(--radius);
+    border: 1px solid #d4e85d;
+    background: var(--brand-yellow);
+    color: #0a0a0e;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+}
+
+.btn-cta::after,
+.btn-plan::after,
+.btn-darkish::after {
+    content: "\2192";
+    font-weight: 900;
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+}
+
+.btn-cta:hover,
+.btn-plan:hover,
+.btn-darkish:hover {
+    transform: translateY(-2px);
+    filter: brightness(0.98);
+}
+
+.btn-cta:hover::after,
+.btn-plan:hover::after,
+.btn-darkish:hover::after {
+    transform: translateX(3px);
+}
+
+.btn-ghost {
+    --btn-h: 54px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: var(--btn-h);
+    padding: 0 26px;
+    border-radius: var(--radius);
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 800;
+    font-size: 15px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-ghost::after {
+    content: "\2192";
+    transition: transform 0.2s ease;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    transform: translateY(-2px);
+    border-color: white;
+}
+
+.btn-ghost:hover::after {
+    transform: translateX(3px);
+}
+
+/* Tarjeta base */
+.cardish {
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--ring);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+/* Logos soporte */
+.hero .support {
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.hero .support-logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(24px, 4vw, 48px);
+}
+
+.hero .support-logos a {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.hero .support-logos a:hover {
+    transform: translateY(-5px);
+}
+
+.hero .support-logos img {
+    display: block;
+    width: auto;
+    height: clamp(80px, 6vw, 100px);
+    object-fit: contain;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+    opacity: 0.98;
+    border-radius: 12px;
+}
+
+/* Contadores */
+.stats-counter {
+    padding: 40px 0;
+    margin: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--ring);
+    border-bottom: 1px solid var(--ring);
+}
+
+.stats-counter .container {
+    max-width: 900px;
+}
+
+.counter-item {
+    text-align: center;
+    padding: 20px;
+}
+
+.counter-number {
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 900;
+    color: var(--brand-blue);
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.counter-label {
+    font-size: 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+}
+
+/* Cómo trabajamos */
+.how .header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 38px;
+}
+
+.how .header h2 {
+    font-size: clamp(28px, 4.6vw, 44px);
+    letter-spacing: -0.02em;
+    font-weight: 900;
+    margin: 0 0 8px;
+    color: #0a0a0e;
+}
+
+.how .header p {
+    color: var(--muted);
+    margin: 0 auto;
+    max-width: 760px;
+}
+
+.process-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.process-steps::before {
+    content: "";
+    position: absolute;
+    top: 40px;
+    left: 50px;
+    right: 50px;
+    height: 2px;
+    background: #dde1ec;
+    z-index: 1;
+    border-radius: var(--radius-pill);
+}
+
+.step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step-icon {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--brand-yellow);
+    color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 900;
+    margin: 0 auto 16px;
+    border: 1px solid #d4e85d;
+    box-shadow: var(--shadow-sm);
+}
+
+.step h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #0a0a0e;
+}
+
+.step p {
+    color: var(--muted);
+    font-size: 14px;
+    max-width: 260px;
+    margin: 0 auto;
+}
+
+/* Precios */
+.pricing .header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 18px;
+}
+
+.pricing .header h2 {
+    font-size: clamp(28px, 4.6vw, 48px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+    color: #0a0a0e;
+}
+
+.pricing .header p {
+    color: var(--muted);
+    margin: 0;
+}
+
+.plans {
+    margin-top: 24px;
+    --plans-gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--plans-gap);
+}
+
+.plan {
+    border: 2px solid var(--brand-blue);
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.plan:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.1);
+}
+
+.plan .banner {
+    padding: 20px;
+    color: #0a0a0e;
+    background: var(--brand-yellow);
+    border-bottom: 1px solid #d4e85d;
+    min-height: var(--plan-banner-h);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.plan:nth-child(2) .banner {
+    background: rgba(45, 81, 255, 0.95);
+    color: #fff;
+    border-bottom: 1px solid rgba(45, 81, 255, 0.9);
+}
+
+.plan .banner b {
+    font-size: 18px;
+}
+
+.plan .price-xl {
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+.plan .body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.plan .muted {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.plan .extras {
+    margin: 0;
+    padding-left: 20px;
+    color: #2b2e38;
+    font-size: 14px;
+}
+
+.plan .extras li {
+    margin-bottom: 6px;
+    position: relative;
+    list-style: none;
+    padding-left: 14px;
+}
+
+.plan .extras li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--brand-blue);
+    font-weight: 900;
+}
+
+.plan .body>.btn-plan {
+    margin-top: auto;
+    width: 100%;
+    border: 1px solid var(--ring);
+}
+
+/* Calculadora */
+.calculator .header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 42px;
+}
+
+.calculator .header h2 {
+    font-size: clamp(28px, 4.6vw, 44px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+    color: #0a0a0e;
+}
+
+.calculator .header p {
+    color: var(--muted);
+    margin: 0 auto;
+    max-width: 760px;
+}
+
+.calculator-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.calculator-inputs {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 24px;
+    border: 2px solid var(--brand-blue);
+    box-shadow: var(--shadow-sm);
+}
+
+.calculator-result {
+    position: relative;
+    background: var(--brand-blue);
+    color: #ffffff;
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    border: 2px solid var(--brand-blue);
+    box-shadow: var(--shadow-md);
+}
+
+.calculator-result .price {
+    font-size: 56px;
+    font-weight: 900;
+    margin: 18px 0;
+    letter-spacing: -0.06em;
+}
+
+.calculator-result .fine {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(10, 10, 14, 0.12);
+    background: rgba(255, 255, 255, 0.5);
+    color: #0a0a0e;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 800;
+}
+
+.calculator-form .form-group {
+    margin-bottom: 18px;
+}
+
+.calculator-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 800;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #0a0a0e;
+}
+
+.calculator-form select,
+.calculator-form input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--ring);
+    border-radius: 16px;
+    font-size: 16px;
+    background: #fff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calculator-form select:focus,
+.calculator-form input:focus {
+    outline: none;
+    border-color: var(--brand-blue);
+    box-shadow: 0 0 0 3px rgba(45, 81, 255, 0.2);
+}
+
+.calculator-form .range-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.calculator-form .range-container input {
+    flex: 1;
+}
+
+.calculator-form .range-value {
+    min-width: 52px;
+    text-align: right;
+    font-weight: 700;
+    font-size: 14px;
+    color: #0a0a0e;
+}
+
+.form-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--brand-blue);
+    border: 2px solid #fff;
+    margin-top: -7px;
+    box-shadow: 0 0 0 3px rgba(45, 81, 255, 0.25);
+}
+
+.form-range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--brand-blue);
+    border: 2px solid #fff;
+}
+
+.form-range::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 2px;
+    background: #dde1ec;
+}
+
+.form-range::-moz-range-track {
+    height: 4px;
+    border-radius: 2px;
+    background: #dde1ec;
+}
+
+/* FAQ */
+.faq .header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 24px;
+}
+
+.faq .header h2 {
+    font-size: clamp(28px, 4.6vw, 44px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: #0a0a0e;
+}
+
+.faq .header p {
+    color: var(--muted);
+    margin: 0;
+}
+
+.faq-container {
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.faq-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.faq details {
+    background: #fff;
+    border: 1px solid var(--ring);
+    border-radius: 16px;
+    padding: 18px 20px;
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.faq details:hover {
+    border-color: var(--brand-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+}
+
+.faq summary {
+    cursor: pointer;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    color: #0a0a0e;
+}
+
+.faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq details[open] summary .chev {
+    transform: rotate(180deg);
+}
+
+.faq .chev {
+    transition: transform 0.25s ease;
+    font-size: 18px;
+}
+
+.faq .answer {
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.6;
+}
+
+/* Contacto */
+.contact {
+    padding: clamp(60px, 8vw, 120px) 0;
+    background: var(--brand-blue);
+    color: #fff;
+}
+
+.contact-header h2 {
+    font-size: clamp(28px, 4.6vw, 44px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    color: #fff;
+}
+
+.contact-header p {
+    margin: 0 0 16px;
+    opacity: 0.9;
+    max-width: 420px;
+}
+
+.contact-details p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.contact-details a {
+    color: var(--brand-yellow);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-details a:hover {
+    text-decoration: underline;
+}
+
+.contact-card {
+    padding: 24px;
+    border-radius: var(--radius);
+}
+
+.contact-card .form-label {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    :root {
+        --section-gap: 100px;
+        --plan-banner-h: 170px;
+    }
+
+    .section-container {
+        padding: 80px 0;
+    }
+
+    .hero h1 {
+        font-size: clamp(36px, 7vw, 80px);
+    }
+
+    .hero p {
+        font-size: clamp(14px, 1.1vw, 16px);
+    }
+
+    .plans {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .plan:last-child {
+        grid-column: 1 / -1;
+        max-width: calc((100% - var(--plans-gap)) / 2);
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --section-gap: 90px;
+    }
+
+    .section-container {
+        padding: 70px 0;
+    }
+
+    .process-steps {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .process-steps::before {
+        display: none;
+    }
+
+    .calculator-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .plans {
+        --plans-gap: 24px;
+        grid-template-columns: 1fr;
+        gap: var(--plans-gap);
+    }
+
+    .plan:last-child {
+        grid-column: auto;
+        max-width: none;
+        margin: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --section-gap: 80px;
+        --plan-banner-h: 160px;
+    }
+
+    .section-container {
+        padding: 60px 0;
+    }
+
+    .hero h1 {
+        font-size: clamp(28px, 8vw, 60px);
+    }
+
+    .hero p {
+        font-size: 15px;
+    }
+
+    .hero .support {
+        margin-top: 60px;
+    }
+
+    .hero .support-logos img {
+        height: 70px;
+    }
+
+    .cta {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-cta,
+    .btn-ghost {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .calculator-form .range-container {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .calculator-form .range-value {
+        text-align: center;
+    }
+
+    .faq details {
+        padding: 16px 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --section-gap: 60px;
+        --plan-banner-h: 150px;
+    }
+
+    .section-container {
+        padding: 50px 0;
+    }
+
+    .hero h1 {
+        font-size: clamp(26px, 9vw, 44px);
+    }
+
+    .hero p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .hero .support-logos img {
+        height: 60px;
+    }
+
+    .how .header p,
+    .pricing .header p,
+    .calculator .header p,
+    .faq .header p {
+        font-size: 14px;
+        line-height: 1.5;
+        padding: 0 15px;
+    }
+
+    .step p,
+    .plan .muted,
+    .plan .extras,
+    .faq .answer {
+        font-size: 13px;
+    }
+
+    .step h3 {
+        font-size: 16px;
+    }
+
+    .plan .banner b {
+        font-size: 16px;
+    }
+
+    .plan .price-xl {
+        font-size: 32px;
+    }
+
+    .calculator-result .price {
+        font-size: 42px;
+    }
+
+    .calculator-inputs,
+    .calculator-result {
+        padding: 18px;
+    }
+
+    .btn-cta,
+    .btn-plan,
+    .btn-darkish,
+    .btn-ghost {
+        height: 50px;
+        padding: 0 22px;
+        font-size: 14px;
+    }
+
+    .faq details {
+        padding: 14px 16px;
+    }
+}
+
+@media (max-width: 360px) {
+    :root {
+        --section-gap: 50px;
+        --plan-banner-h: 145px;
+    }
+
+    .section-container {
+        padding: 40px 0;
+    }
+
+    .hero h1 {
+        font-size: clamp(24px, 8.5vw, 36px);
+    }
+
+    .hero p {
+        font-size: 13px;
+    }
+
+    .hero .support-logos img {
+        height: 50px;
+    }
+
+    .calculator-form label {
+        font-size: 12px;
+    }
+
+    .calculator-form select,
+    .calculator-form input {
+        font-size: 14px;
+        padding: 10px 14px;
+    }
+
+    .calculator-result .price {
+        font-size: 36px;
+    }
+}

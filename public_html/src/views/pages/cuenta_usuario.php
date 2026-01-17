@@ -1,0 +1,89 @@
+<?php
+// src/views/pages/cuenta_usuario.php
+?><!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Completa tu cuenta - Huichply</title>
+
+  <!-- Bootstrap (grid/utilidades) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+    crossorigin="anonymous"
+  />
+
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Estilos globales + página -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/pages/cuenta_usuario.css" />
+</head>
+
+<body>
+  <!-- Header (compat demo, cargado por JS) -->
+  <div id="header-container"></div>
+
+  <!-- Contenido -->
+  <section class="auth-section">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="user-mini" id="userMiniEmail" style="display:none;">
+          Sesión iniciada como <strong id="userMiniEmailText"></strong>
+        </div>
+
+        <div class="auth-header">
+          <h1>Completa tu cuenta</h1>
+          <p>Solo te pediremos unos pocos datos para terminar de configurar tu perfil.</p>
+        </div>
+
+        <div class="wizard-card" id="wizardCard">
+          <div class="wizard-step-label">
+            <span id="wizardStepText">Paso 1 de 4</span>
+            <span id="wizardTypeText">Cuenta particular</span>
+          </div>
+
+          <div class="wizard-step-progress">
+            <div class="wizard-step-bar" id="wizardStepBar"></div>
+          </div>
+
+          <h2 class="wizard-title" id="wizardTitle">Pregunta</h2>
+          <p class="wizard-description" id="wizardDescription">Descripción</p>
+
+          <div class="wizard-input-area" id="wizardInputArea"></div>
+          <div class="error-message" id="wizardError"></div>
+
+          <div class="wizard-footer">
+            <button type="button" class="btn-secondary-wizard" id="wizardPrevBtn">Volver</button>
+            <button type="button" class="btn-primary-wizard" id="wizardNextBtn">Continuar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (compat demo, cargado por JS) -->
+  <div id="footer-container"></div>
+
+  <!-- Bootstrap JS -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"
+  ></script>
+
+  <!-- Base de datos demo (compat) -->
+  <script src="/database.js"></script>
+
+  <!-- JS de esta página -->
+  <script src="/assets/js/pages/cuenta_usuario.js"></script>
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Huichply — Transportamos todo lo que entre en una furgoneta</title>
+
+    <!-- Bootstrap (grid y utilidades de layout) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- Fuente -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+
+    <!-- CSS global (nuevo esquema) -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <section class="hero section-container" id="hero">
+        <div class="container">
+            <h1>Tu furgoneta cuando la necesitas.</h1>
+            <p>
+                Recogemos y entregamos lo que quepa en una furgoneta: paquetes, cajas,
+                electrodomésticos o muebles. <strong>Huichply</strong> lo lleva de A a B
+                con horarios pactados y confirmación clara.
+            </p>
+
+            <div class="cta mt-2">
+                <a href="Pedidos.html" class="btn-cta" id="cta">Pide ya!</a>
+                <a class="btn-ghost" href="#faq-empresas" id="ctaEmpresas"
+                    aria-label="Información para empresas">Empresas</a>
+            </div>
+
+            <div class="support" aria-label="Empresas que dan soporte a Huichply">
+                <div class="support-logos" role="list" aria-label="Logos de soporte">
+                    <a href="https://www.madridemprende.es/" target="_blank" rel="noopener noreferrer" role="listitem">
+                        <img src="../assets/img/cropped-logo-madrid-emprende-400x-1-1-e1644319408887.jpg"
+                            alt="Madrid Emprende" />
+                    </a>
+
+                    <a href="https://daleph.com/es/" target="_blank" rel="noopener noreferrer" role="listitem">
+                        <img src="../assets/img/kB0AG0vFDThbmYPv0xmlLFZpHHcxI4pT.png" alt="Daleph" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-counter">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 counter-item">
+                    <div class="counter-number" id="usuarios-counter">0</div>
+                    <div class="counter-label">Usuarios activos</div>
+                </div>
+
+                <div class="col-md-6 counter-item">
+                    <div class="counter-number" id="pedidos-counter">0</div>
+                    <div class="counter-label">Pedidos realizados</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="como" class="how section-container">
+        <div class="container">
+            <div class="header">
+                <h2>Cómo trabajamos</h2>
+                <p>
+                    Proceso simple en tres pasos. Sin trucos: acordamos contigo la franja
+                    y confirmamos todo antes del día del servicio.
+                </p>
+            </div>
+
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-icon">1</div>
+                    <h3>Solicita tu servicio</h3>
+                    <p>Indica origen, destino y fecha. Recibes un presupuesto al instante.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">2</div>
+                    <h3>Confirma los detalles</h3>
+                    <p>Te contactamos para ajustar horario y detalles de la recogida.</p>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">3</div>
+                    <h3>Recogemos y entregamos</h3>
+                    <p>Realizamos el servicio en la franja pactada y te notificamos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="precios" class="pricing section-container">
+        <div class="container">
+            <div class="header">
+                <h2>Precios</h2>
+                <p>
+                    Precios mínimos y extras claros. El presupuesto final se confirma contigo
+                    antes de realizar el servicio.
+                </p>
+            </div>
+
+            <div class="plans">
+                <div class="plan">
+                    <div class="banner">
+                        <b>Domicilio / Tienda</b>
+                        <div class="price-xl mt-2">desde 40€</div>
+                    </div>
+
+                    <div class="body">
+                        <p class="muted">Para recogidas y entregas en casa o comercio.</p>
+                        <ul class="extras">
+                            <li><strong>≤ 10 km:</strong> precio fijo <strong>40€</strong>.</li>
+                            <li><strong>≤ 20 km:</strong> precio fijo <strong>50€</strong>.</li>
+                            <li>
+                                Se añade <strong>+10€</strong> por cada objeto pesado (sofás,
+                                lavadoras, camas, frigoríficos, etc.).
+                            </li>
+                            <li><strong>Ayudante extra:</strong> <strong>+12€</strong> si es necesario.</li>
+                        </ul>
+
+                        <a href="Pedidos.html" class="btn-plan">Haz tu presupuesto</a>
+                    </div>
+                </div>
+
+                <div class="plan">
+                    <div class="banner">
+                        <b>Punto limpio</b>
+                        <div class="price-xl mt-2">desde 35€</div>
+                    </div>
+
+                    <div class="body">
+                        <p class="muted">Retiro de enseres y entrega en punto limpio autorizado.</p>
+                        <ul class="extras">
+                            <li><strong>Extra por peso:</strong> <strong>+10€</strong> por cada objeto pesado.</li>
+                            <li>Incluye carga/descarga y recibo de depósito.</li>
+                            <li><strong>Ayudante extra:</strong> <strong>+12€</strong> si es necesario.</li>
+                            <li>
+                                <small>Consideramos "objeto pesado" si pesa <strong>más de 45&nbsp;kg</strong>;
+                                    ≤ 45&nbsp;kg no aplica extra.</small>
+                            </li>
+                        </ul>
+
+                        <a href="Pedidos.html" class="btn-plan">Haz tu presupuesto</a>
+                    </div>
+                </div>
+
+                <div class="plan">
+                    <div class="banner">
+                        <b>Furgoneta llena / Minimudanza</b>
+                        <div class="price-xl mt-2">desde 80€</div>
+                    </div>
+
+                    <div class="body">
+                        <p class="muted">Ideal para un traslado compacto llenando la furgoneta.</p>
+                        <ul class="extras">
+                            <li>Base: <strong>80€</strong> por furgoneta completa (1 viaje).</li>
+                            <li><strong>+10€ por cada objeto pesado</strong>.</li>
+                            <li><strong>Ayudante extra:</strong> <strong>+12€</strong> si es necesario.</li>
+                            <li>
+                                <small>"Objeto pesado" = <strong>&gt; 45&nbsp;kg</strong>. Si ≤ 45&nbsp;kg, no aplica
+                                    extra.</small>
+                            </li>
+                        </ul>
+
+                        <a href="Pedidos.html" class="btn-plan">Haz tu presupuesto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="calculadora" class="calculator section-container">
+        <div class="container">
+            <div class="header">
+                <h2>Calcula tu precio</h2>
+                <p>Obtén una estimación precisa e instantánea del coste de tu servicio</p>
+            </div>
+
+            <div class="calculator-container">
+                <div class="calculator-inputs">
+                    <form id="calculator-form" class="calculator-form">
+                        <div class="form-group">
+                            <label for="tipo">Tipo de servicio</label>
+                            <select id="tipo" class="form-select">
+                                <option value="domicilio">Domicilio / Tienda</option>
+                                <option value="punto">Punto limpio</option>
+                                <option value="mini">Furgoneta llena / Minimudanza</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="km">Distancia (km)</label>
+                            <div class="range-container">
+                                <input type="range" id="km" min="0" max="99" step="1" value="0" class="form-range" />
+                                <span id="km-value" class="range-value">0 km</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pesados">Objetos pesados (+45kg)</label>
+                            <div class="range-container">
+                                <input type="range" id="pesados" min="0" max="4" value="0" class="form-range" />
+                                <span id="pesados-value" class="range-value">0</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="asistencia">Tipo de asistencia</label>
+                            <select id="asistencia" class="form-select">
+                                <option value="0">Solo Transporte (Precio Base)</option>
+                                <option value="5">Transporte con Ayuda (+5€)</option>
+                                <option value="12">Transporte Completo (+12€)</option>
+                            </select>
+
+                            <div class="form-text mt-1" style="font-size: 13px; color: var(--muted)">
+                                Elige el nivel de asistencia que necesitas para tu servicio.
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-darkish w-100 mt-3" id="calculatorCta">
+                            Continuar con mi pedido
+                        </button>
+                    </form>
+                </div>
+
+                <div class="calculator-result">
+                    <div class="pill">Estimación</div>
+                    <div id="estimate" class="price">0€</div>
+                    <div id="asistencia-estimate" class="fine" style="display: none"></div>
+                    <div class="fine">Confirmamos el precio final contigo antes del servicio.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="valoraciones-container"></div>
+
+    <section id="faq" class="faq section-container">
+        <div class="container">
+            <div class="header">
+                <h2>Preguntas frecuentes</h2>
+                <p>Lo esencial sobre reservas, precios y servicio.</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-accordion">
+                    <details>
+                        <summary>¿Cómo reservo un servicio?<span class="chev">▾</span></summary>
+                        <div class="answer">
+                            Haz clic en <em>Pide ya!</em>, indica origen, destino, fecha y una franja horaria.
+                            Confirmamos por teléfono o WhatsApp antes del día del servicio.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>¿Qué entra en el precio base?<span class="chev">▾</span></summary>
+                        <div class="answer">
+                            Incluye conductor, vehículo y carga/descarga básica en planta baja o con ascensor.
+                            Extras por distancia y objetos pesados se suman al final.
+                        </div>
+                    </details>
+
+                    <details>
+                        <summary>¿Qué consideráis "objeto pesado"?<span class="chev">▾</span></summary>
+                        <div class="answer">
+                            Cualquier pieza de <strong>más de 45&nbsp;kg</strong> (p. ej. sofás, lavadoras,
+                            camas, frigoríficos, armarios). Si pesa ≤ 45&nbsp;kg, no aplicamos el extra por peso.
+                        </div>
+                    </details>
+
+                    <details id="faq-empresas">
+                        <summary>¿Tenéis soluciones para empresas?<span class="chev">▾</span></summary>
+                        <div class="answer">
+                            Sí, ofrecemos acuerdos según <em>volumen de envíos</em>, ventanas de recogida y soporte
+                            prioritario. Pide información desde el botón <strong>Empresas</strong> en el hero para
+                            que te contactemos.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="contact section-container">
+        <div class="container">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-5">
+                    <div class="contact-header">
+                        <h2>Ponte en contacto</h2>
+                        <p>Cuéntanos qué necesitas transportar y te responderemos lo antes posible.</p>
+
+                        <div class="contact-details">
+                            <p>
+                                <strong>Email</strong><br />
+                                <a href="mailto:info@huichply.com">info@huichply.com</a>
+                            </p>
+
+                            <p>
+                                <strong>Teléfono</strong><br />
+                                <a href="tel:+34900123456">+34 900 123 456</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="cardish contact-card">
+                        <form>
+                            <div class="mb-3">
+                                <label for="contact-nombre" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="contact-nombre" placeholder="Tu nombre" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contact-email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="contact-email"
+                                    placeholder="tu@correo.com" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="contact-mensaje" class="form-label">Mensaje</label>
+                                <textarea class="form-control" id="contact-mensaje" rows="4"
+                                    placeholder="Cuéntanos brevemente qué necesitas..."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn-cta w-100">Enviar mensaje</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+
+    <!-- JS global (nuevo esquema) -->
+    <script src="../assets/js/app.js"></script>
+
+    <!-- Ajuste de rutas de imágenes si el header/footer legacy aún usan nombres antiguos -->
+    <script>
+        (function () {
+            function rewriteImgs(container) {
+                if (!container) return;
+
+                var map = {
+                    "logo12.png": "../assets/img/logo12.png",
+                    "cropped-logo-madrid-emprende-400x-1-1-e1644319408887.jpg": "../assets/img/cropped-logo-madrid-emprende-400x-1-1-e1644319408887.jpg",
+                    "kB0AG0vFDThbmYPv0xmlLFZpHHcxI4pT.png": "../assets/img/kB0AG0vFDThbmYPv0xmlLFZpHHcxI4pT.png"
+                };
+
+                Array.prototype.forEach.call(container.querySelectorAll("img[src]"), function (img) {
+                    var src = (img.getAttribute("src") || "").trim();
+                    if (map[src]) img.setAttribute("src", map[src]);
+                });
+            }
+
+            function run() {
+                rewriteImgs(document.getElementById("header-container"));
+                rewriteImgs(document.getElementById("footer-container"));
+            }
+
+            var p1 = window.__yevhoHeaderLoaded;
+            var p2 = window.__yevhoFooterLoaded;
+
+            if (p1 && typeof p1.then === "function") {
+                p1.finally(run);
+            } else {
+                run();
+            }
+
+            if (p2 && typeof p2.then === "function") {
+                p2.finally(run);
+            }
+        })();
+    </script>
+</body>
+
+</html>
